@@ -19,29 +19,30 @@
 
 
             <LinearLayout
+                android:id="@+id/inputEmailTransition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="140dp">
 
                 <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/input_email_layout"
+                    android:id="@+id/inputEmailLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="240dp"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:hint="@string/email"
                     android:textColorHint="#E4A400"
+                    app:boxCornerRadiusBottomEnd="10dp"
+                    app:boxCornerRadiusBottomStart="10dp"
+                    app:boxCornerRadiusTopEnd="10dp"
+                    app:boxCornerRadiusTopStart="10dp"
                     app:boxStrokeColor="#342500"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="2dp"
+                    app:errorEnabled="false"
                     app:hintTextColor="#E4A400"
-                    app:placeholderText="Nhập email của bạn!"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:errorEnabled="false">
+                    app:placeholderText="Nhập email của bạn!">
 
                     <com.google.android.material.textfield.TextInputEditText
                         android:id="@+id/editEmail"
@@ -57,17 +58,17 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:layout_marginLeft="10dp"
+                    android:backgroundTint="#FFB800"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
-                    android:backgroundTint="#FFB800"
+                    android:visibility="gone"
                     app:cornerRadius="10dp"
                     app:icon="@drawable/ic_output"
                     app:iconPadding="0dp"
                     app:iconTint="#342500"
                     app:rippleColor="#4D342500"
                     app:strokeColor="#E4A400"
-                    app:strokeWidth="5dp"
-                    android:visibility="gone"/>
+                    app:strokeWidth="5dp" />
             </LinearLayout>
         </RelativeLayout>
 
