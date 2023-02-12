@@ -9,4 +9,17 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="intro">Chào mừng bạn đến với SIGMA</string>
+
+    <string name="btn_signIn">Đăng nhập</string>
+
+    <string name="email">Email*</string>
+    <string name="inputEmail">Nhập email của bạn!</string>
+    <string name="timedown">00:30</string>
+    <string name="OTP_Info">Chưa gửi mã xác thực?</string>
+    <string name="OTP_Request">Gửi lại</string>
+    <string name="OTP_Request2">Nhập lại email</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

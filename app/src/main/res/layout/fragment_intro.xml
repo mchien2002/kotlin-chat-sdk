@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    tools:context=".acti.intro.IntroFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/letter_intro_background">
+
+            <RelativeLayout
+                android:id="@+id/content_letter_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="80dp">
+
+                <TextView
+                    android:id="@+id/textIntro"
+                    android:layout_width="350dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/intro"
+                    android:textAlignment="center"
+                    android:textColor="#342500"
+                    android:textSize="34sp" />
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iconHeart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/content_letter_layout"
+                android:layout_centerHorizontal="true"
+                android:src="@drawable/ic_heart" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonSignIn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/iconHeart"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="15dp"
+                android:contentDescription="@string/btn_signIn"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/btn_signIn"
+                android:textAllCaps="false"
+                android:textColor="#342500"
+                android:textSize="20dp"
+                app:backgroundTint="#FFB800"
+                app:cornerRadius="10dp"
+                app:strokeColor="#E4A400"
+                app:strokeWidth="5dp"
+                android:paddingRight="30dp"
+                android:paddingLeft="30dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                app:rippleColor="#4D342500"/>
+
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
