@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.Aechatsdk" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">#00CBA9</item>
-        <item name="colorPrimaryVariant">#62FFD9</item>
-        <item name="colorOnPrimary">#2B00CBA9</item>
+        <item name="colorPrimary">#2F2E41</item>
+        <item name="colorPrimaryVariant">#50C2C9</item>
+        <item name="colorOnPrimary">#FFFFFF</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">#342500</item>
-        <item name="colorSecondaryVariant">#E4A400</item>
-        <item name="colorOnSecondary">#FFB800</item>
+        <item name="colorSecondary">#2F2E41</item>
+        <item name="colorSecondaryVariant">#50C2C9</item>
+        <item name="colorOnSecondary">#FFFFFF</item>
         <!-- Customize your theme here. -->
     </style>
 

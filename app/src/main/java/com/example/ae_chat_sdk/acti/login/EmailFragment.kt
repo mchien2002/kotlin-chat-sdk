@@ -81,8 +81,4 @@ class EmailFragment : Fragment(), View.OnClickListener, TextWatcher {
             btnSendEmail.visibility = View.VISIBLE
         }
     }
-
-    fun setButtonEnable(btn: MaterialButton) {
-        btn.setBackgroundColor(Color.parseColor("#FFFFB800"))
-    }
 }

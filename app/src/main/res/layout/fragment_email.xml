@@ -1,47 +1,57 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     tools:context=".acti.login.EmailFragment">
-
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/color2">
+
+
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/logo2"
+            android:layout_marginTop="20dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/letter_intro_background">
+            android:layout_height="fill_parent"
+            android:layout_below="@id/logo"
+            android:background="@drawable/frame_4"
+            android:elevation="2dp">
 
-
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/inputEmailTransition"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="140dp">
+                android:layout_marginTop="140dp"
+                android:padding="20dp">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/inputEmailLayout"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="240dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:hint="@string/email"
-                    android:textColorHint="#E4A400"
+                    android:textColorHint="#9950C2C9"
                     app:boxCornerRadiusBottomEnd="10dp"
                     app:boxCornerRadiusBottomStart="10dp"
                     app:boxCornerRadiusTopEnd="10dp"
                     app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="#342500"
-                    app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="2dp"
+                    app:boxStrokeColor="#802F2E41"
+                    app:boxStrokeWidth="2dp"
+                    app:boxStrokeWidthFocused="4dp"
                     app:errorEnabled="false"
-                    app:hintTextColor="#E4A400"
+                    app:hintTextColor="@color/color2"
                     app:placeholderText="Nhập email của bạn!">
 
                     <com.google.android.material.textfield.TextInputEditText
@@ -54,25 +64,21 @@
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonVerify"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_below="@id/inputEmailLayout"
+                    android:layout_alignParentRight="true"
                     android:layout_marginLeft="10dp"
-                    android:backgroundTint="#FFB800"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/button_sign_in"
+                    android:elevation="2dp"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:visibility="gone"
-                    app:cornerRadius="10dp"
-                    app:icon="@drawable/ic_output"
-                    app:iconPadding="0dp"
-                    app:iconTint="#342500"
-                    app:rippleColor="#4D342500"
-                    app:strokeColor="#E4A400"
-                    app:strokeWidth="5dp" />
-            </LinearLayout>
+                    app:cornerRadius="5dp"
+                    app:rippleColor="@color/color1" />
+
+            </RelativeLayout>
         </RelativeLayout>
-
-
     </RelativeLayout>
-
-</FrameLayout>
+</com.google.android.material.circularreveal.CircularRevealRelativeLayout>
