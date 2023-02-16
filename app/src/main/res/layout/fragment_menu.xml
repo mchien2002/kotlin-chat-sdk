@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".acti.setting.MenuFragment">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/frame_3">
+
+        <RelativeLayout
+            android:id="@+id/layoutAvatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp">
+
+            <FrameLayout
+                android:id="@+id/avatar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:layout_gravity="left"
+                    android:src="@drawable/dang_avt"
+                    app:civ_border_color="@color/white"
+                    app:civ_border_width="4dp" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center|bottom"
+                    android:layout_marginLeft="50dp"
+                    android:background="@drawable/button_camera" />
+            </FrameLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/avatar"
+                android:layout_centerHorizontal="true"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/username"
+                android:textColor="@color/color1"
+                android:textSize="24dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/layoutAvatar"
+            android:layout_marginTop="10dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/frame_16"
+                android:paddingLeft="20dp"
+                android:paddingTop="30dp"
+                android:paddingRight="20dp"
+                android:paddingBottom="20dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonFriendList"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_menu"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="left|center"
+                        android:text="@string/list_fri"
+                        android:textAllCaps="false"
+                        android:textColor="@color/color1"
+
+                        app:elevation="0dp"
+                        app:icon="@drawable/icon_right"
+                        app:iconGravity="end"
+                        app:iconTint="@color/color1"
+                        app:rippleColor="#332F2E41" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonSpam"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/buttonFriendList"
+                        android:background="@drawable/bg_menu"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="left|center"
+                        android:text="@string/spam"
+                        android:textAllCaps="false"
+                        android:textColor="@color/color1"
+
+                        app:elevation="0dp"
+                        app:icon="@drawable/icon_right"
+                        app:iconGravity="end"
+                        app:iconTint="@color/color1"
+                        app:rippleColor="#332F2E41" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonAddContact"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/buttonSpam"
+                        android:background="@drawable/bg_menu"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="left|center"
+                        android:text="@string/add_contact"
+                        android:textAllCaps="false"
+                        android:textColor="@color/color1"
+
+                        app:elevation="0dp"
+                        app:icon="@drawable/icon_right"
+                        app:iconGravity="end"
+                        app:iconTint="@color/color1"
+                        app:rippleColor="#332F2E41" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonSetting"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/buttonAddContact"
+                        android:background="@drawable/bg_menu"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="left|center"
+                        android:text="@string/setting"
+                        android:textAllCaps="false"
+                        android:textColor="@color/color1"
+
+                        app:elevation="0dp"
+                        app:icon="@drawable/icon_right"
+                        app:iconGravity="end"
+                        app:iconTint="@color/color1"
+                        app:rippleColor="#332F2E41" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/buttonLogOut"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/buttonSetting"
+                        android:background="@drawable/bg_menu"
+                        android:fontFamily="@font/roboto_bold"
+                        android:gravity="left|center"
+                        android:text="@string/log_out"
+                        android:textAllCaps="false"
+                        android:textColor="@color/red"
+                        app:icon="@drawable/ic_log_out"
+                        app:iconTint="@color/red"
+                        app:iconGravity="start"
+                        app:elevation="0dp"
+                        app:rippleColor="#332F2E41" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+
+</com.google.android.material.circularreveal.CircularRevealRelativeLayout>

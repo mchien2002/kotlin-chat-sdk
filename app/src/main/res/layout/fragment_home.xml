@@ -32,10 +32,10 @@
 
             <ImageButton
                 android:id="@+id/buttonDown"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="50dp"
+                android:layout_height="5dp"
                 android:layout_centerHorizontal="true"
-                android:layout_marginTop="40dp"
+                android:layout_marginTop="35dp"
                 android:background="@drawable/line" />
 
             <RelativeLayout
@@ -47,34 +47,26 @@
                 android:paddingTop="10dp"
                 android:paddingRight="10dp">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+                <EditText
+                    android:id="@+id/inputSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableEnd="@drawable/search"
+                    android:fontFamily="@font/roboto_bold"
                     android:hint="@string/Search"
-                    android:textColorHint="#802F2E41"
-                    app:boxBackgroundColor="@color/white2"
-                    app:boxCornerRadiusBottomEnd="15dp"
-                    app:boxCornerRadiusBottomStart="15dp"
-                    app:boxCornerRadiusTopEnd="15dp"
-                    app:boxCornerRadiusTopStart="15dp"
-                    app:boxStrokeWidth="0dp"
-                    app:boxStrokeWidthFocused="0dp"
-                    app:hintTextColor="@color/transparent">
-
-                    <EditText
-                        android:id="@+id/inputSearch"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:drawableRight="@drawable/search"
-                        android:fontFamily="@font/roboto_bold"
-                        android:inputType="textAutoComplete"
-                        android:paddingTop="10dp"
-                        android:paddingBottom="10dp"
-                        android:textAlignment="textStart"
-                        android:textColor="#000000"
-                        android:textSize="16sp" />
-                </com.google.android.material.textfield.TextInputLayout>
+                    android:imeOptions="actionDone"
+                    android:importantForAutofill="no"
+                    android:inputType="text"
+                    android:paddingStart="15dp"
+                    android:paddingTop="10dp"
+                    android:paddingBottom="10dp"
+                    android:paddingRight="10dp"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/color1"
+                    android:textSize="16sp"
+                    android:background="@drawable/bg_chat_recent"
+                    android:textColorHint="#802F2E41"/>
             </RelativeLayout>
 
             <RelativeLayout
@@ -284,22 +276,445 @@
                         </LinearLayout>
                     </RelativeLayout>
                 </RelativeLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:layout_below="@id/layoutOnstream">
+
                     <ImageView
                         android:id="@+id/textRecent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@drawable/recent"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="5dp"/>
+                        android:background="@drawable/recent" />
+
                     <FrameLayout
+                        android:id="@+id/frameMessage1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/textRecent"
-                        ></FrameLayout>
+                        android:layout_marginTop="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/bg_chat_recent"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="left"
+                                android:src="@drawable/dang_avt" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/textUsername1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/username"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/message1"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/textUsername1"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/content_message"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/timeReceive"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:text="@string/time_receive"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/color2"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameMessage2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/frameMessage1"
+                        android:layout_marginTop="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/bg_chat_recent"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="left"
+                                android:src="@drawable/dang_avt" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/textUsername2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/username"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/message2"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/textUsername2"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/content_message"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/timeReceive2"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:text="@string/time_receive"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/color2"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameMessage3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/frameMessage2"
+                        android:layout_marginTop="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/bg_chat_recent"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="left"
+                                android:src="@drawable/dang_avt" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/textUsername3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/username"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/message3"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/textUsername3"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/content_message"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/timeReceive3"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:text="@string/time_receive"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/color2"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameMessage4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/frameMessage3"
+                        android:layout_marginTop="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/bg_chat_recent"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="left"
+                                android:src="@drawable/dang_avt" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/textUsername4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/username"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/message4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/textUsername4"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/content_message"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/timeReceive4"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:text="@string/time_receive"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/color2"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameMessage5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/frameMessage4"
+                        android:layout_marginTop="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/bg_chat_recent"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="left"
+                                android:src="@drawable/dang_avt" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/textUsername5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/username"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/message5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/textUsername5"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/content_message"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/timeReceive5"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:text="@string/time_receive"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/color2"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameMessage6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/frameMessage5"
+                        android:layout_marginTop="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/bg_chat_recent"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="left"
+                                android:src="@drawable/dang_avt" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/textUsername6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/username"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/message6"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/textUsername6"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/content_message"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/timeReceive6"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:text="@string/time_receive"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/color2"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </FrameLayout>
+
+                    <FrameLayout
+                        android:id="@+id/frameMessage7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/frameMessage6"
+                        android:layout_marginTop="5dp">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:background="@drawable/bg_chat_recent"
+                            android:paddingLeft="5dp"
+                            android:paddingTop="10dp"
+                            android:paddingBottom="10dp">
+
+                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                                android:layout_width="50dp"
+                                android:layout_height="50dp"
+                                android:layout_gravity="left"
+                                android:src="@drawable/dang_avt" />
+
+                            <RelativeLayout
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginLeft="10dp">
+
+                                <TextView
+                                    android:id="@+id/textUsername7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:text="@string/username"
+                                    android:textColor="@color/black"
+                                    android:textSize="14sp" />
+
+                                <TextView
+                                    android:id="@+id/message7"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_below="@id/textUsername7"
+                                    android:fontFamily="@font/roboto_medium"
+                                    android:text="@string/content_message"
+                                    android:textColor="@color/black"
+                                    android:textSize="12sp" />
+                            </RelativeLayout>
+
+                            <TextView
+                                android:id="@+id/timeReceive7"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:paddingRight="10dp"
+                                android:text="@string/time_receive"
+                                android:textAlignment="textEnd"
+                                android:textColor="@color/color2"
+                                android:textSize="10sp" />
+                        </LinearLayout>
+                    </FrameLayout>
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>

@@ -6,30 +6,31 @@
     android:layout_height="wrap_content"
     tools:context=".acti.intro.IntroFragment">
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/layoutItro"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color1">
+        android:background="@color/color1"
+        android:orientation="vertical">
 
         <ImageView
             android:id="@+id/iconLogo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="350dp"
             android:background="@drawable/sigma" />
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_below="@id/iconLogo">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:fontFamily="monospace"
-                android:background="@drawable/logo"
-                android:textSize="64sp" />
-        </RelativeLayout>
-    </RelativeLayout>
+        <ImageView
+            android:id="@+id/logo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/logo"
+            android:layout_marginTop="100dp"
+            android:layout_gravity="center_horizontal"/>
+
+
+    </LinearLayout>
+
 </com.google.android.material.circularreveal.CircularRevealRelativeLayout>
