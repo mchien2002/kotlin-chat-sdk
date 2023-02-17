@@ -82,7 +82,7 @@
                         android:textColor="@color/color1"
 
                         app:elevation="0dp"
-                        app:icon="@drawable/icon_right"
+                        app:icon="@drawable/ic_right"
                         app:iconGravity="end"
                         app:iconTint="@color/color1"
                         app:rippleColor="#332F2E41" />
@@ -100,7 +100,7 @@
                         android:textColor="@color/color1"
 
                         app:elevation="0dp"
-                        app:icon="@drawable/icon_right"
+                        app:icon="@drawable/ic_right"
                         app:iconGravity="end"
                         app:iconTint="@color/color1"
                         app:rippleColor="#332F2E41" />
@@ -118,7 +118,7 @@
                         android:textColor="@color/color1"
 
                         app:elevation="0dp"
-                        app:icon="@drawable/icon_right"
+                        app:icon="@drawable/ic_right"
                         app:iconGravity="end"
                         app:iconTint="@color/color1"
                         app:rippleColor="#332F2E41" />
@@ -136,7 +136,7 @@
                         android:textColor="@color/color1"
 
                         app:elevation="0dp"
-                        app:icon="@drawable/icon_right"
+                        app:icon="@drawable/ic_right"
                         app:iconGravity="end"
                         app:iconTint="@color/color1"
                         app:rippleColor="#332F2E41" />

@@ -2,6 +2,7 @@ package com.example.ae_chat_sdk.acti.login
 
 
 import android.animation.LayoutTransition
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -22,6 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.acti.home.HomeFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
@@ -182,6 +184,7 @@ class EmailFragment : Fragment(), View.OnClickListener, TextWatcher {
                 MainActivity.OTP += inputOTP6.text
 
                 verifyOTP(MainActivity.OTP)
+                v.findNavController().navigate(R.id.action_emailFragment_to_homeFragment)
             }
         }
     }

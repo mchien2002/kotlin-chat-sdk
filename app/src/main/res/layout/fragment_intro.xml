@@ -1,36 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    tools:context=".acti.intro.IntroFragment">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/color1"
+    tools:context=".acti.intro.IntroFragment"
+    android:id="@+id/layoutIntro">
 
-    <LinearLayout
-        android:id="@+id/layoutItro"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color1"
-        android:orientation="vertical">
-
-        <ImageView
-            android:id="@+id/iconLogo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="350dp"
-            android:background="@drawable/sigma" />
+    <ImageView
+        android:id="@+id/ivIconLogoIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="350dp"
+        android:background="@drawable/logo_sigma" />
 
 
-        <ImageView
-            android:id="@+id/logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/logo"
-            android:layout_marginTop="100dp"
-            android:layout_gravity="center_horizontal"/>
+    <ImageView
+        android:id="@+id/ivLetterLogoIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:background="@drawable/logo_letter_sigma1" />
 
 
-    </LinearLayout>
-
-</com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+</LinearLayout>

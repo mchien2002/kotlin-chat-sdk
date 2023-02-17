@@ -1,9 +1,12 @@
 package com.example.ae_chat_sdk
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import com.example.ae_chat_sdk.acti.home.HomeFragment
 import com.example.ae_chat_sdk.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -18,10 +21,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.fragment_otp)
+//        setContentView(R.layout.fragment_email)
 
         this.binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
     }
 
 }

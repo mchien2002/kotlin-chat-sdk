@@ -25,6 +25,7 @@
 
 
         <RelativeLayout
+            android:id="@+id/layoutHome"
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_marginTop="25dp"
@@ -36,7 +37,7 @@
                 android:layout_height="5dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="35dp"
-                android:background="@drawable/line" />
+                android:background="@drawable/ic_line" />
 
             <RelativeLayout
                 android:id="@+id/layoutSearch"
@@ -52,21 +53,18 @@
                     android:id="@+id/inputSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableEnd="@drawable/search"
+                    android:background="@drawable/frame_recent"
+                    android:drawableEnd="@drawable/ic_search"
                     android:fontFamily="@font/roboto_bold"
                     android:hint="@string/Search"
-                    android:imeOptions="actionDone"
-                    android:importantForAutofill="no"
                     android:inputType="text"
                     android:paddingStart="15dp"
                     android:paddingTop="10dp"
-                    android:paddingBottom="10dp"
                     android:paddingRight="10dp"
-                    android:textAlignment="textStart"
+                    android:paddingBottom="10dp"
                     android:textColor="@color/color1"
-                    android:textSize="16sp"
-                    android:background="@drawable/bg_chat_recent"
-                    android:textColorHint="#802F2E41"/>
+                    android:textColorHint="#802F2E41"
+                    android:textSize="16sp" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -86,7 +84,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/onstream" />
+                        android:background="@drawable/label_onstream" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -94,186 +92,197 @@
                         android:layout_below="@id/textOnstream"
                         android:layout_marginTop="5dp">
 
-                        <LinearLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/horizonalOnstream"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingLeft="10dp">
+                            android:orientation="horizontal"
+                            android:paddingLeft="5dp"
+                            android:paddingRight="5dp" />
 
-                            <FrameLayout
-                                android:layout_width="90dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/frame_status">
+                        <!--                        <LinearLayout-->
+                        <!--                            android:id="@+id/layoutScrollOnstream"-->
+                        <!--                            android:layout_width="wrap_content"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:paddingLeft="10dp">-->
 
-                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="65dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/dang_avt" />
+                        <!--                            <FrameLayout-->
+                        <!--                                android:id="@+id/frameOnstream"-->
+                        <!--                                android:layout_width="90dp"-->
+                        <!--                                android:layout_height="120dp"-->
+                        <!--                                android:background="@drawable/frame_status">-->
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="62dp"
-                                    android:background="@drawable/ic_add" />
+                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--                                    android:layout_width="match_parent"-->
+                        <!--                                    android:layout_height="65dp"-->
+                        <!--                                    android:layout_marginTop="10dp"-->
+                        <!--                                    android:src="@drawable/dang_avt" />-->
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="85dp"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/color1"
-                                    android:textSize="12sp" />
-                            </FrameLayout>
+                        <!--                                <ImageView-->
+                        <!--                                    android:layout_width="25dp"-->
+                        <!--                                    android:layout_height="25dp"-->
+                        <!--                                    android:layout_gravity="center_horizontal"-->
+                        <!--                                    android:layout_marginTop="62dp"-->
+                        <!--                                    android:background="@drawable/ic_add" />-->
 
-                            <FrameLayout
-                                android:layout_width="90dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/frame_status">
+                        <!--                                <TextView-->
+                        <!--                                    android:id="@+id/tvUsername"-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:layout_gravity="center_horizontal"-->
+                        <!--                                    android:layout_marginTop="85dp"-->
+                        <!--                                    android:fontFamily="@font/roboto_bold"-->
+                        <!--                                    android:text="@string/username"-->
+                        <!--                                    android:textColor="@color/color1"-->
+                        <!--                                    android:textSize="12sp" />-->
+                        <!--                            </FrameLayout>-->
 
-                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="65dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/dang_avt" />
+                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="62dp"
-                                    android:background="@drawable/ic_add" />
+                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="85dp"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/color1"
-                                    android:textSize="12sp" />
-                            </FrameLayout>
+                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
 
-                            <FrameLayout
-                                android:layout_width="90dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/frame_status">
+                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
 
-                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="65dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/dang_avt" />
+                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="62dp"
-                                    android:background="@drawable/ic_add" />
+                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="85dp"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/color1"
-                                    android:textSize="12sp" />
-                            </FrameLayout>
+                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
 
-                            <FrameLayout
-                                android:layout_width="90dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/frame_status">
+                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
 
-                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="65dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/dang_avt" />
+                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="62dp"
-                                    android:background="@drawable/ic_add" />
+                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="85dp"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/color1"
-                                    android:textSize="12sp" />
-                            </FrameLayout>
+                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
 
-                            <FrameLayout
-                                android:layout_width="90dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/frame_status">
+                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
 
-                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="65dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/dang_avt" />
+                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="62dp"
-                                    android:background="@drawable/ic_add" />
+                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="85dp"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/color1"
-                                    android:textSize="12sp" />
-                            </FrameLayout>
+                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
 
-                            <FrameLayout
-                                android:layout_width="90dp"
-                                android:layout_height="120dp"
-                                android:background="@drawable/frame_status">
+                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
 
-                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="65dp"
-                                    android:layout_marginTop="10dp"
-                                    android:src="@drawable/dang_avt" />
+                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
 
-                                <ImageView
-                                    android:layout_width="25dp"
-                                    android:layout_height="25dp"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="62dp"
-                                    android:background="@drawable/ic_add" />
+                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_gravity="center_horizontal"
-                                    android:layout_marginTop="85dp"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/color1"
-                                    android:textSize="12sp" />
-                            </FrameLayout>
+                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
 
-                        </LinearLayout>
+                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
+                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
+
+                        <!--                        </LinearLayout>-->
                     </RelativeLayout>
                 </RelativeLayout>
 
@@ -287,434 +296,447 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                        android:background="@drawable/recent" />
+                        android:background="@drawable/label_recent" />
 
-                    <FrameLayout
-                        android:id="@+id/frameMessage1"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/textRecent"
                         android:layout_marginTop="5dp">
 
-                        <LinearLayout
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/verticalRecent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/bg_chat_recent"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp">
+                            android:orientation="vertical" />
 
-                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_gravity="left"
-                                android:src="@drawable/dang_avt" />
+                        <!--                        <FrameLayout-->
+                        <!--                            android:id="@+id/frameMessage1"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_marginTop="5dp">-->
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="10dp">
+                        <!--                            <LinearLayout-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_marginLeft="10dp"-->
+                        <!--                                android:layout_marginRight="10dp"-->
+                        <!--                                android:background="@drawable/bg_chat_recent"-->
+                        <!--                                android:paddingLeft="5dp"-->
+                        <!--                                android:paddingTop="10dp"-->
+                        <!--                                android:paddingBottom="10dp">-->
 
-                                <TextView
-                                    android:id="@+id/textUsername1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/black"
-                                    android:textSize="14sp" />
+                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--                                    android:layout_width="50dp"-->
+                        <!--                                    android:layout_height="50dp"-->
+                        <!--                                    android:layout_gravity="left"-->
+                        <!--                                    android:src="@drawable/dang_avt" />-->
 
-                                <TextView
-                                    android:id="@+id/message1"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/textUsername1"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:text="@string/content_message"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-                            </RelativeLayout>
+                        <!--                                <RelativeLayout-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:layout_gravity="center_vertical"-->
+                        <!--                                    android:layout_marginLeft="10dp">-->
 
-                            <TextView
-                                android:id="@+id/timeReceive"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="10dp"
-                                android:text="@string/time_receive"
-                                android:textAlignment="textEnd"
-                                android:textColor="@color/color2"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/textUsername1"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:fontFamily="@font/roboto_bold"-->
+                        <!--                                        android:text="@string/username"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="14sp" />-->
 
-                    <FrameLayout
-                        android:id="@+id/frameMessage2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/frameMessage1"
-                        android:layout_marginTop="5dp">
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/message1"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:layout_below="@id/textUsername1"-->
+                        <!--                                        android:fontFamily="@font/roboto_medium"-->
+                        <!--                                        android:text="@string/content_message"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="12sp" />-->
+                        <!--                                </RelativeLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/bg_chat_recent"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp">
+                        <!--                                <TextView-->
+                        <!--                                    android:id="@+id/timeReceive"-->
+                        <!--                                    android:layout_width="match_parent"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:paddingRight="10dp"-->
+                        <!--                                    android:text="@string/time_receive"-->
+                        <!--                                    android:textAlignment="textEnd"-->
+                        <!--                                    android:textColor="@color/color2"-->
+                        <!--                                    android:textSize="10sp" />-->
+                        <!--                            </LinearLayout>-->
+                        <!--                        </FrameLayout>-->
 
-                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_gravity="left"
-                                android:src="@drawable/dang_avt" />
+                        <!--                        <FrameLayout-->
+                        <!--                            android:id="@+id/frameMessage2"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_below="@id/frameMessage1"-->
+                        <!--                            android:layout_marginTop="5dp">-->
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="10dp">
+                        <!--                            <LinearLayout-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_marginLeft="10dp"-->
+                        <!--                                android:layout_marginRight="10dp"-->
+                        <!--                                android:background="@drawable/bg_chat_recent"-->
+                        <!--                                android:paddingLeft="5dp"-->
+                        <!--                                android:paddingTop="10dp"-->
+                        <!--                                android:paddingBottom="10dp">-->
 
-                                <TextView
-                                    android:id="@+id/textUsername2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/black"
-                                    android:textSize="14sp" />
+                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--                                    android:layout_width="50dp"-->
+                        <!--                                    android:layout_height="50dp"-->
+                        <!--                                    android:layout_gravity="left"-->
+                        <!--                                    android:src="@drawable/dang_avt" />-->
 
-                                <TextView
-                                    android:id="@+id/message2"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/textUsername2"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:text="@string/content_message"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-                            </RelativeLayout>
+                        <!--                                <RelativeLayout-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:layout_gravity="center_vertical"-->
+                        <!--                                    android:layout_marginLeft="10dp">-->
 
-                            <TextView
-                                android:id="@+id/timeReceive2"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="10dp"
-                                android:text="@string/time_receive"
-                                android:textAlignment="textEnd"
-                                android:textColor="@color/color2"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/textUsername2"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:fontFamily="@font/roboto_bold"-->
+                        <!--                                        android:text="@string/username"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="14sp" />-->
 
-                    <FrameLayout
-                        android:id="@+id/frameMessage3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/frameMessage2"
-                        android:layout_marginTop="5dp">
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/message2"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:layout_below="@id/textUsername2"-->
+                        <!--                                        android:fontFamily="@font/roboto_medium"-->
+                        <!--                                        android:text="@string/content_message"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="12sp" />-->
+                        <!--                                </RelativeLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/bg_chat_recent"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp">
+                        <!--                                <TextView-->
+                        <!--                                    android:id="@+id/timeReceive2"-->
+                        <!--                                    android:layout_width="match_parent"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:paddingRight="10dp"-->
+                        <!--                                    android:text="@string/time_receive"-->
+                        <!--                                    android:textAlignment="textEnd"-->
+                        <!--                                    android:textColor="@color/color2"-->
+                        <!--                                    android:textSize="10sp" />-->
+                        <!--                            </LinearLayout>-->
+                        <!--                        </FrameLayout>-->
 
-                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_gravity="left"
-                                android:src="@drawable/dang_avt" />
+                        <!--                        <FrameLayout-->
+                        <!--                            android:id="@+id/frameMessage3"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_below="@id/frameMessage2"-->
+                        <!--                            android:layout_marginTop="5dp">-->
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="10dp">
+                        <!--                            <LinearLayout-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_marginLeft="10dp"-->
+                        <!--                                android:layout_marginRight="10dp"-->
+                        <!--                                android:background="@drawable/bg_chat_recent"-->
+                        <!--                                android:paddingLeft="5dp"-->
+                        <!--                                android:paddingTop="10dp"-->
+                        <!--                                android:paddingBottom="10dp">-->
 
-                                <TextView
-                                    android:id="@+id/textUsername3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/black"
-                                    android:textSize="14sp" />
+                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--                                    android:layout_width="50dp"-->
+                        <!--                                    android:layout_height="50dp"-->
+                        <!--                                    android:layout_gravity="left"-->
+                        <!--                                    android:src="@drawable/dang_avt" />-->
 
-                                <TextView
-                                    android:id="@+id/message3"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/textUsername3"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:text="@string/content_message"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-                            </RelativeLayout>
+                        <!--                                <RelativeLayout-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:layout_gravity="center_vertical"-->
+                        <!--                                    android:layout_marginLeft="10dp">-->
 
-                            <TextView
-                                android:id="@+id/timeReceive3"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="10dp"
-                                android:text="@string/time_receive"
-                                android:textAlignment="textEnd"
-                                android:textColor="@color/color2"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/textUsername3"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:fontFamily="@font/roboto_bold"-->
+                        <!--                                        android:text="@string/username"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="14sp" />-->
 
-                    <FrameLayout
-                        android:id="@+id/frameMessage4"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/frameMessage3"
-                        android:layout_marginTop="5dp">
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/message3"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:layout_below="@id/textUsername3"-->
+                        <!--                                        android:fontFamily="@font/roboto_medium"-->
+                        <!--                                        android:text="@string/content_message"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="12sp" />-->
+                        <!--                                </RelativeLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/bg_chat_recent"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp">
+                        <!--                                <TextView-->
+                        <!--                                    android:id="@+id/timeReceive3"-->
+                        <!--                                    android:layout_width="match_parent"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:paddingRight="10dp"-->
+                        <!--                                    android:text="@string/time_receive"-->
+                        <!--                                    android:textAlignment="textEnd"-->
+                        <!--                                    android:textColor="@color/color2"-->
+                        <!--                                    android:textSize="10sp" />-->
+                        <!--                            </LinearLayout>-->
+                        <!--                        </FrameLayout>-->
 
-                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_gravity="left"
-                                android:src="@drawable/dang_avt" />
+                        <!--                        <FrameLayout-->
+                        <!--                            android:id="@+id/frameMessage4"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_below="@id/frameMessage3"-->
+                        <!--                            android:layout_marginTop="5dp">-->
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="10dp">
+                        <!--                            <LinearLayout-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_marginLeft="10dp"-->
+                        <!--                                android:layout_marginRight="10dp"-->
+                        <!--                                android:background="@drawable/bg_chat_recent"-->
+                        <!--                                android:paddingLeft="5dp"-->
+                        <!--                                android:paddingTop="10dp"-->
+                        <!--                                android:paddingBottom="10dp">-->
 
-                                <TextView
-                                    android:id="@+id/textUsername4"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/black"
-                                    android:textSize="14sp" />
+                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--                                    android:layout_width="50dp"-->
+                        <!--                                    android:layout_height="50dp"-->
+                        <!--                                    android:layout_gravity="left"-->
+                        <!--                                    android:src="@drawable/dang_avt" />-->
 
-                                <TextView
-                                    android:id="@+id/message4"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/textUsername4"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:text="@string/content_message"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-                            </RelativeLayout>
+                        <!--                                <RelativeLayout-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:layout_gravity="center_vertical"-->
+                        <!--                                    android:layout_marginLeft="10dp">-->
 
-                            <TextView
-                                android:id="@+id/timeReceive4"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="10dp"
-                                android:text="@string/time_receive"
-                                android:textAlignment="textEnd"
-                                android:textColor="@color/color2"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/textUsername4"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:fontFamily="@font/roboto_bold"-->
+                        <!--                                        android:text="@string/username"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="14sp" />-->
 
-                    <FrameLayout
-                        android:id="@+id/frameMessage5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/frameMessage4"
-                        android:layout_marginTop="5dp">
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/message4"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:layout_below="@id/textUsername4"-->
+                        <!--                                        android:fontFamily="@font/roboto_medium"-->
+                        <!--                                        android:text="@string/content_message"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="12sp" />-->
+                        <!--                                </RelativeLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/bg_chat_recent"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp">
+                        <!--                                <TextView-->
+                        <!--                                    android:id="@+id/timeReceive4"-->
+                        <!--                                    android:layout_width="match_parent"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:paddingRight="10dp"-->
+                        <!--                                    android:text="@string/time_receive"-->
+                        <!--                                    android:textAlignment="textEnd"-->
+                        <!--                                    android:textColor="@color/color2"-->
+                        <!--                                    android:textSize="10sp" />-->
+                        <!--                            </LinearLayout>-->
+                        <!--                        </FrameLayout>-->
 
-                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_gravity="left"
-                                android:src="@drawable/dang_avt" />
+                        <!--                        <FrameLayout-->
+                        <!--                            android:id="@+id/frameMessage5"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_below="@id/frameMessage4"-->
+                        <!--                            android:layout_marginTop="5dp">-->
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="10dp">
+                        <!--                            <LinearLayout-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_marginLeft="10dp"-->
+                        <!--                                android:layout_marginRight="10dp"-->
+                        <!--                                android:background="@drawable/bg_chat_recent"-->
+                        <!--                                android:paddingLeft="5dp"-->
+                        <!--                                android:paddingTop="10dp"-->
+                        <!--                                android:paddingBottom="10dp">-->
 
-                                <TextView
-                                    android:id="@+id/textUsername5"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/black"
-                                    android:textSize="14sp" />
+                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--                                    android:layout_width="50dp"-->
+                        <!--                                    android:layout_height="50dp"-->
+                        <!--                                    android:layout_gravity="left"-->
+                        <!--                                    android:src="@drawable/dang_avt" />-->
 
-                                <TextView
-                                    android:id="@+id/message5"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/textUsername5"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:text="@string/content_message"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-                            </RelativeLayout>
+                        <!--                                <RelativeLayout-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:layout_gravity="center_vertical"-->
+                        <!--                                    android:layout_marginLeft="10dp">-->
 
-                            <TextView
-                                android:id="@+id/timeReceive5"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="10dp"
-                                android:text="@string/time_receive"
-                                android:textAlignment="textEnd"
-                                android:textColor="@color/color2"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/textUsername5"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:fontFamily="@font/roboto_bold"-->
+                        <!--                                        android:text="@string/username"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="14sp" />-->
 
-                    <FrameLayout
-                        android:id="@+id/frameMessage6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/frameMessage5"
-                        android:layout_marginTop="5dp">
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/message5"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:layout_below="@id/textUsername5"-->
+                        <!--                                        android:fontFamily="@font/roboto_medium"-->
+                        <!--                                        android:text="@string/content_message"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="12sp" />-->
+                        <!--                                </RelativeLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/bg_chat_recent"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp">
+                        <!--                                <TextView-->
+                        <!--                                    android:id="@+id/timeReceive5"-->
+                        <!--                                    android:layout_width="match_parent"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:paddingRight="10dp"-->
+                        <!--                                    android:text="@string/time_receive"-->
+                        <!--                                    android:textAlignment="textEnd"-->
+                        <!--                                    android:textColor="@color/color2"-->
+                        <!--                                    android:textSize="10sp" />-->
+                        <!--                            </LinearLayout>-->
+                        <!--                        </FrameLayout>-->
 
-                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_gravity="left"
-                                android:src="@drawable/dang_avt" />
+                        <!--                        <FrameLayout-->
+                        <!--                            android:id="@+id/frameMessage6"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_below="@id/frameMessage5"-->
+                        <!--                            android:layout_marginTop="5dp">-->
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="10dp">
+                        <!--                            <LinearLayout-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_marginLeft="10dp"-->
+                        <!--                                android:layout_marginRight="10dp"-->
+                        <!--                                android:background="@drawable/bg_chat_recent"-->
+                        <!--                                android:paddingLeft="5dp"-->
+                        <!--                                android:paddingTop="10dp"-->
+                        <!--                                android:paddingBottom="10dp">-->
 
-                                <TextView
-                                    android:id="@+id/textUsername6"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/black"
-                                    android:textSize="14sp" />
+                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--                                    android:layout_width="50dp"-->
+                        <!--                                    android:layout_height="50dp"-->
+                        <!--                                    android:layout_gravity="left"-->
+                        <!--                                    android:src="@drawable/dang_avt" />-->
 
-                                <TextView
-                                    android:id="@+id/message6"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/textUsername6"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:text="@string/content_message"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-                            </RelativeLayout>
+                        <!--                                <RelativeLayout-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:layout_gravity="center_vertical"-->
+                        <!--                                    android:layout_marginLeft="10dp">-->
 
-                            <TextView
-                                android:id="@+id/timeReceive6"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="10dp"
-                                android:text="@string/time_receive"
-                                android:textAlignment="textEnd"
-                                android:textColor="@color/color2"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/textUsername6"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:fontFamily="@font/roboto_bold"-->
+                        <!--                                        android:text="@string/username"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="14sp" />-->
 
-                    <FrameLayout
-                        android:id="@+id/frameMessage7"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/frameMessage6"
-                        android:layout_marginTop="5dp">
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/message6"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:layout_below="@id/textUsername6"-->
+                        <!--                                        android:fontFamily="@font/roboto_medium"-->
+                        <!--                                        android:text="@string/content_message"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="12sp" />-->
+                        <!--                                </RelativeLayout>-->
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:background="@drawable/bg_chat_recent"
-                            android:paddingLeft="5dp"
-                            android:paddingTop="10dp"
-                            android:paddingBottom="10dp">
+                        <!--                                <TextView-->
+                        <!--                                    android:id="@+id/timeReceive6"-->
+                        <!--                                    android:layout_width="match_parent"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:paddingRight="10dp"-->
+                        <!--                                    android:text="@string/time_receive"-->
+                        <!--                                    android:textAlignment="textEnd"-->
+                        <!--                                    android:textColor="@color/color2"-->
+                        <!--                                    android:textSize="10sp" />-->
+                        <!--                            </LinearLayout>-->
+                        <!--                        </FrameLayout>-->
 
-                            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
-                                android:layout_gravity="left"
-                                android:src="@drawable/dang_avt" />
+                        <!--                        <FrameLayout-->
+                        <!--                            android:id="@+id/frameMessage7"-->
+                        <!--                            android:layout_width="match_parent"-->
+                        <!--                            android:layout_height="wrap_content"-->
+                        <!--                            android:layout_below="@id/frameMessage6"-->
+                        <!--                            android:layout_marginTop="5dp">-->
 
-                            <RelativeLayout
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="10dp">
+                        <!--                            <LinearLayout-->
+                        <!--                                android:layout_width="match_parent"-->
+                        <!--                                android:layout_height="wrap_content"-->
+                        <!--                                android:layout_marginLeft="10dp"-->
+                        <!--                                android:layout_marginRight="10dp"-->
+                        <!--                                android:background="@drawable/bg_chat_recent"-->
+                        <!--                                android:paddingLeft="5dp"-->
+                        <!--                                android:paddingTop="10dp"-->
+                        <!--                                android:paddingBottom="10dp">-->
 
-                                <TextView
-                                    android:id="@+id/textUsername7"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:text="@string/username"
-                                    android:textColor="@color/black"
-                                    android:textSize="14sp" />
+                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+                        <!--                                    android:layout_width="50dp"-->
+                        <!--                                    android:layout_height="50dp"-->
+                        <!--                                    android:layout_gravity="left"-->
+                        <!--                                    android:src="@drawable/dang_avt" />-->
 
-                                <TextView
-                                    android:id="@+id/message7"
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_below="@id/textUsername7"
-                                    android:fontFamily="@font/roboto_medium"
-                                    android:text="@string/content_message"
-                                    android:textColor="@color/black"
-                                    android:textSize="12sp" />
-                            </RelativeLayout>
+                        <!--                                <RelativeLayout-->
+                        <!--                                    android:layout_width="wrap_content"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:layout_gravity="center_vertical"-->
+                        <!--                                    android:layout_marginLeft="10dp">-->
 
-                            <TextView
-                                android:id="@+id/timeReceive7"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:paddingRight="10dp"
-                                android:text="@string/time_receive"
-                                android:textAlignment="textEnd"
-                                android:textColor="@color/color2"
-                                android:textSize="10sp" />
-                        </LinearLayout>
-                    </FrameLayout>
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/textUsername7"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:fontFamily="@font/roboto_bold"-->
+                        <!--                                        android:text="@string/username"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="14sp" />-->
+
+                        <!--                                    <TextView-->
+                        <!--                                        android:id="@+id/message7"-->
+                        <!--                                        android:layout_width="wrap_content"-->
+                        <!--                                        android:layout_height="wrap_content"-->
+                        <!--                                        android:layout_below="@id/textUsername7"-->
+                        <!--                                        android:fontFamily="@font/roboto_medium"-->
+                        <!--                                        android:text="@string/content_message"-->
+                        <!--                                        android:textColor="@color/black"-->
+                        <!--                                        android:textSize="12sp" />-->
+                        <!--                                </RelativeLayout>-->
+
+                        <!--                                <TextView-->
+                        <!--                                    android:id="@+id/timeReceive7"-->
+                        <!--                                    android:layout_width="match_parent"-->
+                        <!--                                    android:layout_height="wrap_content"-->
+                        <!--                                    android:paddingRight="10dp"-->
+                        <!--                                    android:text="@string/time_receive"-->
+                        <!--                                    android:textAlignment="textEnd"-->
+                        <!--                                    android:textColor="@color/color2"-->
+                        <!--                                    android:textSize="10sp" />-->
+                        <!--                            </LinearLayout>-->
+                        <!--                        </FrameLayout>-->
+                    </RelativeLayout>
+                    /
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
