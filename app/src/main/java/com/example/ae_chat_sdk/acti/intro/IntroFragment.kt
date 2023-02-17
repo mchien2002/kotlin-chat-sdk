@@ -42,13 +42,11 @@ class IntroFragment : Fragment() {
 
         Handler(Looper.getMainLooper()).postDelayed({
             rlInputEmail.visibility=View.VISIBLE
-            BottomSheetBehavior.from(rlInputEmail).apply {
-                peekHeight = 0
-                isHideable=false
-                this.setState(BottomSheetBehavior.STATE_EXPANDED)
-            }
-        }, 3000)
 
+        }, 2900)
+        BottomSheetBehavior.from(rlInputEmail).apply {
+            this.setState(BottomSheetBehavior.STATE_EXPANDED)
+        }
 
 //        Handler(Looper.getMainLooper()).postDelayed({
 //            v.findNavController().navigate(R.id.action_introFragment_to_emailFragment)
