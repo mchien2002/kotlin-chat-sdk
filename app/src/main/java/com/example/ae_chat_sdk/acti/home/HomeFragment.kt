@@ -57,11 +57,11 @@ class HomeFragment : Fragment() {
 
         rvOnstream=v.findViewById(R.id.horizonalOnstream)
         rvOnstream.layoutManager=LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
-        rvOnstream.adapter=OnstreamAdapter(onstream)
+        rvOnstream.adapter= OnstreamAdapter(onstream)
 
         rvRecent=v.findViewById(R.id.verticalRecent)
         rvRecent.layoutManager=LinearLayoutManager(context, RecyclerView.VERTICAL,false)
-        rvRecent.adapter= RecentAdapter(onstream)
+        rvRecent.adapter= RecentAdapter(recent)
 
 
         return v
