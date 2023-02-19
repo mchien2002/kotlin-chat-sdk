@@ -114,7 +114,7 @@ class IntroFragment : Fragment(), View.OnClickListener, TextWatcher {
     }
 
     private fun showInputEmail() {
-        v.findViewById<ImageView>(R.id.iViewLetterLogoIntro).animate().alpha(0F).setDuration(200).setStartDelay(2500)
+        v.findViewById<ImageView>(R.id.iViewLetterLogoIntro).animate().alpha(0F).setDuration(200).setStartDelay(2200)
 
         v.findViewById<ImageView>(R.id.iViewIconLogoIntroBefore).animate()
             .alpha(0F)
