@@ -20,6 +20,8 @@ import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.Adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.Adapter.RecentAdapter
+import com.example.ae_chat_sdk.acti.BottomSheetHome
+import com.example.ae_chat_sdk.acti.IClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.w3c.dom.Text
 
@@ -33,7 +35,7 @@ class HomeFragment : Fragment() {
     lateinit var rvRecent: RecyclerView
     lateinit var recent: ArrayList<String>
 
-    lateinit var layoutHome: RelativeLayout
+//    lateinit var layoutHome: RelativeLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,9 +64,9 @@ class HomeFragment : Fragment() {
         v = inflater.inflate(R.layout.fragment_home, container, false)
 
         init()
-        BottomSheetBehavior.from(layoutHome).apply {
-            this.state=BottomSheetBehavior.STATE_EXPANDED
-        }
+//        BottomSheetBehavior.from(layoutHome).apply {
+//            this.state = BottomSheetBehavior.STATE_EXPANDED
+//        }
 
 
 
@@ -74,16 +76,23 @@ class HomeFragment : Fragment() {
     }
 
     fun init() {
-        layoutHome = v.findViewById(R.id.rLayoutHome)
+//        layoutHome = v.findViewById(R.id.cLayoutHome)
 
-        rvOnstream = v.findViewById(R.id.rViewHorizonalOnstream)
-        rvOnstream.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rvOnstream.adapter = OnstreamAdapter(onstream)
+//        rvOnstream = v.findViewById(R.id.rViewHorizonalOnstream)
+//        rvOnstream.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+//        rvOnstream.adapter = OnstreamAdapter(onstream)
+//
+//
+//        rvRecent = v.findViewById(R.id.rViewVerticalRecent)
+//        rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+//        rvRecent.adapter = RecentAdapter(recent)
 
-
-        rvRecent = v.findViewById(R.id.rViewVerticalRecent)
-        rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvRecent.adapter = RecentAdapter(recent)
+        val bottomSheetHome=BottomSheetHome(onstream,recent, object : IClickListener {
+            override fun clickItem(itemObject: String) {
+                Toast.makeText(context,itemObject,Toast.LENGTH_SHORT).show()
+            }
+        })
+        bottomSheetHome.show(childFragmentManager,bottomSheetHome.tag)
     }
 
 

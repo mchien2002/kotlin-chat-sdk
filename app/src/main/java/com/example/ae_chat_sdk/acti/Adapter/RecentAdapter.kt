@@ -6,8 +6,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.acti.IClickListener
 
-class RecentAdapter(val data:ArrayList<String>) : RecyclerView.Adapter<RecentAdapter.ViewHolder>() {
+class RecentAdapter(val data:ArrayList<String>, val iClickListener: IClickListener) : RecyclerView.Adapter<RecentAdapter.ViewHolder>() {
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val tvUsername: TextView =itemView.findViewById<TextView>(R.id.tvUsername)
         val tvMessage:TextView=itemView.findViewById(R.id.tvMessage)
@@ -25,6 +26,16 @@ class RecentAdapter(val data:ArrayList<String>) : RecyclerView.Adapter<RecentAda
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvUsername.text=data[position]
+        val itemObject = data[position]
+        if(data.size==0){
+            return
+        }
+
+        holder.tvUsername.text = itemObject
+        holder.tvUsername.setOnClickListener(View.OnClickListener {
+            fun onClick(v:View){
+                iClickListener.clickItem(itemObject)
+            }
+        })
     }
 }

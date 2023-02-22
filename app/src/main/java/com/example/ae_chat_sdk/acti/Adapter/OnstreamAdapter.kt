@@ -7,27 +7,32 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.acti.IClickListener
 
-class OnstreamAdapter(val data: ArrayList<String>) :
-    RecyclerView.Adapter<OnstreamAdapter.ViewHolder>() {
+class OnstreamAdapter(val data: ArrayList<String>, val iClickListener: IClickListener) :
+    RecyclerView.Adapter<OnstreamAdapter.OnStreamViewHolder>() {
 
-    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    class OnStreamViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvUsername: TextView = itemView.findViewById<TextView>(R.id.tvUsername)
-        val layoutOnstream:FrameLayout=itemView.findViewById<FrameLayout>(R.id.frameOnstream)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view: View =
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnStreamViewHolder {
+        val v: View =
             LayoutInflater.from(parent.context).inflate(R.layout.layout_onstream, parent, false)
-        return ViewHolder(view)
+        return OnStreamViewHolder(v)
     }
 
     override fun getItemCount(): Int {
         return data.size
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.tvUsername.text = data[position]
-
+    override fun onBindViewHolder(holder: OnStreamViewHolder, position: Int) {
+        val itemObject = data[position]
+        holder.tvUsername.text = itemObject
+//        holder.tvUsername.setOnClickListener(View.OnClickListener {
+//            fun onClick(v:View){
+//                iClickListener.clickItem(itemObject)
+//            }
+//        })
     }
 }

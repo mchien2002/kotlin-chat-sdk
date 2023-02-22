@@ -68,11 +68,11 @@ class IntroFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setListenerEmail() {
-        rLayoutWrapInputOTP.setOnClickListener {
-            val inputManager =
-                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(rLayoutWrapInputEmail.windowToken, 0)
-        }
+//        rLayoutWrapInputOTP.setOnClickListener {
+//            val inputManager =
+//                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            inputManager.hideSoftInputFromWindow(rLayoutWrapInputEmail.windowToken, 0)
+//        }
         eTextEmail.addTextChangedListener {
             it?.let { string ->
                 fun String.isValidEmail() =
@@ -95,11 +95,11 @@ class IntroFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setListenerOTP() {
-        rLayoutWrapInputOTP.setOnClickListener {
-            val inputManager =
-                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(rLayoutWrapInputEmail.windowToken, 0)
-        }
+//        rLayoutWrapInputOTP.setOnClickListener {
+//            val inputManager =
+//                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            inputManager.hideSoftInputFromWindow(rLayoutWrapInputEmail.windowToken, 0)
+//        }
         setTextChangeListener(inputOTP1, inputOTP2)
         setTextChangeListener(inputOTP2, inputOTP3)
         setTextChangeListener(inputOTP3, inputOTP4)
@@ -142,23 +142,23 @@ class IntroFragment : Fragment(), View.OnClickListener {
     private fun initFocusEmail() {
         eTextEmail.isEnabled = true
 
-        eTextEmail.postDelayed({
-            eTextEmail.requestFocus()
-            val inputMethodManager =
-                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(eTextEmail, InputMethodManager.SHOW_FORCED)
-        }, 4000)
+//        eTextEmail.postDelayed({
+//            eTextEmail.requestFocus()
+//            val inputMethodManager =
+//                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            inputMethodManager.showSoftInput(eTextEmail, InputMethodManager.SHOW_FORCED)
+//        }, 4000)
     }
 
     private fun initFocusOTP() {
         inputOTP1.isEnabled = true
-
-        inputOTP1.postDelayed({
-            inputOTP1.requestFocus()
-            val inputMethodManager =
-                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputMethodManager.showSoftInput(eTextEmail, InputMethodManager.SHOW_FORCED)
-        }, 500)
+        inputOTP1.requestFocus()
+//        inputOTP1.postDelayed({
+//            inputOTP1.requestFocus()
+//            val inputMethodManager =
+//                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//            inputMethodManager.showSoftInput(eTextEmail, InputMethodManager.SHOW_FORCED)
+//        }, 500)
     }
 
 
@@ -197,6 +197,7 @@ class IntroFragment : Fragment(), View.OnClickListener {
                 fromEditText.isEnabled = false
 
             }
+            Log.d("KeyCode", event.keyCode.toString())
             false
         }
     }
@@ -243,12 +244,12 @@ class IntroFragment : Fragment(), View.OnClickListener {
             .setDuration(200).setStartDelay(2500)
 
         Handler(Looper.getMainLooper()).postDelayed({
-
             BottomSheetBehavior.from(v.findViewById(R.id.rLayoutInput)).apply {
                 this.state = BottomSheetBehavior.STATE_EXPANDED
                 this.isDraggable = false
             }
         }, 3000)
+
         Handler(Looper.getMainLooper()).postDelayed({
             iViewLogo.visibility = View.VISIBLE
         }, 3500)
@@ -284,7 +285,9 @@ class IntroFragment : Fragment(), View.OnClickListener {
     private fun verifyOTP(OTP: String) {
         Log.d("OTP", OTP)
         resetOTP()
-//        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+        Handler(Looper.getMainLooper()).postDelayed({
+            v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+        }, 1000)
     }
 }
 
