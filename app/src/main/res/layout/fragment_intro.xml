@@ -24,26 +24,29 @@
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
         android:background="@drawable/logo_letter_sigma1" />
+    <ImageView
+        android:id="@+id/iViewIconLogoIntroAfter"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center|top"
+        android:background="@drawable/logo_sigma"
+        android:layout_marginTop="20dp"
+        android:visibility="invisible"/>
 
     <RelativeLayout
         android:id="@+id/rLayoutInput"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#33000000"
+        android:paddingTop="120dp"
         app:behavior_hideable="false"
         app:behavior_peekHeight="0dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <ImageView
-            android:id="@+id/iViewIconLogoIntroAfter"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:background="@drawable/logo_sigma" />
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
-            android:layout_below="@id/iViewIconLogoIntroAfter"
+            android:layout_height="match_parent"
             android:background="@drawable/frame_4">
 
             <RelativeLayout
@@ -55,27 +58,11 @@
                 android:paddingRight="20dp"
                 android:visibility="visible">
 
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/buttonSendEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginLeft="10dp"
-                    android:background="@drawable/button_sign_in"
-                    android:elevation="2dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:visibility="gone"
-                    app:cornerRadius="5dp"
-                    app:rippleColor="@color/color1" />
-
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tLayoutInputEmail"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/buttonSendEmail"
                     android:layout_centerInParent="true"
                     android:background="@color/white"
                     android:hint="@string/email"
@@ -98,6 +85,20 @@
                         android:inputType="textEmailAddress"
                         android:textColor="@color/color1" />
                 </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonSendEmail"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="40dp"
+                    android:background="@drawable/button_sign_in"
+                    android:elevation="2dp"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:visibility="invisible"
+                    app:cornerRadius="5dp"
+                    app:rippleColor="@color/color1"
+                    android:layout_below="@id/tLayoutInputEmail"/>
 
 
             </RelativeLayout>
@@ -107,8 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:padding="20dp"
-                android:visibility="gone">
+                android:visibility="invisible">
 
                 <TextView
                     android:id="@+id/tViewEmailInformation"
@@ -129,13 +129,12 @@
                         android:id="@+id/lLayouteTextInputOTP"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:padding="20dp">
+                        android:layout_centerHorizontal="true">
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
-                            android:layout_height="60dp"
+                            android:layout_height="55dp"
                             android:clickable="false"
                             android:enabled="false"
                             app:boxStrokeColor="@color/color1"
@@ -153,13 +152,13 @@
                                 android:maxLength="1"
                                 android:padding="0dp"
                                 android:textColor="@color/color1"
-                                android:textSize="24sp" />
+                                android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
-                            android:layout_height="60dp"
+                            android:layout_height="55dp"
                             android:layout_marginLeft="5dp"
                             android:clickable="false"
                             android:enabled="false"
@@ -178,13 +177,13 @@
                                 android:maxLength="1"
                                 android:padding="0dp"
                                 android:textColor="#000000"
-                                android:textSize="24sp" />
+                                android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
-                            android:layout_height="60dp"
+                            android:layout_height="55dp"
                             android:layout_marginLeft="5dp"
                             android:clickable="false"
                             android:enabled="false"
@@ -203,14 +202,14 @@
                                 android:maxLength="1"
                                 android:padding="0dp"
                                 android:textColor="#000000"
-                                android:textSize="24sp" />
+                                android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
-                            android:layout_height="60dp"
+                            android:layout_height="55dp"
                             android:layout_marginLeft="5dp"
                             android:clickable="false"
                             android:enabled="false"
@@ -229,14 +228,14 @@
                                 android:maxLength="1"
                                 android:padding="0dp"
                                 android:textColor="#000000"
-                                android:textSize="24sp" />
+                                android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
-                            android:layout_height="60dp"
+                            android:layout_height="55dp"
                             android:layout_marginLeft="5dp"
                             android:clickable="false"
                             android:enabled="false"
@@ -255,13 +254,13 @@
                                 android:maxLength="1"
                                 android:padding="0dp"
                                 android:textColor="#000000"
-                                android:textSize="24sp" />
+                                android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
-                            android:layout_height="60dp"
+                            android:layout_height="55dp"
                             android:layout_marginLeft="5dp"
                             android:clickable="false"
                             android:enabled="false"
@@ -280,7 +279,7 @@
                                 android:maxLength="1"
                                 android:padding="0dp"
                                 android:textColor="#000000"
-                                android:textSize="24sp" />
+                                android:textSize="20sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
                     </LinearLayout>

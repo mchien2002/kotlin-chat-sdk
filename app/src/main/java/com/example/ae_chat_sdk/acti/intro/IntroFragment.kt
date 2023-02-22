@@ -11,26 +11,25 @@ import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
-import androidx.coordinatorlayout.widget.CoordinatorLayout
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 
 
-class IntroFragment : Fragment(), View.OnClickListener, TextWatcher {
+class IntroFragment : Fragment(), View.OnClickListener {
 
     // Intro
-
+    lateinit var iViewLogo: ImageView
 
     // Email
     lateinit var btnSendEmail: Button
@@ -58,9 +57,9 @@ class IntroFragment : Fragment(), View.OnClickListener, TextWatcher {
         v = inflater.inflate(R.layout.fragment_intro, container, false)
 
 
+
         init()
         setOnClickListener(this)
-        addTextChangedListener(this)
         showInputEmail()
 
 
@@ -68,17 +67,139 @@ class IntroFragment : Fragment(), View.OnClickListener, TextWatcher {
         return v;
     }
 
-    private fun addTextChangedListener(introFragment: IntroFragment) {
+    private fun setListenerEmail() {
+        rLayoutWrapInputOTP.setOnClickListener {
+            val inputManager =
+                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(rLayoutWrapInputEmail.windowToken, 0)
+        }
+        eTextEmail.addTextChangedListener {
+            it?.let { string ->
+                fun String.isValidEmail() =
+                    !TextUtils.isEmpty(string.toString().trim()) && Patterns.EMAIL_ADDRESS.matcher(
+                        string.toString().trim()
+                    )
+                        .matches()
 
-        eTextEmail.addTextChangedListener(introFragment)
-        inputOTP1.addTextChangedListener(introFragment)
-        inputOTP2.addTextChangedListener(introFragment)
-        inputOTP3.addTextChangedListener(introFragment)
-        inputOTP4.addTextChangedListener(introFragment)
-        inputOTP5.addTextChangedListener(introFragment)
-        inputOTP6.addTextChangedListener(introFragment)
+
+                if (!string.toString().trim().isValidEmail()) {
+                    tLayoutInputEmail.error = "Email chưa đúng cú pháp!"
+                    btnSendEmail.visibility = View.GONE
+                } else {
+                    tLayoutInputEmail.isErrorEnabled = false
+                    btnSendEmail.visibility = View.VISIBLE
+                    MainActivity.Email = string.toString().trim()
+                }
+            }
+        }
     }
 
+    private fun setListenerOTP() {
+        rLayoutWrapInputOTP.setOnClickListener {
+            val inputManager =
+                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputManager.hideSoftInputFromWindow(rLayoutWrapInputEmail.windowToken, 0)
+        }
+        setTextChangeListener(inputOTP1, inputOTP2)
+        setTextChangeListener(inputOTP2, inputOTP3)
+        setTextChangeListener(inputOTP3, inputOTP4)
+        setTextChangeListener(inputOTP4, inputOTP5)
+        setTextChangeListener(inputOTP5, inputOTP6)
+        setTextChangeListener(inputOTP6, done = {
+            MainActivity.OTP = inputOTP1.text.toString().trim() + inputOTP2.text.toString()
+                .trim() + inputOTP3.text.toString().trim() + inputOTP4.text.toString()
+                .trim() + inputOTP5.text.toString().trim() + inputOTP6.text.toString().trim()
+            Toast.makeText(context, MainActivity.OTP, Toast.LENGTH_SHORT).show()
+            verifyOTP(MainActivity.OTP)
+        })
+
+        setKeyListener(inputOTP2, inputOTP1)
+        setKeyListener(inputOTP3, inputOTP2)
+        setKeyListener(inputOTP4, inputOTP3)
+        setKeyListener(inputOTP5, inputOTP4)
+        setKeyListener(inputOTP6, inputOTP5)
+    }
+
+    private fun resetOTP() {
+        inputOTP1.isEnabled = false
+        inputOTP2.isEnabled = false
+        inputOTP3.isEnabled = false
+        inputOTP4.isEnabled = false
+        inputOTP5.isEnabled = false
+        inputOTP6.isEnabled = false
+
+
+        inputOTP1.setText("")
+        inputOTP2.setText("")
+        inputOTP3.setText("")
+        inputOTP4.setText("")
+        inputOTP5.setText("")
+        inputOTP6.setText("")
+
+        initFocusOTP()
+    }
+
+    private fun initFocusEmail() {
+        eTextEmail.isEnabled = true
+
+        eTextEmail.postDelayed({
+            eTextEmail.requestFocus()
+            val inputMethodManager =
+                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(eTextEmail, InputMethodManager.SHOW_FORCED)
+        }, 4000)
+    }
+
+    private fun initFocusOTP() {
+        inputOTP1.isEnabled = true
+
+        inputOTP1.postDelayed({
+            inputOTP1.requestFocus()
+            val inputMethodManager =
+                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.showSoftInput(eTextEmail, InputMethodManager.SHOW_FORCED)
+        }, 500)
+    }
+
+
+    private fun setTextChangeListener(
+        fromEditText: EditText,
+        targetEditText: EditText? = null,
+        done: (() -> Unit)? = null
+    ) {
+        fromEditText.addTextChangedListener {
+            it?.let { string ->
+                if (string.isNotEmpty()) {
+                    targetEditText?.let { editText ->
+                        editText.isEnabled = true
+                        editText.requestFocus()
+                    } ?: run {
+                        done?.let { done ->
+                            done()
+                        }
+                    }
+                    fromEditText.clearFocus()
+                    fromEditText.isEnabled = false
+                }
+            }
+        }
+    }
+
+
+    private fun setKeyListener(fromEditText: EditText, backToEditText: EditText) {
+        fromEditText.setOnKeyListener { _, _, event ->
+            if (null != event && KeyEvent.KEYCODE_DEL == event.keyCode) {
+                backToEditText.isEnabled = true
+                backToEditText.requestFocus()
+                backToEditText.setText("")
+
+                fromEditText.clearFocus()
+                fromEditText.isEnabled = false
+
+            }
+            false
+        }
+    }
 
     private fun setOnClickListener(introFragment: IntroFragment) {
         // Email
@@ -92,7 +213,7 @@ class IntroFragment : Fragment(), View.OnClickListener, TextWatcher {
 
     private fun init() {
         // Intro
-
+        iViewLogo = v.findViewById(R.id.iViewIconLogoIntroAfter)
 
         // Email
         btnSendEmail = v.findViewById(R.id.buttonSendEmail)
@@ -114,18 +235,31 @@ class IntroFragment : Fragment(), View.OnClickListener, TextWatcher {
     }
 
     private fun showInputEmail() {
-        v.findViewById<ImageView>(R.id.iViewLetterLogoIntro).animate().alpha(0F).setDuration(200).setStartDelay(2200)
+        v.findViewById<ImageView>(R.id.iViewLetterLogoIntro).animate().alpha(0F).setDuration(200)
+            .setStartDelay(2200)
 
         v.findViewById<ImageView>(R.id.iViewIconLogoIntroBefore).animate()
             .alpha(0F)
             .setDuration(200).setStartDelay(2500)
 
         Handler(Looper.getMainLooper()).postDelayed({
+
             BottomSheetBehavior.from(v.findViewById(R.id.rLayoutInput)).apply {
                 this.state = BottomSheetBehavior.STATE_EXPANDED
+                this.isDraggable = false
             }
-
         }, 3000)
+        Handler(Looper.getMainLooper()).postDelayed({
+            iViewLogo.visibility = View.VISIBLE
+        }, 3500)
+
+
+
+
+        setListenerEmail()
+        initFocusEmail()
+
+//        iViewLogo.animate().alpha(1F).setDuration(200).setStartDelay(3000)
     }
 
     override fun onClick(view: View?) {
@@ -134,9 +268,10 @@ class IntroFragment : Fragment(), View.OnClickListener, TextWatcher {
 //                v.findNavController().navigate(R.id.action_emailFragment_to_OTPFragment)
                 rLayoutWrapInputEmail.visibility = View.GONE
                 rLayoutWrapInputOTP.visibility = View.VISIBLE
-                v.findViewById<TextView>(R.id.tViewEmailInformation).text = "Mã xác thực đã được gửi đến\n" + MainActivity.Email
-                inputOTP1.isEnabled = true
-                inputOTP1.requestFocus()
+                v.findViewById<TextView>(R.id.tViewEmailInformation).text =
+                    "Mã xác thực đã được gửi đến\n" + MainActivity.Email
+                resetOTP()
+                setListenerOTP()
             }
             R.id.buttonInputEmailAgain -> {
                 rLayoutWrapInputEmail.visibility = View.VISIBLE
@@ -145,86 +280,11 @@ class IntroFragment : Fragment(), View.OnClickListener, TextWatcher {
         }
     }
 
-    override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-    }
-
-    override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-    }
-
-    override fun afterTextChanged(s: Editable?) {
-        if (eTextEmail.isFocused) {
-            MainActivity.Email = s.toString().trim()
-
-            fun String.isValidEmail() =
-                !TextUtils.isEmpty(MainActivity.Email) && Patterns.EMAIL_ADDRESS.matcher(
-                    MainActivity.Email
-                )
-                    .matches()
-
-
-            if (!MainActivity.Email.isValidEmail()) {
-                tLayoutInputEmail.error = "Email chưa đúng cú pháp!"
-                btnSendEmail.visibility = View.GONE
-            } else {
-                tLayoutInputEmail.isErrorEnabled = false
-                btnSendEmail.visibility = View.VISIBLE
-            }
-        } else if (inputOTP1.isFocused) {
-            if (s.toString().trim().length == 1) {
-                inputOTP2.isEnabled = true
-                inputOTP2.requestFocus()
-
-                inputOTP1.isEnabled = false
-                MainActivity.OTP += inputOTP1.text
-            }
-        } else if (inputOTP2.isFocused) {
-            if (s.toString().trim().length == 1) {
-                inputOTP3.isEnabled = true
-                inputOTP3.requestFocus()
-
-                inputOTP2.isEnabled = false
-                MainActivity.OTP += inputOTP2.text
-
-            }
-        } else if (inputOTP3.isFocused) {
-            if (s.toString().trim().length == 1) {
-                inputOTP4.isEnabled = true
-                inputOTP4.requestFocus()
-
-                inputOTP3.isEnabled = false
-                MainActivity.OTP += inputOTP3.text
-
-            }
-        } else if (inputOTP4.isFocused) {
-            if (s.toString().trim().length == 1) {
-                inputOTP5.isEnabled = true
-                inputOTP5.requestFocus()
-
-                inputOTP4.isEnabled = false
-                MainActivity.OTP += inputOTP4.text
-
-            }
-        } else if (inputOTP5.isFocused) {
-            if (s.toString().trim().length == 1) {
-                inputOTP6.isEnabled = true
-                inputOTP6.requestFocus()
-
-                inputOTP5.isEnabled = false
-                MainActivity.OTP += inputOTP5.text
-
-            }
-        } else if (inputOTP6.isFocused) {
-            if (s.toString().trim().length == 1) {
-                MainActivity.OTP += inputOTP6.text
-
-                verifyOTP(MainActivity.OTP)
-                v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
-            }
-        }
-    }
 
     private fun verifyOTP(OTP: String) {
         Log.d("OTP", OTP)
+        resetOTP()
+//        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
     }
 }
 

@@ -11,21 +11,27 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
+import androidx.fragment.app.FragmentManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.OrientationHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.Adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.Adapter.RecentAdapter
+import com.google.android.material.bottomsheet.BottomSheetBehavior
 import org.w3c.dom.Text
 
 class HomeFragment : Fragment() {
 
+    lateinit var v: View
+
     lateinit var rvOnstream: RecyclerView
-    lateinit var onstream:ArrayList<String>
+    lateinit var onstream: ArrayList<String>
 
     lateinit var rvRecent: RecyclerView
-    lateinit var recent:ArrayList<String>
+    lateinit var recent: ArrayList<String>
 
     lateinit var layoutHome: RelativeLayout
 
@@ -39,36 +45,46 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        onstream=ArrayList()
-        for(i in 1..20){
+        // set data for list on Stream
+        onstream = ArrayList()
+        for (i in 1..20) {
             onstream.add("username # $i")
         }
 
 
-        recent=ArrayList()
-        for(i in 1..20){
+        // set data for recent chat
+        recent = ArrayList()
+        for (i in 1..20) {
             recent.add("username # $i")
         }
 
         // Inflate the layout for this fragment
-        val v = inflater.inflate(R.layout.fragment_home, container, false)
+        v = inflater.inflate(R.layout.fragment_home, container, false)
 
-        layoutHome=v.findViewById(R.id.layoutHome)
+        init()
+        BottomSheetBehavior.from(layoutHome).apply {
+            this.state=BottomSheetBehavior.STATE_EXPANDED
+        }
 
-        rvOnstream=v.findViewById(R.id.horizonalOnstream)
-        rvOnstream.layoutManager=LinearLayoutManager(context, RecyclerView.HORIZONTAL,false)
-        rvOnstream.adapter= OnstreamAdapter(onstream)
 
-        rvRecent=v.findViewById(R.id.verticalRecent)
-        rvRecent.layoutManager=LinearLayoutManager(context, RecyclerView.VERTICAL,false)
-        rvRecent.adapter= RecentAdapter(recent)
 
 
         return v
 
     }
 
+    fun init() {
+        layoutHome = v.findViewById(R.id.rLayoutHome)
 
+        rvOnstream = v.findViewById(R.id.rViewHorizonalOnstream)
+        rvOnstream.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        rvOnstream.adapter = OnstreamAdapter(onstream)
+
+
+        rvRecent = v.findViewById(R.id.rViewVerticalRecent)
+        rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvRecent.adapter = RecentAdapter(recent)
+    }
 
 
 }

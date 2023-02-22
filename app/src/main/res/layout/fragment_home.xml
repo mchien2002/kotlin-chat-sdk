@@ -1,22 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.circularreveal.CircularRevealRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/color2"
     tools:context=".acti.home.HomeFragment">
 
+
     <RelativeLayout
+        android:id="@+id/rLayoutHome"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color2">
+        android:layout_gravity="top|center"
+        android:nestedScrollingEnabled="true"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="100dp"
+        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
         <TextView
-            android:id="@+id/username"
+            android:id="@+id/tViewUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:fontFamily="@font/roboto_bold"
             android:text="@string/username"
             android:textAlignment="center"
@@ -25,14 +32,14 @@
 
 
         <RelativeLayout
-            android:id="@+id/layoutHome"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
             android:layout_marginTop="25dp"
             android:background="@drawable/frame_4">
 
             <ImageButton
-                android:id="@+id/buttonDown"
+                android:id="@+id/iButtonDown"
                 android:layout_width="50dp"
                 android:layout_height="5dp"
                 android:layout_centerHorizontal="true"
@@ -40,10 +47,10 @@
                 android:background="@drawable/ic_line" />
 
             <RelativeLayout
-                android:id="@+id/layoutSearch"
+                android:id="@+id/rLayoutSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/buttonDown"
+                android:layout_below="@id/iButtonDown"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
                 android:paddingRight="10dp">
@@ -70,17 +77,17 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_below="@id/layoutSearch">
+                android:layout_below="@id/rLayoutSearch">
 
                 <RelativeLayout
-                    android:id="@+id/layoutOnstream"
+                    android:id="@+id/rLayoutOnstream"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingTop="15dp"
                     android:paddingBottom="5dp">
 
                     <ImageView
-                        android:id="@+id/textOnstream"
+                        android:id="@+id/iViewOnstream"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -89,210 +96,27 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/textOnstream"
+                        android:layout_below="@id/iViewOnstream"
                         android:layout_marginTop="5dp">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/horizonalOnstream"
+                            android:id="@+id/rViewHorizonalOnstream"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
                             android:paddingLeft="5dp"
                             android:paddingRight="5dp" />
 
-                        <!--                        <LinearLayout-->
-                        <!--                            android:id="@+id/layoutScrollOnstream"-->
-                        <!--                            android:layout_width="wrap_content"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:paddingLeft="10dp">-->
-
-                        <!--                            <FrameLayout-->
-                        <!--                                android:id="@+id/frameOnstream"-->
-                        <!--                                android:layout_width="90dp"-->
-                        <!--                                android:layout_height="120dp"-->
-                        <!--                                android:background="@drawable/frame_status">-->
-
-                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                        <!--                                    android:layout_width="match_parent"-->
-                        <!--                                    android:layout_height="65dp"-->
-                        <!--                                    android:layout_marginTop="10dp"-->
-                        <!--                                    android:src="@drawable/dang_avt" />-->
-
-                        <!--                                <ImageView-->
-                        <!--                                    android:layout_width="25dp"-->
-                        <!--                                    android:layout_height="25dp"-->
-                        <!--                                    android:layout_gravity="center_horizontal"-->
-                        <!--                                    android:layout_marginTop="62dp"-->
-                        <!--                                    android:background="@drawable/ic_add" />-->
-
-                        <!--                                <TextView-->
-                        <!--                                    android:id="@+id/tvUsername"-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:layout_gravity="center_horizontal"-->
-                        <!--                                    android:layout_marginTop="85dp"-->
-                        <!--                                    android:fontFamily="@font/roboto_bold"-->
-                        <!--                                    android:text="@string/username"-->
-                        <!--                                    android:textColor="@color/color1"-->
-                        <!--                                    android:textSize="12sp" />-->
-                        <!--                            </FrameLayout>-->
-
-                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                            <FrameLayout&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_width="90dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:layout_height="120dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                android:background="@drawable/frame_status">&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="match_parent"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="65dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="10dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:src="@drawable/dang_avt" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <ImageView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="25dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="62dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:background="@drawable/ic_add" />&ndash;&gt;-->
-
-                        <!--                            &lt;!&ndash;                                <TextView&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_width="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_height="wrap_content"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_gravity="center_horizontal"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:layout_marginTop="85dp"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:fontFamily="@font/roboto_bold"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:text="@string/username"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textColor="@color/color1"&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                                    android:textSize="12sp" />&ndash;&gt;-->
-                        <!--                            &lt;!&ndash;                            </FrameLayout>&ndash;&gt;-->
-
-                        <!--                        </LinearLayout>-->
                     </RelativeLayout>
                 </RelativeLayout>
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:layout_below="@id/layoutOnstream">
+                    android:layout_below="@id/rLayoutOnstream">
 
                     <ImageView
-                        android:id="@+id/textRecent"
+                        android:id="@+id/iViewRecent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
@@ -301,444 +125,21 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/textRecent"
+                        android:layout_below="@id/iViewRecent"
                         android:layout_marginTop="5dp">
 
                         <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/verticalRecent"
+                            android:id="@+id/rViewVerticalRecent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:nestedScrollingEnabled="true"
                             android:orientation="vertical" />
 
-                        <!--                        <FrameLayout-->
-                        <!--                            android:id="@+id/frameMessage1"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_marginTop="5dp">-->
 
-                        <!--                            <LinearLayout-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:layout_marginLeft="10dp"-->
-                        <!--                                android:layout_marginRight="10dp"-->
-                        <!--                                android:background="@drawable/bg_chat_recent"-->
-                        <!--                                android:paddingLeft="5dp"-->
-                        <!--                                android:paddingTop="10dp"-->
-                        <!--                                android:paddingBottom="10dp">-->
-
-                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                        <!--                                    android:layout_width="50dp"-->
-                        <!--                                    android:layout_height="50dp"-->
-                        <!--                                    android:layout_gravity="left"-->
-                        <!--                                    android:src="@drawable/dang_avt" />-->
-
-                        <!--                                <RelativeLayout-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:layout_gravity="center_vertical"-->
-                        <!--                                    android:layout_marginLeft="10dp">-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/textUsername1"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:fontFamily="@font/roboto_bold"-->
-                        <!--                                        android:text="@string/username"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="14sp" />-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/message1"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:layout_below="@id/textUsername1"-->
-                        <!--                                        android:fontFamily="@font/roboto_medium"-->
-                        <!--                                        android:text="@string/content_message"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="12sp" />-->
-                        <!--                                </RelativeLayout>-->
-
-                        <!--                                <TextView-->
-                        <!--                                    android:id="@+id/timeReceive"-->
-                        <!--                                    android:layout_width="match_parent"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:paddingRight="10dp"-->
-                        <!--                                    android:text="@string/time_receive"-->
-                        <!--                                    android:textAlignment="textEnd"-->
-                        <!--                                    android:textColor="@color/color2"-->
-                        <!--                                    android:textSize="10sp" />-->
-                        <!--                            </LinearLayout>-->
-                        <!--                        </FrameLayout>-->
-
-                        <!--                        <FrameLayout-->
-                        <!--                            android:id="@+id/frameMessage2"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_below="@id/frameMessage1"-->
-                        <!--                            android:layout_marginTop="5dp">-->
-
-                        <!--                            <LinearLayout-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:layout_marginLeft="10dp"-->
-                        <!--                                android:layout_marginRight="10dp"-->
-                        <!--                                android:background="@drawable/bg_chat_recent"-->
-                        <!--                                android:paddingLeft="5dp"-->
-                        <!--                                android:paddingTop="10dp"-->
-                        <!--                                android:paddingBottom="10dp">-->
-
-                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                        <!--                                    android:layout_width="50dp"-->
-                        <!--                                    android:layout_height="50dp"-->
-                        <!--                                    android:layout_gravity="left"-->
-                        <!--                                    android:src="@drawable/dang_avt" />-->
-
-                        <!--                                <RelativeLayout-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:layout_gravity="center_vertical"-->
-                        <!--                                    android:layout_marginLeft="10dp">-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/textUsername2"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:fontFamily="@font/roboto_bold"-->
-                        <!--                                        android:text="@string/username"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="14sp" />-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/message2"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:layout_below="@id/textUsername2"-->
-                        <!--                                        android:fontFamily="@font/roboto_medium"-->
-                        <!--                                        android:text="@string/content_message"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="12sp" />-->
-                        <!--                                </RelativeLayout>-->
-
-                        <!--                                <TextView-->
-                        <!--                                    android:id="@+id/timeReceive2"-->
-                        <!--                                    android:layout_width="match_parent"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:paddingRight="10dp"-->
-                        <!--                                    android:text="@string/time_receive"-->
-                        <!--                                    android:textAlignment="textEnd"-->
-                        <!--                                    android:textColor="@color/color2"-->
-                        <!--                                    android:textSize="10sp" />-->
-                        <!--                            </LinearLayout>-->
-                        <!--                        </FrameLayout>-->
-
-                        <!--                        <FrameLayout-->
-                        <!--                            android:id="@+id/frameMessage3"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_below="@id/frameMessage2"-->
-                        <!--                            android:layout_marginTop="5dp">-->
-
-                        <!--                            <LinearLayout-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:layout_marginLeft="10dp"-->
-                        <!--                                android:layout_marginRight="10dp"-->
-                        <!--                                android:background="@drawable/bg_chat_recent"-->
-                        <!--                                android:paddingLeft="5dp"-->
-                        <!--                                android:paddingTop="10dp"-->
-                        <!--                                android:paddingBottom="10dp">-->
-
-                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                        <!--                                    android:layout_width="50dp"-->
-                        <!--                                    android:layout_height="50dp"-->
-                        <!--                                    android:layout_gravity="left"-->
-                        <!--                                    android:src="@drawable/dang_avt" />-->
-
-                        <!--                                <RelativeLayout-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:layout_gravity="center_vertical"-->
-                        <!--                                    android:layout_marginLeft="10dp">-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/textUsername3"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:fontFamily="@font/roboto_bold"-->
-                        <!--                                        android:text="@string/username"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="14sp" />-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/message3"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:layout_below="@id/textUsername3"-->
-                        <!--                                        android:fontFamily="@font/roboto_medium"-->
-                        <!--                                        android:text="@string/content_message"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="12sp" />-->
-                        <!--                                </RelativeLayout>-->
-
-                        <!--                                <TextView-->
-                        <!--                                    android:id="@+id/timeReceive3"-->
-                        <!--                                    android:layout_width="match_parent"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:paddingRight="10dp"-->
-                        <!--                                    android:text="@string/time_receive"-->
-                        <!--                                    android:textAlignment="textEnd"-->
-                        <!--                                    android:textColor="@color/color2"-->
-                        <!--                                    android:textSize="10sp" />-->
-                        <!--                            </LinearLayout>-->
-                        <!--                        </FrameLayout>-->
-
-                        <!--                        <FrameLayout-->
-                        <!--                            android:id="@+id/frameMessage4"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_below="@id/frameMessage3"-->
-                        <!--                            android:layout_marginTop="5dp">-->
-
-                        <!--                            <LinearLayout-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:layout_marginLeft="10dp"-->
-                        <!--                                android:layout_marginRight="10dp"-->
-                        <!--                                android:background="@drawable/bg_chat_recent"-->
-                        <!--                                android:paddingLeft="5dp"-->
-                        <!--                                android:paddingTop="10dp"-->
-                        <!--                                android:paddingBottom="10dp">-->
-
-                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                        <!--                                    android:layout_width="50dp"-->
-                        <!--                                    android:layout_height="50dp"-->
-                        <!--                                    android:layout_gravity="left"-->
-                        <!--                                    android:src="@drawable/dang_avt" />-->
-
-                        <!--                                <RelativeLayout-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:layout_gravity="center_vertical"-->
-                        <!--                                    android:layout_marginLeft="10dp">-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/textUsername4"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:fontFamily="@font/roboto_bold"-->
-                        <!--                                        android:text="@string/username"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="14sp" />-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/message4"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:layout_below="@id/textUsername4"-->
-                        <!--                                        android:fontFamily="@font/roboto_medium"-->
-                        <!--                                        android:text="@string/content_message"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="12sp" />-->
-                        <!--                                </RelativeLayout>-->
-
-                        <!--                                <TextView-->
-                        <!--                                    android:id="@+id/timeReceive4"-->
-                        <!--                                    android:layout_width="match_parent"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:paddingRight="10dp"-->
-                        <!--                                    android:text="@string/time_receive"-->
-                        <!--                                    android:textAlignment="textEnd"-->
-                        <!--                                    android:textColor="@color/color2"-->
-                        <!--                                    android:textSize="10sp" />-->
-                        <!--                            </LinearLayout>-->
-                        <!--                        </FrameLayout>-->
-
-                        <!--                        <FrameLayout-->
-                        <!--                            android:id="@+id/frameMessage5"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_below="@id/frameMessage4"-->
-                        <!--                            android:layout_marginTop="5dp">-->
-
-                        <!--                            <LinearLayout-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:layout_marginLeft="10dp"-->
-                        <!--                                android:layout_marginRight="10dp"-->
-                        <!--                                android:background="@drawable/bg_chat_recent"-->
-                        <!--                                android:paddingLeft="5dp"-->
-                        <!--                                android:paddingTop="10dp"-->
-                        <!--                                android:paddingBottom="10dp">-->
-
-                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                        <!--                                    android:layout_width="50dp"-->
-                        <!--                                    android:layout_height="50dp"-->
-                        <!--                                    android:layout_gravity="left"-->
-                        <!--                                    android:src="@drawable/dang_avt" />-->
-
-                        <!--                                <RelativeLayout-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:layout_gravity="center_vertical"-->
-                        <!--                                    android:layout_marginLeft="10dp">-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/textUsername5"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:fontFamily="@font/roboto_bold"-->
-                        <!--                                        android:text="@string/username"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="14sp" />-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/message5"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:layout_below="@id/textUsername5"-->
-                        <!--                                        android:fontFamily="@font/roboto_medium"-->
-                        <!--                                        android:text="@string/content_message"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="12sp" />-->
-                        <!--                                </RelativeLayout>-->
-
-                        <!--                                <TextView-->
-                        <!--                                    android:id="@+id/timeReceive5"-->
-                        <!--                                    android:layout_width="match_parent"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:paddingRight="10dp"-->
-                        <!--                                    android:text="@string/time_receive"-->
-                        <!--                                    android:textAlignment="textEnd"-->
-                        <!--                                    android:textColor="@color/color2"-->
-                        <!--                                    android:textSize="10sp" />-->
-                        <!--                            </LinearLayout>-->
-                        <!--                        </FrameLayout>-->
-
-                        <!--                        <FrameLayout-->
-                        <!--                            android:id="@+id/frameMessage6"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_below="@id/frameMessage5"-->
-                        <!--                            android:layout_marginTop="5dp">-->
-
-                        <!--                            <LinearLayout-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:layout_marginLeft="10dp"-->
-                        <!--                                android:layout_marginRight="10dp"-->
-                        <!--                                android:background="@drawable/bg_chat_recent"-->
-                        <!--                                android:paddingLeft="5dp"-->
-                        <!--                                android:paddingTop="10dp"-->
-                        <!--                                android:paddingBottom="10dp">-->
-
-                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                        <!--                                    android:layout_width="50dp"-->
-                        <!--                                    android:layout_height="50dp"-->
-                        <!--                                    android:layout_gravity="left"-->
-                        <!--                                    android:src="@drawable/dang_avt" />-->
-
-                        <!--                                <RelativeLayout-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:layout_gravity="center_vertical"-->
-                        <!--                                    android:layout_marginLeft="10dp">-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/textUsername6"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:fontFamily="@font/roboto_bold"-->
-                        <!--                                        android:text="@string/username"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="14sp" />-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/message6"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:layout_below="@id/textUsername6"-->
-                        <!--                                        android:fontFamily="@font/roboto_medium"-->
-                        <!--                                        android:text="@string/content_message"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="12sp" />-->
-                        <!--                                </RelativeLayout>-->
-
-                        <!--                                <TextView-->
-                        <!--                                    android:id="@+id/timeReceive6"-->
-                        <!--                                    android:layout_width="match_parent"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:paddingRight="10dp"-->
-                        <!--                                    android:text="@string/time_receive"-->
-                        <!--                                    android:textAlignment="textEnd"-->
-                        <!--                                    android:textColor="@color/color2"-->
-                        <!--                                    android:textSize="10sp" />-->
-                        <!--                            </LinearLayout>-->
-                        <!--                        </FrameLayout>-->
-
-                        <!--                        <FrameLayout-->
-                        <!--                            android:id="@+id/frameMessage7"-->
-                        <!--                            android:layout_width="match_parent"-->
-                        <!--                            android:layout_height="wrap_content"-->
-                        <!--                            android:layout_below="@id/frameMessage6"-->
-                        <!--                            android:layout_marginTop="5dp">-->
-
-                        <!--                            <LinearLayout-->
-                        <!--                                android:layout_width="match_parent"-->
-                        <!--                                android:layout_height="wrap_content"-->
-                        <!--                                android:layout_marginLeft="10dp"-->
-                        <!--                                android:layout_marginRight="10dp"-->
-                        <!--                                android:background="@drawable/bg_chat_recent"-->
-                        <!--                                android:paddingLeft="5dp"-->
-                        <!--                                android:paddingTop="10dp"-->
-                        <!--                                android:paddingBottom="10dp">-->
-
-                        <!--                                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-                        <!--                                    android:layout_width="50dp"-->
-                        <!--                                    android:layout_height="50dp"-->
-                        <!--                                    android:layout_gravity="left"-->
-                        <!--                                    android:src="@drawable/dang_avt" />-->
-
-                        <!--                                <RelativeLayout-->
-                        <!--                                    android:layout_width="wrap_content"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:layout_gravity="center_vertical"-->
-                        <!--                                    android:layout_marginLeft="10dp">-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/textUsername7"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:fontFamily="@font/roboto_bold"-->
-                        <!--                                        android:text="@string/username"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="14sp" />-->
-
-                        <!--                                    <TextView-->
-                        <!--                                        android:id="@+id/message7"-->
-                        <!--                                        android:layout_width="wrap_content"-->
-                        <!--                                        android:layout_height="wrap_content"-->
-                        <!--                                        android:layout_below="@id/textUsername7"-->
-                        <!--                                        android:fontFamily="@font/roboto_medium"-->
-                        <!--                                        android:text="@string/content_message"-->
-                        <!--                                        android:textColor="@color/black"-->
-                        <!--                                        android:textSize="12sp" />-->
-                        <!--                                </RelativeLayout>-->
-
-                        <!--                                <TextView-->
-                        <!--                                    android:id="@+id/timeReceive7"-->
-                        <!--                                    android:layout_width="match_parent"-->
-                        <!--                                    android:layout_height="wrap_content"-->
-                        <!--                                    android:paddingRight="10dp"-->
-                        <!--                                    android:text="@string/time_receive"-->
-                        <!--                                    android:textAlignment="textEnd"-->
-                        <!--                                    android:textColor="@color/color2"-->
-                        <!--                                    android:textSize="10sp" />-->
-                        <!--                            </LinearLayout>-->
-                        <!--                        </FrameLayout>-->
                     </RelativeLayout>
-                    /
+
                 </RelativeLayout>
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>
-</com.google.android.material.circularreveal.CircularRevealRelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
