@@ -23,6 +23,15 @@
     <string name="add_contact">Thêm liên lạc</string>
     <string name="setting">Cài đặt</string>
     <string name="log_out">Đăng xuất</string>
+
+    <string name="status">Trạng thái hoạt động</string>
+    <string name="notification_sound">Thông báo &amp; âm thanh</string>
+    <string name="email2">Email</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="report">Báo cáo sự cố</string>
+    <string name="help">Trợ giúp</string>
+    <string name="delete_account">Xóa tài khoản</string>
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

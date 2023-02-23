@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rLayoutSetting"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_menu_option"
+    android:visibility="visible">
+
+
+    <!--        <RelativeLayout-->
+    <!--            android:id="@+id/layoutAvatar"-->
+    <!--            android:layout_width="wrap_content"-->
+    <!--            android:layout_height="wrap_content"-->
+    <!--            android:layout_centerHorizontal="true"-->
+    <!--            android:layout_marginTop="30dp">-->
+
+    <!--            <FrameLayout-->
+    <!--                android:id="@+id/avatar"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content">-->
+
+    <!--                <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="100dp"-->
+    <!--                    android:layout_gravity="left"-->
+    <!--                    android:src="@drawable/avt_1"-->
+    <!--                    app:civ_border_color="@color/white"-->
+    <!--                    app:civ_border_width="2dp" />-->
+
+    <!--                <ImageButton-->
+    <!--                    android:layout_width="30dp"-->
+    <!--                    android:layout_height="30dp"-->
+    <!--                    android:layout_gravity="center|bottom"-->
+    <!--                    android:layout_marginLeft="40dp"-->
+    <!--                    android:background="@drawable/button_camera" />-->
+    <!--            </FrameLayout>-->
+
+    <!--            <TextView-->
+    <!--                android:id="@+id/tViewUsername"-->
+    <!--                android:layout_width="wrap_content"-->
+    <!--                android:layout_height="wrap_content"-->
+    <!--                android:layout_below="@id/avatar"-->
+    <!--                android:layout_centerHorizontal="true"-->
+    <!--                android:layout_marginTop="5dp"-->
+    <!--                android:fontFamily="@font/roboto_bold"-->
+    <!--                android:text="@string/username"-->
+    <!--                android:textColor="@color/white"-->
+    <!--                android:textSize="24dp" />-->
+    <!--        </RelativeLayout>-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
+
+
+
+        <RelativeLayout
+            android:id="@+id/rLayoutOptionSetting"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_frame_option">
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/buttonBack"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/button_back"
+                app:backgroundTint="@color/white"
+                app:cornerRadius="5dp"
+                app:rippleColor="@color/color1" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:layout_marginBottom="15dp"
+                android:padding="20dp">
+
+
+                <!--                    <com.google.android.material.button.MaterialButton-->
+                <!--                        android:id="@+id/buttonTextStatus"-->
+                <!--                        android:layout_width="match_parent"-->
+                <!--                        android:layout_height="wrap_content"-->
+                <!--                        android:background="@drawable/bg_option_transparent"-->
+                <!--                        android:clickable="false"-->
+                <!--                        android:fontFamily="@font/roboto"-->
+                <!--                        android:gravity="left|center"-->
+                <!--                        android:text="@string/status"-->
+                <!--                        android:textAllCaps="false"-->
+                <!--                        android:textColor="@color/white"-->
+                <!--                        android:textSize="15dp"-->
+                <!--                        app:elevation="0dp"-->
+                <!--                        android:layout_weight="15"/>-->
+
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|right"
+                    android:layout_marginLeft="15dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/bg_option_transparent"
+                    android:checked="true"
+                    android:fontFamily="@font/roboto"
+                    android:text="@string/status"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:thumbTint="@color/white"
+                    app:trackTint="#4DFFFFFF" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonNotificationAndSound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/switchStatus"
+                    android:background="@drawable/bg_option_transparent"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="left|center"
+                    android:text="@string/notification_sound"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_right"
+                    app:iconGravity="end"
+                    app:iconTint="@color/white"
+                    app:rippleColor="#332F2E41" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonChangeEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/buttonNotificationAndSound"
+                    android:background="@drawable/bg_option_transparent"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="left|center"
+                    android:text="@string/email2"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_right"
+                    app:iconGravity="end"
+                    app:iconTint="@color/white"
+                    app:rippleColor="#332F2E41" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonChangeLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/buttonAddContact"
+                    android:background="@drawable/bg_option_transparent"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="left|center"
+                    android:text="@string/language"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_right"
+                    app:iconGravity="end"
+                    app:iconTint="@color/white"
+                    app:rippleColor="#332F2E41" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonReportError"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/buttonAddContact"
+                    android:background="@drawable/bg_option_transparent"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="left|center"
+                    android:text="@string/report"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_right"
+                    app:iconGravity="end"
+                    app:iconTint="@color/white"
+                    app:rippleColor="#332F2E41" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/buttonHelp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/buttonAddContact"
+                    android:background="@drawable/bg_option_transparent"
+                    android:fontFamily="@font/roboto"
+                    android:gravity="left|center"
+                    android:text="@string/help"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:textSize="15dp"
+                    app:elevation="0dp"
+                    app:icon="@drawable/ic_right"
+                    app:iconGravity="end"
+                    app:iconTint="@color/white"
+                    app:rippleColor="#332F2E41" />
+            </LinearLayout>
+        </RelativeLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rLayoutOptionSetting"
+            android:layout_margin="20dp"
+            android:background="@drawable/bg_frame_recent"
+            android:text="@string/delete_account"
+            android:textAllCaps="false"
+            android:textColor="#80FF0000"
+            app:backgroundTint="@color/white"
+            android:fontFamily="@font/roboto_bold"
+            android:textSize="15dp"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -4,12 +4,10 @@
     android:id="@+id/rLayoutMenuOption"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:visibility="visible">
+    android:visibility="visible"
+    android:background="@drawable/bg_menu_option">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/bg_menu_option">
+
 
         <RelativeLayout
             android:id="@+id/layoutAvatar"
@@ -66,20 +64,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:layout_marginTop="25dp"
-                android:orientation="vertical">
+                android:layout_marginTop="15dp"
+                android:orientation="vertical"
+                android:layout_marginBottom="15dp">
 
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/buttonFriendList"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/bg_option_transparent"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto"
                     android:gravity="left|center"
                     android:text="@string/list_fri"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     app:elevation="0dp"
                     app:icon="@drawable/ic_right"
                     app:iconGravity="end"
@@ -92,13 +91,13 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/buttonFriendList"
                     android:background="@drawable/bg_option_transparent"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto"
                     android:gravity="left|center"
                     android:text="@string/spam"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
 
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     app:elevation="0dp"
                     app:icon="@drawable/ic_right"
                     app:iconGravity="end"
@@ -111,12 +110,12 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/buttonSpam"
                     android:background="@drawable/bg_option_transparent"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto"
                     android:gravity="left|center"
                     android:text="@string/add_contact"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     app:elevation="0dp"
                     app:icon="@drawable/ic_right"
                     app:iconGravity="end"
@@ -129,12 +128,12 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/buttonAddContact"
                     android:background="@drawable/bg_option_transparent"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto"
                     android:gravity="left|center"
                     android:text="@string/setting"
                     android:textAllCaps="false"
                     android:textColor="@color/white"
-                    android:textSize="16dp"
+                    android:textSize="15dp"
                     app:elevation="0dp"
                     app:icon="@drawable/ic_right"
                     app:iconGravity="end"
@@ -147,19 +146,19 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/buttonSetting"
                     android:background="@drawable/bg_option_transparent"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto_bold"
                     android:gravity="left|center"
                     android:text="@string/log_out"
                     android:textAllCaps="false"
-                    android:textColor="@color/red"
+                    android:textColor="#CD2323"
                     app:elevation="0dp"
                     app:icon="@drawable/ic_log_out"
                     app:iconGravity="start"
-                    app:iconTint="@color/red"
+                    app:iconTint="#FFCD2323"
+                    android:textSize="15dp"
                     app:rippleColor="#332F2E41" />
             </LinearLayout>
         </RelativeLayout>
-    </RelativeLayout>
 
 
 </RelativeLayout>
