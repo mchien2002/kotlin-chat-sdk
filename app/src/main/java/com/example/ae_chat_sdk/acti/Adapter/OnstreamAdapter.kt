@@ -3,7 +3,6 @@ package com.example.ae_chat_sdk.acti.Adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
@@ -18,7 +17,7 @@ class OnstreamAdapter(val data: ArrayList<String>, val iClickListener: IClickLis
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OnStreamViewHolder {
         val v: View =
-            LayoutInflater.from(parent.context).inflate(R.layout.layout_onstream, parent, false)
+            LayoutInflater.from(parent.context).inflate(R.layout.layout_frame_onstream, parent, false)
         return OnStreamViewHolder(v)
     }
 

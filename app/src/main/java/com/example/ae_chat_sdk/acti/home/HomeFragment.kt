@@ -1,6 +1,8 @@
 package com.example.ae_chat_sdk.acti.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.DragEvent
 import androidx.fragment.app.Fragment
@@ -29,18 +31,16 @@ class HomeFragment : Fragment() {
 
     lateinit var v: View
 
+    // RecyclerView Message Home
     lateinit var rvOnstream: RecyclerView
-    lateinit var onstream: ArrayList<String>
-
     lateinit var rvRecent: RecyclerView
     lateinit var recent: ArrayList<String>
+    lateinit var onstream: ArrayList<String>
 
-//    lateinit var layoutHome: RelativeLayout
+    // Layout Message Home
+    lateinit var lLayoutBottomSheetHome: RelativeLayout
+    lateinit var rLayoutMessageHome: RelativeLayout
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -60,41 +60,78 @@ class HomeFragment : Fragment() {
             recent.add("username # $i")
         }
 
+
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_home, container, false)
 
         init()
-//        BottomSheetBehavior.from(layoutHome).apply {
-//            this.state = BottomSheetBehavior.STATE_EXPANDED
-//        }
-
-
+        renderDataRecyclerView()
+        setBottomSheetBehavior()
+        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+            .setDuration(0).startDelay = 0
 
 
         return v
-
     }
+
 
     fun init() {
-//        layoutHome = v.findViewById(R.id.cLayoutHome)
+        lLayoutBottomSheetHome = v.findViewById(R.id.lLayoutBottomSheetHome)
+        rLayoutMessageHome = v.findViewById(R.id.rLayoutMessageHome)
 
-//        rvOnstream = v.findViewById(R.id.rViewHorizonalOnstream)
-//        rvOnstream.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-//        rvOnstream.adapter = OnstreamAdapter(onstream)
-//
-//
-//        rvRecent = v.findViewById(R.id.rViewVerticalRecent)
-//        rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-//        rvRecent.adapter = RecentAdapter(recent)
+        rvOnstream = v.findViewById(R.id.rViewHorizonalOnstream)
+        rvRecent = v.findViewById(R.id.rViewVerticalRecent)
 
-        val bottomSheetHome=BottomSheetHome(onstream,recent, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(context,itemObject,Toast.LENGTH_SHORT).show()
-            }
-        })
-        bottomSheetHome.show(childFragmentManager,bottomSheetHome.tag)
     }
 
+    private fun renderDataRecyclerView() {
+        rvOnstream.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        rvOnstream.adapter = OnstreamAdapter(onstream, object : IClickListener {
+            override fun clickItem(itemObject: String) {
+                Toast.makeText(context, itemObject, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvRecent.adapter = RecentAdapter(recent, object : IClickListener {
+            override fun clickItem(itemObject: String) {
+                Toast.makeText(context, itemObject, Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
+    private fun setBottomSheetBehavior() {
+        BottomSheetBehavior.from(lLayoutBottomSheetHome).apply {
+            this.state = BottomSheetBehavior.STATE_EXPANDED
+        }
+        BottomSheetBehavior.from(lLayoutBottomSheetHome)
+            .addBottomSheetCallback(object : BottomSheetBehavior.BottomSheetCallback() {
+                override fun onStateChanged(bottomSheet: View, newState: Int) {
+                    when (newState) {
+                        BottomSheetBehavior.STATE_EXPANDED -> {
+                            v.findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate()
+                                .alpha(1F).setDuration(100).startDelay = 0
+                            v.findViewById<TextView>(R.id.tViewUsername).animate().alpha(1F)
+                                .setDuration(500).startDelay = 0
+                            v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate()
+                                .alpha(0F).setDuration(0).startDelay = 0
+
+                        }
+                        else -> {
+                            v.findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate()
+                                .alpha(0F).setDuration(100).startDelay = 0
+                            v.findViewById<TextView>(R.id.tViewUsername).animate().alpha(0F)
+                                .setDuration(500).startDelay = 0
+                            v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate()
+                                .alpha(1F).setDuration(0).startDelay = 0
+                        }
+                    }
+                }
+
+                override fun onSlide(bottomSheet: View, slideOffset: Float) {
+                }
+            })
+    }
 
 }
 

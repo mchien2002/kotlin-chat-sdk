@@ -17,7 +17,7 @@ class RecentAdapter(val data:ArrayList<String>, val iClickListener: IClickListen
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view: View =
-            LayoutInflater.from(parent!!.context).inflate(R.layout.layout_recent, parent, false)
+            LayoutInflater.from(parent!!.context).inflate(R.layout.layout_frame_recent, parent, false)
         return ViewHolder(view)
     }
 
