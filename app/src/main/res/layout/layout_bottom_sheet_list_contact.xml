@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/rLayoutBottomSheetListContact"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="5dp"
+    android:background="@drawable/bg_frame_bottom_sheet"
+    android:nestedScrollingEnabled="true"
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="0dp"
+    app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
+
+    <ImageButton
+        android:id="@+id/iButtonDown"
+        android:layout_width="65dp"
+        android:layout_height="8dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/ic_line" />
+
+    <RelativeLayout
+        android:id="@+id/rLayoutListContact"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iButtonDown"
+        android:paddingTop="20dp">
+
+
+        <RelativeLayout
+            android:id="@+id/rLayoutSearch"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp">
+
+            <EditText
+                android:id="@+id/inputSearch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_frame_recent"
+                android:drawableEnd="@drawable/ic_search"
+                android:fontFamily="@font/roboto_bold"
+                android:hint="@string/Search"
+                android:inputType="text"
+                android:paddingStart="15dp"
+                android:paddingTop="10dp"
+                android:paddingRight="10dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/color1"
+                android:textColorHint="#802F2E41"
+                android:textSize="16sp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rLayoutSearch"
+            android:paddingLeft="10dp"
+            android:paddingTop="20dp"
+            android:paddingRight="10dp"
+            android:paddingBottom="5dp">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rViewHorizonalContact"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal" />
+
+        </RelativeLayout>
+    </RelativeLayout>
+</RelativeLayout>
+
+    <!--</LinearLayout>-->

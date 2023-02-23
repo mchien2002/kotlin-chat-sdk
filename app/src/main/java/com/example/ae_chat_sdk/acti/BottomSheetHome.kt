@@ -11,7 +11,6 @@ import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.Adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.Adapter.RecentAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class BottomSheetHome(
@@ -67,7 +66,7 @@ class BottomSheetHome(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        rootView = inflater.inflate(R.layout.layout_bottom_sheet_main, container, false)
+        rootView = inflater.inflate(R.layout.layout_bottom_sheet_home, container, false)
         return rootView
     }
 

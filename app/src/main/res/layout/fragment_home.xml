@@ -4,32 +4,28 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color2"
+    android:background="@drawable/bg_menu_option"
     tools:context=".acti.home.HomeFragment">
 
     <TextView
-        android:id="@+id/tViewUsername"
+        android:id="@+id/tViewPagename"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="5dp"
         android:fontFamily="@font/roboto_bold"
         android:text="@string/username"
         android:textAlignment="center"
-        android:textColor="@color/color1"
+        android:textColor="@color/white"
         android:textSize="20sp"
         android:visibility="visible" />
 
     <include
-        android:id="@+id/rLayoutMenuOption"
         layout="@layout/layout_menu_option"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
-    <include
-        android:id="@+id/rLayoutSetting"
-        layout="@layout/layout_setting" />
 
-    <include layout="@layout/layout_bottom_sheet_main" />
+    <include layout="@layout/layout_bottom_sheet_home" />
+    <include layout="@layout/layout_bottom_sheet_list_contact"/>
     <!--    <RelativeLayout-->
     <!--        android:id="@+id/rLayoutHome"-->
     <!--        android:layout_width="match_parent"-->
