@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/color2"
     tools:context=".acti.home.HomeFragment">
+
     <TextView
         android:id="@+id/tViewUsername"
         android:layout_width="wrap_content"
@@ -17,8 +18,16 @@
         android:textAlignment="center"
         android:textColor="@color/color1"
         android:textSize="20sp"
-        android:visibility="visible"/>
-    <include layout="@layout/layout_menu_option"/>
+        android:visibility="visible" />
+
+    <include
+        android:id="@+id/rLayoutMenuOption"
+        layout="@layout/layout_menu_option"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/rLayoutSetting"
+        layout="@layout/layout_setting" />
 
     <include layout="@layout/layout_bottom_sheet_main" />
     <!--    <RelativeLayout-->

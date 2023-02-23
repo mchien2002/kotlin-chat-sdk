@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rLayoutSetting"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_menu_option"
@@ -52,8 +51,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
-
-
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonBack"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/button_back"
+            app:backgroundTint="@color/white"
+            app:cornerRadius="5dp"
+            app:rippleColor="@color/color1" />
 
         <RelativeLayout
             android:id="@+id/rLayoutOptionSetting"
@@ -61,23 +67,14 @@
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:background="@drawable/bg_frame_option">
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonBack"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/button_back"
-                app:backgroundTint="@color/white"
-                app:cornerRadius="5dp"
-                app:rippleColor="@color/color1" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:layout_marginTop="15dp"
-                android:orientation="vertical"
                 android:layout_marginBottom="15dp"
+                android:orientation="vertical"
                 android:padding="20dp">
 
 
@@ -202,19 +199,38 @@
                     app:iconTint="@color/white"
                     app:rippleColor="#332F2E41" />
             </LinearLayout>
+
         </RelativeLayout>
 
         <com.google.android.material.button.MaterialButton
+            android:id="@+id/buttonDeleteAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/rLayoutOptionSetting"
-            android:layout_margin="20dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/bg_frame_recent"
+            android:fontFamily="@font/roboto_bold"
             android:text="@string/delete_account"
             android:textAllCaps="false"
             android:textColor="#80FF0000"
-            app:backgroundTint="@color/white"
-            android:fontFamily="@font/roboto_bold"
-            android:textSize="15dp"/>
+            android:textSize="15dp"
+            app:backgroundTint="@color/white" />
+
     </RelativeLayout>
+
+
+    <TextView
+        android:id="@+id/tViewUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/setting"
+        android:textColor="@color/color1"
+        android:textSize="24dp"
+        android:layout_marginBottom="50dp"/>
 </RelativeLayout>
