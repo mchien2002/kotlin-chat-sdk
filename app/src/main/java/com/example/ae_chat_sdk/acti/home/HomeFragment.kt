@@ -188,6 +188,12 @@ class HomeFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
+                        rLayoutBottomSheetListContact.animate().alpha(1F)
+                            .setDuration(0).startDelay = 0
+                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                            .setDuration(0).startDelay = 0
+                        tvPagename.text = "Danh sách liên hệ"
+                        tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
                     }
                     else -> {
                         tvPagename.text = "Username"

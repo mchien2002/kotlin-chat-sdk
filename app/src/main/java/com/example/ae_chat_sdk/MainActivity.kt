@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        setContentView(R.layout.fragment_home)
+//        setContentView(R.layout.layout_popup_chat)
 
         this.binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)

@@ -34,6 +34,9 @@
     <string name="delete_account">Xóa tài khoản</string>
 
 
+    <string name="type_message_here">Type message here</string>
+
+
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
