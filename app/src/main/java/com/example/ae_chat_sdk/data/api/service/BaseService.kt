@@ -9,7 +9,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 
 interface BaseService {
-    @POST(ACCOUNT_POST_EMAIL)
+    @POST("register_by_email")
     @FormUrlEncoded
     fun registerAccount(@Field("email") params: String): Call<String>
 }

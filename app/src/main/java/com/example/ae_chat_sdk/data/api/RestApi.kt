@@ -13,7 +13,9 @@ class RestApi {
             val client = OkHttpClient.Builder()
             client.addInterceptor(logging)
 
-            return Retrofit.Builder().baseUrl(ApiConstant.URL).client(client.build())
+            return Retrofit.Builder()
+                .baseUrl("https://104c-2001-ee0-5004-ec30-797d-bd00-168f-eea7.ap.ngrok.io/api/v1/")
+                .client(client.build())
                 .addConverterFactory(GsonConverterFactory.create()).build()
         }
     }

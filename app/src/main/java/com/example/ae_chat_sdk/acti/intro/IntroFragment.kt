@@ -271,11 +271,10 @@ class IntroFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.buttonSendEmail -> {
-                Log.d("Email:", MainActivity.Email)
 
                 // Test API
                 val restApi = RestApi.getAPI().create(BaseService::class.java)
-                val call = restApi.registerAccount("tranhuynhtanphat9380@gmail.com")
+                val call = restApi.registerAccount(MainActivity.Email)
                 call.enqueue(object : Callback<String> {
                     override fun onFailure(call: Call<String>, t: Throwable) {
                         Log.d(
