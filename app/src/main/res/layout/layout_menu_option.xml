@@ -46,7 +46,7 @@
             android:fontFamily="@font/roboto_bold"
             android:text="@string/username"
             android:textColor="@color/white"
-            android:textSize="24sp" />
+            android:textSize="24dp" />
     </RelativeLayout>
 
     <RelativeLayout

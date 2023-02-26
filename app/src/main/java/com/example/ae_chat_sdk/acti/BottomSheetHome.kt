@@ -19,7 +19,6 @@ class BottomSheetHome(
     val iClickListener: IClickListener
 ) : BottomSheetDialogFragment() {
 
-    lateinit var bottomDialog: Dialog
     lateinit var bottomSheetBehavior: BottomSheetBehavior<View>
     lateinit var rootView: View
 

@@ -22,8 +22,13 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.data.api.RestApi
+import com.example.ae_chat_sdk.data.api.service.BaseService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 
 class IntroFragment : Fragment(), View.OnClickListener {
@@ -266,13 +271,28 @@ class IntroFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.buttonSendEmail -> {
-//                v.findNavController().navigate(R.id.action_emailFragment_to_OTPFragment)
-                rLayoutWrapInputEmail.visibility = View.GONE
-                rLayoutWrapInputOTP.visibility = View.VISIBLE
-                v.findViewById<TextView>(R.id.tViewEmailInformation).text =
-                    "Mã xác thực đã được gửi đến\n" + MainActivity.Email
-                resetOTP()
-                setListenerOTP()
+                Log.d("Email:", MainActivity.Email)
+
+                // Test API
+                val restApi = RestApi.getAPI().create(BaseService::class.java)
+                val call = restApi.registerAccount("tranhuynhtanphat9380@gmail.com")
+                call.enqueue(object : Callback<String> {
+                    override fun onFailure(call: Call<String>, t: Throwable) {
+                        Log.d(
+                            "Error",
+                            "We can't send OTP to your Email Address. " + t.toString()
+                        )
+                    }
+
+                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                        rLayoutWrapInputEmail.visibility = View.GONE
+                        rLayoutWrapInputOTP.visibility = View.VISIBLE
+                        v.findViewById<TextView>(R.id.tViewEmailInformation).text =
+                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
+                        resetOTP()
+                        setListenerOTP()
+                    }
+                })
             }
             R.id.buttonInputEmailAgain -> {
                 rLayoutWrapInputEmail.visibility = View.VISIBLE
