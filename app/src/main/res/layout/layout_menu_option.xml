@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/avatar"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="More Fonts..."
             android:text="@string/username"
             android:textColor="@color/white"
             android:textSize="24dp" />

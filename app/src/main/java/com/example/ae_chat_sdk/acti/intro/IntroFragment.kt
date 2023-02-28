@@ -23,7 +23,9 @@ import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.data.api.RestApi
+import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.api.service.BaseService
+import com.example.ae_chat_sdk.data.api.service.RegisterService
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
@@ -271,10 +273,8 @@ class IntroFragment : Fragment(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.buttonSendEmail -> {
+                val call = RegisterRepository().registerByMail(MainActivity.Email)
 
-                // Test API
-                val restApi = RestApi.getAPI().create(BaseService::class.java)
-                val call = restApi.registerAccount(MainActivity.Email)
                 call.enqueue(object : Callback<String> {
                     override fun onFailure(call: Call<String>, t: Throwable) {
                         Log.d(
