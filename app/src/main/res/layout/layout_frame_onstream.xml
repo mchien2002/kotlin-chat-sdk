@@ -5,11 +5,11 @@
     android:layout_height="120dp"
     android:background="@drawable/bg_frame_status">
 
-<!--    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="65dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:src="@drawable/avt_1" />-->
+    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="65dp"
+        android:layout_marginTop="10dp"
+        android:src="@drawable/avt_1" />
 
     <ImageView
         android:layout_width="25dp"

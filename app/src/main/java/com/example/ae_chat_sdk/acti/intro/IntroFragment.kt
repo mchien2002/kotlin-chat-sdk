@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.stream.Collectors.mapping
 
 
 class IntroFragment : Fragment(), View.OnClickListener {
@@ -64,9 +65,7 @@ class IntroFragment : Fragment(), View.OnClickListener {
         v = inflater.inflate(R.layout.fragment_intro, container, false)
 
 
-
         init()
-        setOnClickListener(this)
         showInputEmail()
 
 
@@ -74,12 +73,37 @@ class IntroFragment : Fragment(), View.OnClickListener {
         return v;
     }
 
+    private fun init() {
+        // Intro
+        iViewLogo = v.findViewById(R.id.iViewIconLogoIntroAfter)
+
+        // Email
+        btnSendEmail = v.findViewById(R.id.buttonSendEmail)
+        eTextEmail = v.findViewById(R.id.eTextEmail)
+        tLayoutInputEmail = v.findViewById(R.id.tLayoutInputEmail)
+        rLayoutWrapInputEmail = v.findViewById(R.id.rLayoutWrapInputEmail)
+
+        // OTP
+
+        rLayoutWrapInputOTP = v.findViewById(R.id.rLayoutWrapTextInputOTP)
+        inputOTP1 = v.findViewById(R.id.eTextInputOTP1)
+        inputOTP2 = v.findViewById(R.id.eTextInputOTP2)
+        inputOTP3 = v.findViewById(R.id.eTextInputOTP3)
+        inputOTP4 = v.findViewById(R.id.eTextInputOTP4)
+        inputOTP5 = v.findViewById(R.id.eTextInputOTP5)
+        inputOTP6 = v.findViewById(R.id.eTextInputOTP6)
+
+        // Email
+        btnSendEmail.setOnClickListener(this)
+
+
+        // OTP
+        v.findViewById<Button>(R.id.buttonInputEmailAgain).setOnClickListener(this)
+
+    }
+
+
     private fun setListenerEmail() {
-//        rLayoutWrapInputOTP.setOnClickListener {
-//            val inputManager =
-//                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            inputManager.hideSoftInputFromWindow(rLayoutWrapInputEmail.windowToken, 0)
-//        }
         eTextEmail.addTextChangedListener {
             it?.let { string ->
                 fun String.isValidEmail() =
@@ -102,11 +126,6 @@ class IntroFragment : Fragment(), View.OnClickListener {
     }
 
     private fun setListenerOTP() {
-//        rLayoutWrapInputOTP.setOnClickListener {
-//            val inputManager =
-//                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            inputManager.hideSoftInputFromWindow(rLayoutWrapInputEmail.windowToken, 0)
-//        }
         setTextChangeListener(inputOTP1, inputOTP2)
         setTextChangeListener(inputOTP2, inputOTP3)
         setTextChangeListener(inputOTP3, inputOTP4)
@@ -125,7 +144,9 @@ class IntroFragment : Fragment(), View.OnClickListener {
         setKeyListener(inputOTP4, inputOTP3)
         setKeyListener(inputOTP5, inputOTP4)
         setKeyListener(inputOTP6, inputOTP5)
+
     }
+
 
     private fun resetOTP() {
         inputOTP1.isEnabled = false
@@ -146,26 +167,10 @@ class IntroFragment : Fragment(), View.OnClickListener {
         initFocusOTP()
     }
 
-    private fun initFocusEmail() {
-        eTextEmail.isEnabled = true
-
-//        eTextEmail.postDelayed({
-//            eTextEmail.requestFocus()
-//            val inputMethodManager =
-//                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            inputMethodManager.showSoftInput(eTextEmail, InputMethodManager.SHOW_FORCED)
-//        }, 4000)
-    }
 
     private fun initFocusOTP() {
         inputOTP1.isEnabled = true
         inputOTP1.requestFocus()
-//        inputOTP1.postDelayed({
-//            inputOTP1.requestFocus()
-//            val inputMethodManager =
-//                context?.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//            inputMethodManager.showSoftInput(eTextEmail, InputMethodManager.SHOW_FORCED)
-//        }, 500)
     }
 
 
@@ -195,7 +200,7 @@ class IntroFragment : Fragment(), View.OnClickListener {
 
     private fun setKeyListener(fromEditText: EditText, backToEditText: EditText) {
         fromEditText.setOnKeyListener { _, _, event ->
-            if (null != event && KeyEvent.KEYCODE_DEL == event.keyCode) {
+            if (event!!.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_DEL && fromEditText.id != R.id.eTextInputOTP1 && fromEditText.text.isEmpty()) {
                 backToEditText.isEnabled = true
                 backToEditText.requestFocus()
                 backToEditText.setText("")
@@ -209,38 +214,6 @@ class IntroFragment : Fragment(), View.OnClickListener {
         }
     }
 
-    private fun setOnClickListener(introFragment: IntroFragment) {
-        // Email
-        btnSendEmail.setOnClickListener(introFragment)
-
-
-        // OTP
-        v.findViewById<Button>(R.id.buttonInputEmailAgain).setOnClickListener(introFragment)
-    }
-
-
-    private fun init() {
-        // Intro
-        iViewLogo = v.findViewById(R.id.iViewIconLogoIntroAfter)
-
-        // Email
-        btnSendEmail = v.findViewById(R.id.buttonSendEmail)
-        eTextEmail = v.findViewById(R.id.eTextEmail)
-        tLayoutInputEmail = v.findViewById(R.id.tLayoutInputEmail)
-        rLayoutWrapInputEmail = v.findViewById(R.id.rLayoutWrapInputEmail)
-
-        // OTP
-
-        rLayoutWrapInputOTP = v.findViewById(R.id.rLayoutWrapTextInputOTP)
-        inputOTP1 = v.findViewById(R.id.eTextInputOTP1)
-        inputOTP2 = v.findViewById(R.id.eTextInputOTP2)
-        inputOTP3 = v.findViewById(R.id.eTextInputOTP3)
-        inputOTP4 = v.findViewById(R.id.eTextInputOTP4)
-        inputOTP5 = v.findViewById(R.id.eTextInputOTP5)
-        inputOTP6 = v.findViewById(R.id.eTextInputOTP6)
-
-
-    }
 
     private fun showInputEmail() {
         v.findViewById<ImageView>(R.id.iViewLetterLogoIntro).animate().alpha(0F).setDuration(200)
@@ -265,7 +238,8 @@ class IntroFragment : Fragment(), View.OnClickListener {
 
 
         setListenerEmail()
-        initFocusEmail()
+        eTextEmail.isEnabled = true
+
 
 //        iViewLogo.animate().alpha(1F).setDuration(200).setStartDelay(3000)
     }
@@ -284,14 +258,15 @@ class IntroFragment : Fragment(), View.OnClickListener {
                     }
 
                     override fun onResponse(call: Call<String>, response: Response<String>) {
-                        rLayoutWrapInputEmail.visibility = View.GONE
-                        rLayoutWrapInputOTP.visibility = View.VISIBLE
-                        v.findViewById<TextView>(R.id.tViewEmailInformation).text =
-                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
-                        resetOTP()
-                        setListenerOTP()
+
                     }
                 })
+                rLayoutWrapInputEmail.visibility = View.GONE
+                rLayoutWrapInputOTP.visibility = View.VISIBLE
+                v.findViewById<TextView>(R.id.tViewEmailInformation).text =
+                    "Mã xác thực đã được gửi đến\n" + MainActivity.Email
+                resetOTP()
+                setListenerOTP()
             }
             R.id.buttonInputEmailAgain -> {
                 rLayoutWrapInputEmail.visibility = View.VISIBLE

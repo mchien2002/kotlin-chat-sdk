@@ -8,8 +8,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.Adapter.OnstreamAdapter
-import com.example.ae_chat_sdk.acti.Adapter.RecentAdapter
+import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
+import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
