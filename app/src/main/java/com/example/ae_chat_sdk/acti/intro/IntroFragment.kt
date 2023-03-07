@@ -26,8 +26,12 @@ import com.example.ae_chat_sdk.data.api.RestApi
 import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.api.service.BaseService
 import com.example.ae_chat_sdk.data.api.service.RegisterService
+import com.example.ae_chat_sdk.data.model.MyResponse
+import com.example.ae_chat_sdk.data.model.User
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -279,6 +283,30 @@ class IntroFragment : Fragment(), View.OnClickListener {
     private fun verifyOTP(OTP: String) {
         Log.d("OTP", OTP)
         resetOTP()
+        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
+        call.enqueue(object : Callback<MyResponse> {
+            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                Log.d(
+                    "Error",
+                    t.toString()
+                )
+            }
+
+            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
+                if (response.code() == 200) {
+                    //val user: User = response.body()?.data as User
+                    val gson = Gson()
+                    val type = object : TypeToken<User>() {}.type
+                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
+
+
+                    Log.d(
+                        "Error",
+                        "thanh cong $user"
+                    )
+                }
+            }
+        })
         Handler(Looper.getMainLooper()).postDelayed({
             v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
         }, 1000)
