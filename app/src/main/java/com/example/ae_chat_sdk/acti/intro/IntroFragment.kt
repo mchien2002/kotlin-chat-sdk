@@ -50,6 +50,8 @@ class IntroFragment : Fragment(), View.OnClickListener {
     lateinit var tLayoutInputEmail: TextInputLayout
     lateinit var rLayoutWrapInputEmail: RelativeLayout
 
+
+
     // OTP
     lateinit var rLayoutWrapInputOTP: RelativeLayout
     lateinit var inputOTP1: EditText
@@ -58,6 +60,7 @@ class IntroFragment : Fragment(), View.OnClickListener {
     lateinit var inputOTP4: EditText
     lateinit var inputOTP5: EditText
     lateinit var inputOTP6: EditText
+
 
     lateinit var v: View
 
@@ -97,6 +100,8 @@ class IntroFragment : Fragment(), View.OnClickListener {
         inputOTP4 = v.findViewById(R.id.eTextInputOTP4)
         inputOTP5 = v.findViewById(R.id.eTextInputOTP5)
         inputOTP6 = v.findViewById(R.id.eTextInputOTP6)
+
+
 
         // Email
         btnSendEmail.setOnClickListener(this)
@@ -262,7 +267,10 @@ class IntroFragment : Fragment(), View.OnClickListener {
                         )
                     }
 
-                    override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
+                    override fun onResponse(
+                        call: Call<MyResponse>,
+                        response: Response<MyResponse>
+                    ) {
                         rLayoutWrapInputEmail.visibility = View.GONE
                         rLayoutWrapInputOTP.visibility = View.VISIBLE
                         v.findViewById<TextView>(R.id.tViewEmailInformation).text =
@@ -299,10 +307,12 @@ class IntroFragment : Fragment(), View.OnClickListener {
                     //val user: User = response.body()?.data as User
                     val gson = Gson()
                     val type = object : TypeToken<User>() {}.type
-                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
+//                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
                     val appStorage = AppStorage.getInstance(context!!)
-                    appStorage.saveData("User",gson.toJson(response.body()?.data))
-                    
+                    appStorage.saveData("User", gson.toJson(response.body()?.data))
+                    val userString: String = appStorage.getData("User", "").toString()
+                    val user = gson.fromJson<User>(userString, type)
+
 
                     Log.d(
                         "Success",
@@ -311,6 +321,7 @@ class IntroFragment : Fragment(), View.OnClickListener {
                     Handler(Looper.getMainLooper()).postDelayed({
                         v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
                     }, 1000)
+
                 }
 
             }

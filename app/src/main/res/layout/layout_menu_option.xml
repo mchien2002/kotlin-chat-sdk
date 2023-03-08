@@ -18,13 +18,15 @@
 
         <FrameLayout
             android:id="@+id/avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_width="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="100dp">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:layout_width="match_parent"
+                android:id="@+id/avatarUser"
+                android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:layout_gravity="left"
+                android:layout_gravity="center_horizontal"
                 android:src="@drawable/avt_1"
                 app:civ_border_color="@color/white"
                 app:civ_border_width="2dp" />
@@ -32,7 +34,7 @@
             <ImageButton
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_gravity="center|bottom"
+                android:layout_gravity="right|bottom"
                 android:layout_marginLeft="40dp"
                 android:background="@drawable/button_camera" />
         </FrameLayout>

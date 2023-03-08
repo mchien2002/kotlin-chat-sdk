@@ -13,11 +13,12 @@
         android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/roboto_bold"
-        android:text="@string/username"
+        android:text="@string/setting"
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:visibility="visible" />
+        android:visibility="visible"
+        tools:ignore="VisualLintOverlap,TextSizeCheck" />
 
     <include
         layout="@layout/layout_menu_option"
