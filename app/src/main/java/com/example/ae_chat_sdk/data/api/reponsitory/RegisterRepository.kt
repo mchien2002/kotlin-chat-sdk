@@ -8,7 +8,7 @@ import retrofit2.Call
 class RegisterRepository constructor(){
     private val registerService = RegisterService()
 
-    public fun registerByMail(email: String): Call<String> {
+    public fun registerByMail(email: String): Call<MyResponse> {
         return registerService.registerAccount(email)
     }
     public fun verifyOTP(email: String,otp : String): Call<MyResponse> {

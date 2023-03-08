@@ -253,24 +253,25 @@ class IntroFragment : Fragment(), View.OnClickListener {
             R.id.buttonSendEmail -> {
                 val call = RegisterRepository().registerByMail(MainActivity.Email)
 
-                call.enqueue(object : Callback<String> {
-                    override fun onFailure(call: Call<String>, t: Throwable) {
+                call.enqueue(object : Callback<MyResponse> {
+                    override fun onFailure(call: Call<MyResponse>, t: Throwable) {
                         Log.d(
                             "Error",
                             "We can't send OTP to your Email Address. " + t.toString()
                         )
                     }
 
-                    override fun onResponse(call: Call<String>, response: Response<String>) {
+                    override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
+                        rLayoutWrapInputEmail.visibility = View.GONE
+                        rLayoutWrapInputOTP.visibility = View.VISIBLE
+                        v.findViewById<TextView>(R.id.tViewEmailInformation).text =
+                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
+                        resetOTP()
+                        setListenerOTP()
 
                     }
                 })
-                rLayoutWrapInputEmail.visibility = View.GONE
-                rLayoutWrapInputOTP.visibility = View.VISIBLE
-                v.findViewById<TextView>(R.id.tViewEmailInformation).text =
-                    "Mã xác thực đã được gửi đến\n" + MainActivity.Email
-                resetOTP()
-                setListenerOTP()
+
             }
             R.id.buttonInputEmailAgain -> {
                 rLayoutWrapInputEmail.visibility = View.VISIBLE
@@ -301,15 +302,17 @@ class IntroFragment : Fragment(), View.OnClickListener {
 
 
                     Log.d(
-                        "Error",
+                        "Success",
                         "thanh cong $user"
                     )
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+                    }, 1000)
                 }
+
             }
         })
-        Handler(Looper.getMainLooper()).postDelayed({
-            v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
-        }, 1000)
+
     }
 }
 

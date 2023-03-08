@@ -11,7 +11,7 @@ import retrofit2.http.POST
 interface RegisterController {
     @POST(ApiConstant.ACCOUNT_POST_EMAIL)
     @FormUrlEncoded
-    fun registerAccount(@Field("email") email: String): Call<String>
+    fun registerAccount(@Field("email") email: String): Call<MyResponse>
 
     @POST(ApiConstant.VERIFY_OTP)
     @FormUrlEncoded

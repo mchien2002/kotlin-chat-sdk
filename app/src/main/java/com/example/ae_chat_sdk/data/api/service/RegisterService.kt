@@ -9,7 +9,7 @@ public class RegisterService constructor() : RegisterController {
 
     private val registerService = BaseService.getAPI().create(RegisterController::class.java)
 
-    override fun registerAccount(email: String): Call<String> {
+    override fun registerAccount(email: String): Call<MyResponse> {
         return registerService.registerAccount(email)
     }
 
