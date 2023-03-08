@@ -28,6 +28,7 @@ import com.example.ae_chat_sdk.data.api.service.BaseService
 import com.example.ae_chat_sdk.data.api.service.RegisterService
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
@@ -299,7 +300,9 @@ class IntroFragment : Fragment(), View.OnClickListener {
                     val gson = Gson()
                     val type = object : TypeToken<User>() {}.type
                     val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-
+                    val appStorage = AppStorage.getInstance(context!!)
+                    appStorage.saveData("User",gson.toJson(response.body()?.data))
+                    
 
                     Log.d(
                         "Success",
