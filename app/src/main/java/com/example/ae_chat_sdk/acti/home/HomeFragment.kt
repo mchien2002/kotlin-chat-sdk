@@ -2,25 +2,32 @@ package com.example.ae_chat_sdk.acti.home
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.Adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.Adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.Adapter.RecentAdapter
 import com.example.ae_chat_sdk.acti.IClickListener
 import com.example.ae_chat_sdk.data.api.ApiConstant
+import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
+import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -28,8 +35,11 @@ import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.hdodenhof.circleimageview.CircleImageView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
-class HomeFragment : Fragment() {
+class HomeFragment : Fragment(), View.OnClickListener {
 
     lateinit var v: View
 
@@ -37,6 +47,8 @@ class HomeFragment : Fragment() {
     lateinit var rvOnstream: RecyclerView
     lateinit var rvRecent: RecyclerView
     lateinit var rvListContact: RecyclerView
+
+    lateinit var btnLogOut : Button
 
 
     lateinit var recent: ArrayList<String>
@@ -127,6 +139,8 @@ class HomeFragment : Fragment() {
 
         tvUserName = v.findViewById(R.id.tViewUsername)
 
+        btnLogOut = v.findViewById(R.id.buttonLogOut)
+        btnLogOut.setOnClickListener(this)
     }
 
     private fun renderDataRecyclerView() {
@@ -245,8 +259,24 @@ class HomeFragment : Fragment() {
 
 
     }
+    override fun onClick(view: View)
+    {
+        when (view?.id) {
+            R.id.buttonLogOut -> {
+                Handler(Looper.getMainLooper()).postDelayed({
+                    v.findNavController().navigate(R.id.nav_graph)
+                }, 1000)
+                val appStorage = context?.let { AppStorage.getInstance(it) }
+                val userString = appStorage?.clearData()
+                Log.d("SHOW DATAAAAAA",userString.toString())
+            }
+        }
+    }
 
 
 }
+
+
+
 
 

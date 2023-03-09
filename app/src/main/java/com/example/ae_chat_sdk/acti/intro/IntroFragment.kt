@@ -1,31 +1,23 @@
 package com.example.ae_chat_sdk.acti.intro
 
-import android.content.Context
-import android.content.Intent
-import android.media.Image
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.data.api.RestApi
 import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
-import com.example.ae_chat_sdk.data.api.service.BaseService
-import com.example.ae_chat_sdk.data.api.service.RegisterService
+import com.example.ae_chat_sdk.data.model.ErrorMessage
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
@@ -36,7 +28,6 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.stream.Collectors.mapping
 
 
 class IntroFragment : Fragment(), View.OnClickListener {
@@ -72,7 +63,7 @@ class IntroFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         v = inflater.inflate(R.layout.fragment_intro, container, false)
 
-
+        checkNewLogin()
         init()
         showInputEmail()
 
@@ -145,7 +136,6 @@ class IntroFragment : Fragment(), View.OnClickListener {
             MainActivity.OTP = inputOTP1.text.toString().trim() + inputOTP2.text.toString()
                 .trim() + inputOTP3.text.toString().trim() + inputOTP4.text.toString()
                 .trim() + inputOTP5.text.toString().trim() + inputOTP6.text.toString().trim()
-            Toast.makeText(context, MainActivity.OTP, Toast.LENGTH_SHORT).show()
             verifyOTP(MainActivity.OTP)
         })
 
@@ -323,10 +313,31 @@ class IntroFragment : Fragment(), View.OnClickListener {
                     }, 1000)
 
                 }
+                else if (response.code()==401)
+                {
+                    val message : String? = "Bạn đã nhập sai OTP!!"
+
+                    Toast.makeText(context, message, Toast.LENGTH_LONG
+                    ).show()
+                    resetOTP()
+                }
 
             }
         })
 
+    }
+    private fun checkNewLogin()
+    {
+        val appStorage = context?.let { AppStorage.getInstance(it) }
+        val userString = appStorage?.getData("User","").toString()
+        Log.d("Lengggggggggg",userString.length.toString())
+        if (userString.length > 10)
+        {
+            Handler(Looper.getMainLooper()).postDelayed({
+                v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+            }, 1000)
+        }
+        Log.d("SHOW DATAAAAAA",userString.toString())
     }
 }
 
