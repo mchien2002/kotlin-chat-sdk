@@ -8,6 +8,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
+import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.databinding.ActivityMainBinding
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -35,7 +36,7 @@ class MainActivity : AppCompatActivity() {
 
         val chanelId=1
 
-        val request:Request=Request.Builder().url("https://ec7a-115-73-10-148.ap.ngrok.io/api/v1/chat/32").build()
+        val request:Request=Request.Builder().url(SocketConstant.URL).build()
         val webSocketListener= WebSocketListener()
         val ws =client.newWebSocket(request,webSocketListener)
 
