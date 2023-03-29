@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?><!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rLayoutBottomSheetListContact"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,45 +12,48 @@
     app:behavior_peekHeight="0dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-    <ImageButton
+
+    <ImageView
         android:id="@+id/iButtonDown"
         android:layout_width="65dp"
         android:layout_height="8dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/ic_line" />
+        android:layout_marginTop="35dp"
+        android:background="@drawable/ic_line"
+        android:contentDescription="@string/description_button_down" />
 
     <RelativeLayout
         android:id="@+id/rLayoutListContact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iButtonDown"
-        android:paddingTop="20dp">
-
+        android:layout_below="@id/iButtonDown">
 
         <RelativeLayout
             android:id="@+id/rLayoutSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp">
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="15dp">
 
             <EditText
                 android:id="@+id/inputSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:background="@drawable/bg_frame_recent"
                 android:drawableEnd="@drawable/ic_search"
                 android:fontFamily="@font/roboto_bold"
                 android:hint="@string/Search"
                 android:inputType="text"
+                android:padding="10dp"
                 android:paddingStart="15dp"
-                android:paddingTop="10dp"
-                android:paddingRight="10dp"
-                android:paddingBottom="10dp"
                 android:textColor="@color/color1"
-                android:textColorHint="#802F2E41"
-                android:textSize="16sp" />
+                android:textColorHint="#4D2F2E41"
+                android:textSize="14sp"
+                tools:ignore="TouchTargetSizeCheck" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -57,7 +61,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/rLayoutSearch"
             android:paddingLeft="10dp"
-            android:paddingTop="20dp"
             android:paddingRight="10dp"
             android:paddingBottom="5dp">
 

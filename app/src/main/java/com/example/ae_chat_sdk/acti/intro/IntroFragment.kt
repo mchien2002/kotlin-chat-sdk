@@ -265,10 +265,13 @@ class IntroFragment : Fragment(), View.OnClickListener {
                     override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
                         rLayoutWrapInputEmail.visibility = View.GONE
                         rLayoutWrapInputOTP.visibility = View.VISIBLE
-                        v.findViewById<TextView>(R.id.tViewEmailInformation).text =
-                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
-                        resetOTP()
-                        setListenerOTP()
+
+                        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+
+//                        v.findViewById<TextView>(R.id.tViewEmailInformation).text =
+//                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
+//                        resetOTP()
+//                        setListenerOTP()
 
                     }
                 })

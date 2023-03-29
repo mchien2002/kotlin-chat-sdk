@@ -15,6 +15,8 @@
     <string name="UserEmail">email.\nco</string>
     <string name="Search">Tìm kiếm</string>
 
+    <string name="description_button_down">Button drop down</string>
+
     <string name="username">username</string>
     <string name="content_message">content message</string>
     <string name="time_receive">1 phút</string>
