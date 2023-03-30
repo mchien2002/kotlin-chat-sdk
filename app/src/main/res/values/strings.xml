@@ -37,7 +37,9 @@
 
 
     <string name="type_message_here">Nhập tin nhắn</string>
-
+    <string name="notification">Thông báo</string>
+    <string name="back">Trở về</string>
+    <string name="send_message">Gửi</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
