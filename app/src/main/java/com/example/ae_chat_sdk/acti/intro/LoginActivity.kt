@@ -254,7 +254,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         resetOTP()
                         setListenerOTP()
 
-                        setStartHomeActivity()
+                        verifyOTP(MainActivity.OTP)
                     }
                 })
 
@@ -289,8 +289,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     appStorage.saveData("User", gson.toJson(response.body()?.data))
                     val userString: String = appStorage.getData("User", "").toString()
                     val user = gson.fromJson<User>(userString, type)
-
-
                     Log.d(
                         "Success",
                         "thanh cong $user"
@@ -319,11 +317,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         val userString = appStorage?.getData("User", "").toString()
         Log.d("Lengggggggggg", userString.length.toString())
         if (userString.length > 10) {
-            Handler(Looper.getMainLooper()).postDelayed({
-//                v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
 
-            }, 1000)
+            setStartHomeActivity()
         }
+
         Log.d("SHOW DATAAAAAA", userString.toString())
     }
 

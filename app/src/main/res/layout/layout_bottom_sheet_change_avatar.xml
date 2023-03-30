@@ -1,0 +1,27 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlBottomSheetChangeAvatar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <Button
+        android:id="@+id/btnChupAnh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chụp Ảnh"/>
+
+    <Button
+        android:id="@+id/btnChonAnh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Chọn ảnh từ thư viện"/>
+
+    <Button
+        android:id="@+id/btnXoaAnh"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Xóa ảnh đại diện"/>
+
+</LinearLayout>

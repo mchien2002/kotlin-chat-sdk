@@ -16,6 +16,10 @@ class AppStorage private constructor(context: Context)
             }
             return instance as AppStorage
         }
+
+        fun getInstance(): AppStorage {
+            return instance as AppStorage
+        }
     }
 
     fun saveData(key: String, value: String) {
