@@ -24,14 +24,15 @@
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
         android:background="@drawable/logo_letter_sigma1" />
+
     <ImageView
         android:id="@+id/ivIconLogoIntroAfter"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center|top"
-        android:background="@drawable/logo_sigma"
         android:layout_marginTop="20dp"
-        android:visibility="invisible"/>
+        android:background="@drawable/logo_sigma"
+        android:visibility="invisible" />
 
     <RelativeLayout
         android:id="@+id/rlInput"
@@ -84,12 +85,14 @@
                         android:layout_height="wrap_content"
                         android:inputType="textEmailAddress"
                         android:textColor="@color/color1"
-                        android:textSize="12sp"/>
+                        android:textSize="12sp" />
                 </com.google.android.material.textfield.TextInputLayout>
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/mbSendEmail"
                     android:layout_width="wrap_content"
                     android:layout_height="40dp"
+                    android:layout_below="@id/tlInputEmail"
                     android:layout_alignParentRight="true"
                     android:layout_marginTop="40dp"
                     android:background="@drawable/button_sign_in"
@@ -98,8 +101,7 @@
                     android:insetBottom="0dp"
                     android:visibility="invisible"
                     app:cornerRadius="5dp"
-                    app:rippleColor="@color/color1"
-                    android:layout_below="@id/tlInputEmail"/>
+                    app:rippleColor="@color/color1" />
 
 
             </RelativeLayout>

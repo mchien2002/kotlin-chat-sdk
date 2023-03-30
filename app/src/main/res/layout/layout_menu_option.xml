@@ -30,10 +30,11 @@
                 app:civ_border_width="2dp" />
 
             <ImageButton
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:id="@+id/ibChangeAvatar"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center|bottom"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="35dp"
                 android:background="@drawable/button_camera" />
         </FrameLayout>
 
@@ -43,10 +44,10 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/flAvatar"
             android:layout_centerHorizontal="true"
-            android:fontFamily="More Fonts..."
+            android:fontFamily="@font/roboto_medium"
             android:text="@string/username"
             android:textColor="@color/white"
-            android:textSize="24dp" />
+            android:textSize="18dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -62,6 +63,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
             android:layout_marginTop="20dp"
             android:layout_marginBottom="20dp"
             android:orientation="vertical">
@@ -71,13 +74,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="left|center"
+                android:letterSpacing="0.03"
                 android:text="@string/list_contact"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="15sp"
-                app:elevation="0dp"
+                android:textSize="14sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
@@ -92,10 +95,11 @@
                 android:layout_marginRight="10dp"
                 android:background="@drawable/bg_option_transparent"
                 android:checked="true"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_bold"
+                android:letterSpacing="0.03"
                 android:text="@string/status"
                 android:textColor="@color/white"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 app:thumbTint="@color/white"
                 app:trackTint="#4DFFFFFF" />
 
@@ -105,13 +109,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/switchStatus"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="left|center"
+                android:letterSpacing="0.03"
                 android:text="@string/notification_sound"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="15sp"
-                app:elevation="0dp"
+
+                android:textSize="14sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
@@ -123,13 +128,14 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/mbNotificationAndSound"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="left|center"
+                android:letterSpacing="0.03"
                 android:text="@string/email2"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="15sp"
-                app:elevation="0dp"
+
+                android:textSize="14sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
@@ -140,13 +146,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="left|center"
+                android:letterSpacing="0.03"
                 android:text="@string/language"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="15sp"
-                app:elevation="0dp"
+                android:textSize="14sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
@@ -158,17 +164,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_bold"
                 android:gravity="left|center"
                 android:text="@string/support"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="15sp"
-                app:elevation="0dp"
+                android:textSize="14sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
-                app:rippleColor="#332F2E41" />
+                app:rippleColor="#332F2E41"
+                android:letterSpacing="0.03"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbLogOut"
@@ -180,12 +186,12 @@
                 android:text="@string/log_out"
                 android:textAllCaps="false"
                 android:textColor="#CD2323"
-                android:textSize="15sp"
-                app:elevation="0dp"
+                android:textSize="14sp"
                 app:icon="@drawable/ic_log_out"
                 app:iconGravity="start"
                 app:iconTint="#FFCD2323"
-                app:rippleColor="#332F2E41" />
+                app:rippleColor="#332F2E41"
+                android:letterSpacing="0.03"/>
         </LinearLayout>
     </RelativeLayout>
 

@@ -277,11 +277,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         response: Response<MyResponse>
                     ) {
 
-                        resetOTP()
-                        rLayoutWrapInputEmail.visibility = View.GONE
-                        rLayoutWrapInputOTP.visibility = View.VISIBLE
-
-
+//                        resetOTP()
+//                        rLayoutWrapInputEmail.visibility = View.GONE
+//                        rLayoutWrapInputOTP.visibility = View.VISIBLE
+                        setStartHomeActivity()
                     }
                 })
 
