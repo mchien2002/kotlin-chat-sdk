@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_menu_option"
-    tools:context=".acti.home.HomeFragment">
+    tools:context=".acti.home.HomeActivity">
 
     <TextView
         android:id="@+id/tViewPagename"

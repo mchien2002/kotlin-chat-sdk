@@ -1,11 +1,9 @@
 package com.example.ae_chat_sdk.acti.home
 
 import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
@@ -20,9 +18,7 @@ import com.example.ae_chat_sdk.acti.IClickListener
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 
-class HomeFragment : Fragment() {
-
-    lateinit var v: View
+class HomeActivity : AppCompatActivity() {
 
     // RecyclerView Message Home
     lateinit var rvOnstream: RecyclerView
@@ -44,10 +40,10 @@ class HomeFragment : Fragment() {
 
     //
     lateinit var tvPagename: TextView
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_home)
 
         // set data for list on Stream
         onstream = ArrayList()
@@ -67,25 +63,33 @@ class HomeFragment : Fragment() {
             contact.add("username # $i")
         }
 
-
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_home, container, false)
-
         init()
         setButtonOnClickListener()
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
+    }
 
+    private fun init() {
+        rLayoutBottomSheetHome = findViewById(R.id.rLayoutBottomSheetHome)
+        rLayoutMessageHome = findViewById(R.id.rLayoutMessageHome)
+        rLayoutBottomSheetListContact = findViewById(R.id.rLayoutBottomSheetListContact)
 
-        return v
+        rvOnstream = findViewById(R.id.rViewHorizonalOnstream)
+        rvRecent = findViewById(R.id.rViewVerticalRecent)
+        rvListContact = findViewById(R.id.rViewHorizonalContact)
+
+        bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
+        bottomSheetContactBehavior = BottomSheetBehavior.from(rLayoutBottomSheetListContact)
+
+        tvPagename = findViewById(R.id.tViewPagename)
     }
 
     private fun setButtonOnClickListener() {
-        v.findViewById<MaterialButton>(R.id.buttonListContact)
+        findViewById<MaterialButton>(R.id.buttonListContact)
             .setOnClickListener(View.OnClickListener {
                 // show Bottom Sheet Contact
                 setBottomSheetBehaviorContact()
-                v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
                     .setDuration(0).startDelay = 0
                 tvPagename.text = "Danh sách liên hệ"
                 tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
@@ -93,50 +97,6 @@ class HomeFragment : Fragment() {
                     .setDuration(0).startDelay = 0
                 true
             })
-    }
-
-
-    private fun init() {
-        rLayoutBottomSheetHome = v.findViewById(R.id.rLayoutBottomSheetHome)
-        rLayoutMessageHome = v.findViewById(R.id.rLayoutMessageHome)
-        rLayoutBottomSheetListContact = v.findViewById(R.id.rLayoutBottomSheetListContact)
-
-        rvOnstream = v.findViewById(R.id.rViewHorizonalOnstream)
-        rvRecent = v.findViewById(R.id.rViewVerticalRecent)
-        rvListContact = v.findViewById(R.id.rViewHorizonalContact)
-
-        bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
-        bottomSheetContactBehavior = BottomSheetBehavior.from(rLayoutBottomSheetListContact)
-
-        tvPagename = v.findViewById(R.id.tViewPagename)
-    }
-
-    private fun renderDataRecyclerView() {
-        rvOnstream.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rvOnstream.adapter = OnstreamAdapter(onstream, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(context, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvRecent.adapter = RecentAdapter(recent, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(context, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        rvListContact.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvListContact.adapter = ContactAdapter(contact, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(context, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
-        rvListContact.addItemDecoration(
-            DividerItemDecoration(
-                context, DividerItemDecoration.VERTICAL
-            )
-        )
     }
 
     private fun setBottomSheetBehaviorHome() {
@@ -148,16 +108,16 @@ class HomeFragment : Fragment() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate().alpha(1F)
                             .setDuration(100).startDelay = 0
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
                             .setDuration(500).startDelay = 0
 
                     }
                     else -> {
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate().alpha(0F)
                             .setDuration(100).startDelay = 0
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(1F)
                             .setDuration(500).startDelay = 0
                     }
                 }
@@ -179,14 +139,14 @@ class HomeFragment : Fragment() {
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         rLayoutBottomSheetListContact.animate().alpha(1F)
                             .setDuration(0).startDelay = 0
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
                             .setDuration(0).startDelay = 0
                         tvPagename.text = "Danh sách liên hệ"
                         tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
                     }
                     else -> {
                         tvPagename.text = "Username"
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(1F)
                             .setDuration(0).startDelay = 0
                         tvPagename.setTextColor(Color.parseColor("#FFFFFF"))
                         rLayoutBottomSheetListContact.animate().alpha(0F)
@@ -200,7 +160,33 @@ class HomeFragment : Fragment() {
         })
     }
 
+    private fun renderDataRecyclerView() {
+        rvOnstream.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.HORIZONTAL, false)
+        rvOnstream.adapter = OnstreamAdapter(onstream, object : IClickListener {
+            override fun clickItem(itemObject: String) {
+                Toast.makeText(applicationContext, itemObject, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        rvRecent.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+        rvRecent.adapter = RecentAdapter(recent, object : IClickListener {
+            override fun clickItem(itemObject: String) {
+                Toast.makeText(applicationContext, itemObject, Toast.LENGTH_SHORT).show()
+            }
+        })
+
+        rvListContact.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
+        rvListContact.adapter = ContactAdapter(contact, object : IClickListener {
+            override fun clickItem(itemObject: String) {
+                Toast.makeText(applicationContext, itemObject, Toast.LENGTH_SHORT).show()
+            }
+        })
+        rvListContact.addItemDecoration(
+            DividerItemDecoration(
+                applicationContext, DividerItemDecoration.VERTICAL
+            )
+        )
+    }
+
 
 }
-
-

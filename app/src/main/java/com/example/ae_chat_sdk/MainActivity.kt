@@ -1,5 +1,6 @@
 package com.example.ae_chat_sdk
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -7,6 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
+import com.example.ae_chat_sdk.acti.intro.LoginActivity
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.databinding.ActivityMainBinding
@@ -30,6 +32,16 @@ class MainActivity : AppCompatActivity() {
         this.binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        connectSocket()
+        setStartLoginActivity()
+    }
+
+    private fun setStartLoginActivity() {
+        val intent:Intent= Intent(this, LoginActivity::class.java )
+        this.startActivity(intent)
+    }
+
+    private fun connectSocket(){
         val client=OkHttpClient()
 
         val apiKey=""
@@ -39,7 +51,6 @@ class MainActivity : AppCompatActivity() {
         val request:Request=Request.Builder().url(SocketConstant.URL).build()
         val webSocketListener= WebSocketListener()
         val ws =client.newWebSocket(request,webSocketListener)
-
     }
 
 }

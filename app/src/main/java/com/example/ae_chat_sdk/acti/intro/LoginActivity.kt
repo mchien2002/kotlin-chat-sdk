@@ -1,31 +1,22 @@
 package com.example.ae_chat_sdk.acti.intro
 
-import android.content.Context
 import android.content.Intent
-import android.media.Image
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.core.widget.addTextChangedListener
-import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.data.api.RestApi
+import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
-import com.example.ae_chat_sdk.data.api.service.BaseService
-import com.example.ae_chat_sdk.data.api.service.RegisterService
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
@@ -36,10 +27,8 @@ import com.google.gson.reflect.TypeToken
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.stream.Collectors.mapping
 
-
-class IntroFragment : Fragment(), View.OnClickListener {
+class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     // Intro
     lateinit var iViewLogo: ImageView
@@ -58,55 +47,41 @@ class IntroFragment : Fragment(), View.OnClickListener {
     lateinit var inputOTP4: EditText
     lateinit var inputOTP5: EditText
     lateinit var inputOTP6: EditText
-
-    lateinit var v: View
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-
-    ): View? {
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_intro, container, false)
-
+    
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_login)
 
         init()
         showInputEmail()
-
-
-
-        return v;
     }
 
     private fun init() {
         // Intro
-        iViewLogo = v.findViewById(R.id.iViewIconLogoIntroAfter)
+        iViewLogo = findViewById(R.id.iViewIconLogoIntroAfter)
 
         // Email
-        btnSendEmail = v.findViewById(R.id.buttonSendEmail)
-        eTextEmail = v.findViewById(R.id.eTextEmail)
-        tLayoutInputEmail = v.findViewById(R.id.tLayoutInputEmail)
-        rLayoutWrapInputEmail = v.findViewById(R.id.rLayoutWrapInputEmail)
+        btnSendEmail = findViewById(R.id.buttonSendEmail)
+        eTextEmail = findViewById(R.id.eTextEmail)
+        tLayoutInputEmail = findViewById(R.id.tLayoutInputEmail)
+        rLayoutWrapInputEmail = findViewById(R.id.rLayoutWrapInputEmail)
 
         // OTP
-
-        rLayoutWrapInputOTP = v.findViewById(R.id.rLayoutWrapTextInputOTP)
-        inputOTP1 = v.findViewById(R.id.eTextInputOTP1)
-        inputOTP2 = v.findViewById(R.id.eTextInputOTP2)
-        inputOTP3 = v.findViewById(R.id.eTextInputOTP3)
-        inputOTP4 = v.findViewById(R.id.eTextInputOTP4)
-        inputOTP5 = v.findViewById(R.id.eTextInputOTP5)
-        inputOTP6 = v.findViewById(R.id.eTextInputOTP6)
+        rLayoutWrapInputOTP = findViewById(R.id.rLayoutWrapTextInputOTP)
+        inputOTP1 = findViewById(R.id.eTextInputOTP1)
+        inputOTP2 = findViewById(R.id.eTextInputOTP2)
+        inputOTP3 = findViewById(R.id.eTextInputOTP3)
+        inputOTP4 = findViewById(R.id.eTextInputOTP4)
+        inputOTP5 = findViewById(R.id.eTextInputOTP5)
+        inputOTP6 = findViewById(R.id.eTextInputOTP6)
 
         // Email
         btnSendEmail.setOnClickListener(this)
 
-
         // OTP
-        v.findViewById<Button>(R.id.buttonInputEmailAgain).setOnClickListener(this)
+        findViewById<Button>(R.id.buttonInputEmailAgain).setOnClickListener(this)
 
     }
-
 
     private fun setListenerEmail() {
         eTextEmail.addTextChangedListener {
@@ -129,6 +104,34 @@ class IntroFragment : Fragment(), View.OnClickListener {
             }
         }
     }
+    private fun showInputEmail() {
+        findViewById<ImageView>(R.id.iViewLetterLogoIntro).animate().alpha(0F).setDuration(200)
+            .setStartDelay(2200)
+
+        findViewById<ImageView>(R.id.iViewIconLogoIntroBefore).animate()
+            .alpha(0F)
+            .setDuration(200).setStartDelay(2500)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            BottomSheetBehavior.from(findViewById(R.id.rLayoutInput)).apply {
+                this.state = BottomSheetBehavior.STATE_EXPANDED
+                this.isDraggable = false
+            }
+        }, 3000)
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            iViewLogo.visibility = View.VISIBLE
+        }, 3500)
+
+
+
+
+        setListenerEmail()
+        eTextEmail.isEnabled = true
+
+
+//        iViewLogo.animate().alpha(1F).setDuration(200).setStartDelay(3000)
+    }
 
     private fun setListenerOTP() {
         setTextChangeListener(inputOTP1, inputOTP2)
@@ -140,7 +143,7 @@ class IntroFragment : Fragment(), View.OnClickListener {
             MainActivity.OTP = inputOTP1.text.toString().trim() + inputOTP2.text.toString()
                 .trim() + inputOTP3.text.toString().trim() + inputOTP4.text.toString()
                 .trim() + inputOTP5.text.toString().trim() + inputOTP6.text.toString().trim()
-            Toast.makeText(context, MainActivity.OTP, Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, MainActivity.OTP, Toast.LENGTH_SHORT).show()
             verifyOTP(MainActivity.OTP)
         })
 
@@ -151,7 +154,6 @@ class IntroFragment : Fragment(), View.OnClickListener {
         setKeyListener(inputOTP6, inputOTP5)
 
     }
-
 
     private fun resetOTP() {
         inputOTP1.isEnabled = false
@@ -172,12 +174,47 @@ class IntroFragment : Fragment(), View.OnClickListener {
         initFocusOTP()
     }
 
-
     private fun initFocusOTP() {
         inputOTP1.isEnabled = true
         inputOTP1.requestFocus()
     }
 
+    private fun verifyOTP(OTP: String) {
+        Log.d("OTP", OTP)
+        resetOTP()
+        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
+        call.enqueue(object : Callback<MyResponse> {
+            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                Log.d(
+                    "Error",
+                    t.toString()
+                )
+            }
+
+            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
+                if (response.code() == 200) {
+                    //val user: User = response.body()?.data as User
+                    val gson = Gson()
+                    val type = object : TypeToken<User>() {}.type
+                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
+                    val appStorage = AppStorage.getInstance(applicationContext!!)
+                    appStorage.saveData("User", gson.toJson(response.body()?.data))
+
+
+                    Log.d(
+                        "Success",
+                        "thanh cong $user"
+                    )
+                    Handler(Looper.getMainLooper()).postDelayed({
+//                        findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+                        setStartHomeActivity()
+                    }, 1000)
+                }
+
+            }
+        })
+
+    }
 
     private fun setTextChangeListener(
         fromEditText: EditText,
@@ -202,7 +239,6 @@ class IntroFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
     private fun setKeyListener(fromEditText: EditText, backToEditText: EditText) {
         fromEditText.setOnKeyListener { _, _, event ->
             if (event!!.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_DEL && fromEditText.id != R.id.eTextInputOTP1 && fromEditText.text.isEmpty()) {
@@ -219,36 +255,6 @@ class IntroFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
-    private fun showInputEmail() {
-        v.findViewById<ImageView>(R.id.iViewLetterLogoIntro).animate().alpha(0F).setDuration(200)
-            .setStartDelay(2200)
-
-        v.findViewById<ImageView>(R.id.iViewIconLogoIntroBefore).animate()
-            .alpha(0F)
-            .setDuration(200).setStartDelay(2500)
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            BottomSheetBehavior.from(v.findViewById(R.id.rLayoutInput)).apply {
-                this.state = BottomSheetBehavior.STATE_EXPANDED
-                this.isDraggable = false
-            }
-        }, 3000)
-
-        Handler(Looper.getMainLooper()).postDelayed({
-            iViewLogo.visibility = View.VISIBLE
-        }, 3500)
-
-
-
-
-        setListenerEmail()
-        eTextEmail.isEnabled = true
-
-
-//        iViewLogo.animate().alpha(1F).setDuration(200).setStartDelay(3000)
-    }
-
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.buttonSendEmail -> {
@@ -262,17 +268,21 @@ class IntroFragment : Fragment(), View.OnClickListener {
                         )
                     }
 
-                    override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
+                    override fun onResponse(
+                        call: Call<MyResponse>,
+                        response: Response<MyResponse>
+                    ) {
                         rLayoutWrapInputEmail.visibility = View.GONE
                         rLayoutWrapInputOTP.visibility = View.VISIBLE
 
-                        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+//                        findNavController().navigate(R.id.action_introFragment_to_homeFragment)
 
-//                        v.findViewById<TextView>(R.id.tViewEmailInformation).text =
+//                        findViewById<TextView>(R.id.tViewEmailInformation).text =
 //                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
 //                        resetOTP()
 //                        setListenerOTP()
 
+                        setStartHomeActivity()
                     }
                 })
 
@@ -284,41 +294,8 @@ class IntroFragment : Fragment(), View.OnClickListener {
         }
     }
 
-
-    private fun verifyOTP(OTP: String) {
-        Log.d("OTP", OTP)
-        resetOTP()
-        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
-        call.enqueue(object : Callback<MyResponse> {
-            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                Log.d(
-                    "Error",
-                    t.toString()
-                )
-            }
-
-            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
-                if (response.code() == 200) {
-                    //val user: User = response.body()?.data as User
-                    val gson = Gson()
-                    val type = object : TypeToken<User>() {}.type
-                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                    val appStorage = AppStorage.getInstance(context!!)
-                    appStorage.saveData("User",gson.toJson(response.body()?.data))
-                    
-
-                    Log.d(
-                        "Success",
-                        "thanh cong $user"
-                    )
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
-                    }, 1000)
-                }
-
-            }
-        })
-
+    private fun setStartHomeActivity(){
+        val intent: Intent = Intent(this, HomeActivity::class.java)
+        this.startActivity(intent);
     }
 }
-
