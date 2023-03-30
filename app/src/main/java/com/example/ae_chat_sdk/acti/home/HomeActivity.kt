@@ -4,46 +4,24 @@ import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
-import android.widget.RelativeLayout
-import android.widget.TextView
-import android.widget.Toast
-import androidx.navigation.findNavController
-=======
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
-import com.example.ae_chat_sdk.acti.Adapter.ContactAdapter
-import com.example.ae_chat_sdk.acti.Adapter.OnstreamAdapter
-import com.example.ae_chat_sdk.acti.Adapter.RecentAdapter
-import com.example.ae_chat_sdk.acti.IClickListener
 import com.example.ae_chat_sdk.data.api.ApiConstant
-import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
-import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
-=======
 import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
@@ -53,11 +31,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
-class HomeFragment : Fragment(), View.OnClickListener {
-=======
-class HomeActivity : AppCompatActivity() {
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
+class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     // Context
     lateinit var context: Context
@@ -117,26 +91,9 @@ class HomeActivity : AppCompatActivity() {
         setButtonOnClickListener()
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
         setData()
-=======
     }
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 
-    private fun init() {
-        rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
-        rLayoutMessageHome = findViewById(R.id.rlMessageHome)
-        rLayoutBottomSheetListContact = findViewById(R.id.rlBottomSheetListContact)
-
-        rvOnstream = findViewById(R.id.rvHorizonalOnstream)
-        rvRecent = findViewById(R.id.rvVerticalRecent)
-        rvListContact = findViewById(R.id.rvHorizonalContact)
-
-        bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
-        bottomSheetContactBehavior = BottomSheetBehavior.from(rLayoutBottomSheetListContact)
-
-        tvPagename = findViewById(R.id.tvPageName)
-    }
 
     private fun setButtonOnClickListener() {
         findViewById<MaterialButton>(R.id.buttonListContact)
@@ -152,60 +109,29 @@ class HomeActivity : AppCompatActivity() {
             })
     }
 
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
-
     private fun init() {
-        rLayoutBottomSheetHome = v.findViewById(R.id.rLayoutBottomSheetHome)
-        rLayoutMessageHome = v.findViewById(R.id.rLayoutMessageHome)
-        rLayoutBottomSheetListContact = v.findViewById(R.id.rLayoutBottomSheetListContact)
+        rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
+        rLayoutMessageHome = findViewById(R.id.rlMessageHome)
+        rLayoutBottomSheetListContact = findViewById(R.id.rlBottomSheetListContact)
 
-        rvOnstream = v.findViewById(R.id.rViewHorizonalOnstream)
-        rvRecent = v.findViewById(R.id.rViewVerticalRecent)
-        rvListContact = v.findViewById(R.id.rViewHorizonalContact)
+        rvOnstream = findViewById(R.id.rvHorizonalOnstream)
+        rvRecent = findViewById(R.id.rvVerticalRecent)
+        rvListContact = findViewById(R.id.rvHorizonalContact)
 
         bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
         bottomSheetContactBehavior = BottomSheetBehavior.from(rLayoutBottomSheetListContact)
 
-        tvPagename = v.findViewById(R.id.tViewPagename)
+        tvPagename = findViewById(R.id.tvPageName)
 
-        avatarUser  = v.findViewById(R.id.avatarUser)
+        avatarUser  = findViewById(R.id.ivAvatar)
 
-        tvUserName = v.findViewById(R.id.tViewUsername)
+        tvUserName = findViewById(R.id.tvUsername)
 
-        btnLogOut = v.findViewById(R.id.buttonLogOut)
+        btnLogOut = findViewById(R.id.mbLogOut)
         btnLogOut.setOnClickListener(this)
     }
 
-    private fun renderDataRecyclerView() {
-        rvOnstream.layoutManager = LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rvOnstream.adapter = OnstreamAdapter(onstream, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(context, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
 
-        rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvRecent.adapter = RecentAdapter(recent, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(context, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
-
-        rvListContact.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvListContact.adapter = ContactAdapter(contact, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(context, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
-        rvListContact.addItemDecoration(
-            DividerItemDecoration(
-                context, DividerItemDecoration.VERTICAL
-            )
-        )
-    }
-
-=======
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
     private fun setBottomSheetBehaviorHome() {
         bottomSheetHomeBehavior.apply {
             this.state = BottomSheetBehavior.STATE_EXPANDED
@@ -267,11 +193,10 @@ class HomeActivity : AppCompatActivity() {
         })
     }
 
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
     private fun setData() {
         val gson = Gson()
         val type = object : TypeToken<User>() {}.type
-        val appStorage = AppStorage.getInstance(requireContext())
+        val appStorage = AppStorage.getInstance(context)
         val userString: String = appStorage.getData("User", "").toString()
         val user = gson.fromJson<User>(userString, type)
         tvUserName.text = user.userName.toString()
@@ -298,9 +223,9 @@ class HomeActivity : AppCompatActivity() {
     override fun onClick(view: View)
     {
         when (view?.id) {
-            R.id.buttonLogOut -> {
+            R.id.mbLogOut -> {
                 Handler(Looper.getMainLooper()).postDelayed({
-                    v.findNavController().navigate(R.id.nav_graph)
+//                    findNavController().navigate(R.id.nav_graph)
                 }, 1000)
                 val appStorage = context?.let { AppStorage.getInstance(it) }
                 val userString = appStorage?.clearData()
@@ -309,12 +234,10 @@ class HomeActivity : AppCompatActivity() {
         }
     }
 
-=======
     private fun renderDataRecyclerView() {
         rvOnstream.layoutManager =
             LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
         rvOnstream.adapter = OnstreamAdapter(onstream, context)
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 
         rvRecent.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -329,12 +252,4 @@ class HomeActivity : AppCompatActivity() {
             )
         )
     }
-
-
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
-
-
-
-=======
 }
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt

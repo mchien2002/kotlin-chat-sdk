@@ -5,10 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg_menu_option"
-    tools:context=".acti.home.HomeFragment">
+    tools:context=".acti.home.HomeActivity">
 
     <TextView
-        android:id="@+id/tViewPagename"
+        android:id="@+id/tvPageName"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_gravity="center_horizontal"
@@ -27,138 +27,5 @@
 
     <include layout="@layout/layout_bottom_sheet_home" />
     <include layout="@layout/layout_bottom_sheet_list_contact"/>
-    <!--    <RelativeLayout-->
-    <!--        android:id="@+id/rLayoutHome"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="match_parent"-->
-    <!--        android:layout_gravity="top|center"-->
-    <!--        android:nestedScrollingEnabled="true"-->
-    <!--        app:behavior_hideable="false"-->
-    <!--        app:behavior_peekHeight="100dp"-->
-    <!--        app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">-->
 
-    <!--        <TextView-->
-    <!--            android:id="@+id/tViewUsername"-->
-    <!--            android:layout_width="wrap_content"-->
-    <!--            android:layout_height="wrap_content"-->
-    <!--            android:layout_centerHorizontal="true"-->
-    <!--            android:layout_marginTop="10dp"-->
-    <!--            android:fontFamily="@font/roboto_bold"-->
-    <!--            android:text="@string/username"-->
-    <!--            android:textAlignment="center"-->
-    <!--            android:textColor="@color/color1"-->
-    <!--            android:textSize="20sp" />-->
-
-
-    <!--        <RelativeLayout-->
-    <!--            android:layout_width="match_parent"-->
-    <!--            android:layout_height="match_parent"-->
-    <!--            android:layout_gravity="bottom"-->
-    <!--            android:layout_marginTop="25dp"-->
-    <!--            android:background="@drawable/frame_4">-->
-
-    <!--            <ImageButton-->
-    <!--                android:id="@+id/iButtonDown"-->
-    <!--                android:layout_width="50dp"-->
-    <!--                android:layout_height="5dp"-->
-    <!--                android:layout_centerHorizontal="true"-->
-    <!--                android:layout_marginTop="35dp"-->
-    <!--                android:background="@drawable/ic_line" />-->
-
-    <!--            <RelativeLayout-->
-    <!--                android:id="@+id/rLayoutSearch"-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="wrap_content"-->
-    <!--                android:layout_below="@id/iButtonDown"-->
-    <!--                android:paddingLeft="10dp"-->
-    <!--                android:paddingTop="10dp"-->
-    <!--                android:paddingRight="10dp">-->
-
-
-    <!--                <EditText-->
-    <!--                    android:id="@+id/inputSearch"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:background="@drawable/frame_recent"-->
-    <!--                    android:drawableEnd="@drawable/ic_search"-->
-    <!--                    android:fontFamily="@font/roboto_bold"-->
-    <!--                    android:hint="@string/Search"-->
-    <!--                    android:inputType="text"-->
-    <!--                    android:paddingStart="15dp"-->
-    <!--                    android:paddingTop="10dp"-->
-    <!--                    android:paddingRight="10dp"-->
-    <!--                    android:paddingBottom="10dp"-->
-    <!--                    android:textColor="@color/color1"-->
-    <!--                    android:textColorHint="#802F2E41"-->
-    <!--                    android:textSize="16sp" />-->
-    <!--            </RelativeLayout>-->
-
-    <!--            <RelativeLayout-->
-    <!--                android:layout_width="match_parent"-->
-    <!--                android:layout_height="fill_parent"-->
-    <!--                android:layout_below="@id/rLayoutSearch">-->
-
-    <!--                <RelativeLayout-->
-    <!--                    android:id="@+id/rLayoutOnstream"-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="wrap_content"-->
-    <!--                    android:paddingTop="15dp"-->
-    <!--                    android:paddingBottom="5dp">-->
-
-    <!--                    <ImageView-->
-    <!--                        android:id="@+id/iViewOnstream"-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_marginLeft="10dp"-->
-    <!--                        android:background="@drawable/label_onstream" />-->
-
-    <!--                    <RelativeLayout-->
-    <!--                        android:layout_width="match_parent"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_below="@id/iViewOnstream"-->
-    <!--                        android:layout_marginTop="5dp">-->
-
-    <!--                        <androidx.recyclerview.widget.RecyclerView-->
-    <!--                            android:id="@+id/rViewHorizonalOnstream"-->
-    <!--                            android:layout_width="wrap_content"-->
-    <!--                            android:layout_height="wrap_content"-->
-    <!--                            android:orientation="horizontal"-->
-    <!--                            android:paddingLeft="5dp"-->
-    <!--                            android:paddingRight="5dp" />-->
-
-    <!--                    </RelativeLayout>-->
-    <!--                </RelativeLayout>-->
-
-    <!--                <RelativeLayout-->
-    <!--                    android:layout_width="match_parent"-->
-    <!--                    android:layout_height="fill_parent"-->
-    <!--                    android:layout_below="@id/rLayoutOnstream">-->
-
-    <!--                    <ImageView-->
-    <!--                        android:id="@+id/iViewRecent"-->
-    <!--                        android:layout_width="wrap_content"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_marginLeft="10dp"-->
-    <!--                        android:background="@drawable/label_recent" />-->
-
-    <!--                    <RelativeLayout-->
-    <!--                        android:layout_width="match_parent"-->
-    <!--                        android:layout_height="wrap_content"-->
-    <!--                        android:layout_below="@id/iViewRecent"-->
-    <!--                        android:layout_marginTop="5dp">-->
-
-    <!--                        <androidx.recyclerview.widget.RecyclerView-->
-    <!--                            android:id="@+id/rViewVerticalRecent"-->
-    <!--                            android:layout_width="match_parent"-->
-    <!--                            android:layout_height="wrap_content"-->
-    <!--                            android:nestedScrollingEnabled="true"-->
-    <!--                            android:orientation="vertical" />-->
-
-
-    <!--                    </RelativeLayout>-->
-
-    <!--                </RelativeLayout>-->
-    <!--            </RelativeLayout>-->
-    <!--        </RelativeLayout>-->
-    <!--    </RelativeLayout>-->
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

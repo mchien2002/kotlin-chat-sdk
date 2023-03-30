@@ -1,11 +1,9 @@
 package com.example.ae_chat_sdk.acti.intro
 
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/intro/IntroFragment.kt
-=======
+
 import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/intro/LoginActivity.kt
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -13,22 +11,16 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.View
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/intro/IntroFragment.kt
 import android.view.ViewGroup
-=======
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/intro/LoginActivity.kt
 import android.widget.*
 import androidx.core.widget.addTextChangedListener
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/intro/IntroFragment.kt
 import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.model.ErrorMessage
-=======
 import com.example.ae_chat_sdk.acti.home.HomeActivity
-import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/intro/LoginActivity.kt
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
@@ -55,7 +47,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var rLayoutWrapInputEmail: RelativeLayout
 
 
-
     // OTP
     lateinit var rLayoutWrapInputOTP: RelativeLayout
     lateinit var inputOTP1: EditText
@@ -65,30 +56,17 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var inputOTP5: EditText
     lateinit var inputOTP6: EditText
 
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/intro/IntroFragment.kt
 
-    lateinit var v: View
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-
-    ): View? {
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_intro, container, false)
-
-        checkNewLogin()
-=======
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
         context = applicationContext
 
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/intro/LoginActivity.kt
         init()
         showInputEmail()
         setListenerOTP()
+        checkNewLogin()
     }
 
     private fun init() {
@@ -109,7 +87,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         inputOTP4 = findViewById(R.id.etInputOTP4)
         inputOTP5 = findViewById(R.id.etInputOTP5)
         inputOTP6 = findViewById(R.id.etInputOTP6)
-
 
 
         // Email
@@ -216,42 +193,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         inputOTP1.requestFocus()
     }
 
-    private fun verifyOTP(OTP: String) {
-        Log.d("OTP", OTP)
-        resetOTP()
-        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
-        call.enqueue(object : Callback<MyResponse> {
-            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                Log.d(
-                    "Error",
-                    t.toString()
-                )
-            }
-
-            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
-                if (response.code() == 200) {
-                    //val user: User = response.body()?.data as User
-                    val gson = Gson()
-                    val type = object : TypeToken<User>() {}.type
-                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                    val appStorage = AppStorage.getInstance(context!!)
-                    appStorage.saveData("User", gson.toJson(response.body()?.data))
-
-
-                    Log.d(
-                        "Success",
-                        "thanh cong $user"
-                    )
-                    Handler(Looper.getMainLooper()).postDelayed({
-                        setStartHomeActivity()
-                    }, 1000)
-                }
-
-            }
-        })
-
-    }
-
     private fun setTextChangeListener(
         fromEditText: EditText,
         targetEditText: EditText? = null,
@@ -306,19 +247,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         call: Call<MyResponse>,
                         response: Response<MyResponse>
                     ) {
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/intro/IntroFragment.kt
                         rLayoutWrapInputEmail.visibility = View.GONE
                         rLayoutWrapInputOTP.visibility = View.VISIBLE
-                        v.findViewById<TextView>(R.id.tViewEmailInformation).text =
+                        findViewById<TextView>(R.id.tvEmailInformation).text =
                             "Mã xác thực đã được gửi đến\n" + MainActivity.Email
                         resetOTP()
                         setListenerOTP()
-=======
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/intro/LoginActivity.kt
 
-//                        resetOTP()
-//                        rLayoutWrapInputEmail.visibility = View.GONE
-//                        rLayoutWrapInputOTP.visibility = View.VISIBLE
                         setStartHomeActivity()
                     }
                 })
@@ -331,7 +266,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/intro/IntroFragment.kt
 
     private fun verifyOTP(OTP: String) {
         Log.d("OTP", OTP)
@@ -362,15 +296,15 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         "thanh cong $user"
                     )
                     Handler(Looper.getMainLooper()).postDelayed({
-                        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+//                        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+                        setStartHomeActivity()
                     }, 1000)
 
-                }
-                else if (response.code()==401)
-                {
-                    val message : String? = "Bạn đã nhập sai OTP!!"
+                } else if (response.code() == 401) {
+                    val message: String? = "Bạn đã nhập sai OTP!!"
 
-                    Toast.makeText(context, message, Toast.LENGTH_LONG
+                    Toast.makeText(
+                        context, message, Toast.LENGTH_LONG
                     ).show()
                     resetOTP()
                 }
@@ -379,25 +313,22 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         })
 
     }
-    private fun checkNewLogin()
-    {
+
+    private fun checkNewLogin() {
         val appStorage = context?.let { AppStorage.getInstance(it) }
-        val userString = appStorage?.getData("User","").toString()
-        Log.d("Lengggggggggg",userString.length.toString())
-        if (userString.length > 10)
-        {
+        val userString = appStorage?.getData("User", "").toString()
+        Log.d("Lengggggggggg", userString.length.toString())
+        if (userString.length > 10) {
             Handler(Looper.getMainLooper()).postDelayed({
-                v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+//                v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
+
             }, 1000)
         }
-        Log.d("SHOW DATAAAAAA",userString.toString())
+        Log.d("SHOW DATAAAAAA", userString.toString())
     }
-}
 
-=======
     private fun setStartHomeActivity() {
         val intent: Intent = Intent(this, HomeActivity::class.java)
         this.startActivity(intent);
     }
 }
->>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/intro/LoginActivity.kt
