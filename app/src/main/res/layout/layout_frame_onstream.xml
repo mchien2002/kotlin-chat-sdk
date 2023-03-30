@@ -3,31 +3,35 @@
     android:id="@+id/flOnstream"
     android:layout_width="90dp"
     android:layout_height="120dp"
-    android:background="@drawable/bg_frame_status">
+    android:background="@drawable/bg_frame_status"
+    android:padding="10dp">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/ivAvatar"
         android:layout_width="match_parent"
         android:layout_height="65dp"
-        android:layout_marginTop="10dp"
         android:src="@drawable/avt_1" />
 
     <ImageView
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="62dp"
+        android:layout_marginTop="55dp"
         android:background="@drawable/ic_add" />
 
     <TextView
         android:id="@+id/tvUsername"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="85dp"
+        android:layout_marginTop="75dp"
+        android:ellipsize="end"
         android:fontFamily="@font/roboto_bold"
+        android:letterSpacing="0.02"
+        android:maxLines="1"
         android:text="@string/username"
+        android:textAlignment="center"
         android:textColor="@color/color1"
-        android:textSize="12sp" />
+        android:textSize="10sp" />
 
 </FrameLayout>

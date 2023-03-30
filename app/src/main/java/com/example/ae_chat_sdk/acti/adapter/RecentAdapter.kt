@@ -1,10 +1,13 @@
 package com.example.ae_chat_sdk.acti.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.PopupMenu
+import android.widget.PopupWindow
 import android.widget.TextView
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
@@ -34,7 +37,7 @@ class RecentAdapter(val listRecent: ArrayList<String>, val context: Context) :
         val itemObject = listRecent[position]
         holder.tvUsername.text = itemObject
         holder.flRecent.setOnClickListener(View.OnClickListener {
-            Toast.makeText(context,"Recent", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Recent", Toast.LENGTH_SHORT).show()
         })
     }
 }

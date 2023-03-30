@@ -2,11 +2,11 @@ package com.example.ae_chat_sdk.acti.home
 
 import android.content.Context
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -33,15 +33,14 @@ class HomeActivity : AppCompatActivity() {
     lateinit var contact: ArrayList<String>
 
     lateinit var rLayoutBottomSheetHome: RelativeLayout
-    lateinit var rLayoutMessageHome: RelativeLayout
-    lateinit var rLayoutBottomSheetListContact: RelativeLayout
 
     // BottomSheet
     lateinit var bottomSheetHomeBehavior: BottomSheetBehavior<View>
-    lateinit var bottomSheetContactBehavior: BottomSheetBehavior<View>
 
-    //
+    // Name Page
     lateinit var tvPagename: TextView
+
+    var listContact: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +52,6 @@ class HomeActivity : AppCompatActivity() {
             onstream.add("username # $i")
         }
 
-
         // set data for recent chat
         recent = ArrayList()
         for (i in 1..20) {
@@ -64,8 +62,8 @@ class HomeActivity : AppCompatActivity() {
         for (i in 1..20) {
             contact.add("username # $i")
         }
-        
-        context=applicationContext;
+
+        context = applicationContext
 
         init()
         setButtonOnClickListener()
@@ -75,30 +73,22 @@ class HomeActivity : AppCompatActivity() {
 
     private fun init() {
         rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
-        rLayoutMessageHome = findViewById(R.id.rlMessageHome)
-        rLayoutBottomSheetListContact = findViewById(R.id.rlBottomSheetListContact)
+//        rLayoutBottomSheetListContact = findViewById(R.id.rlBottomSheetListContact)
 
         rvOnstream = findViewById(R.id.rvHorizonalOnstream)
         rvRecent = findViewById(R.id.rvVerticalRecent)
         rvListContact = findViewById(R.id.rvHorizonalContact)
 
         bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
-        bottomSheetContactBehavior = BottomSheetBehavior.from(rLayoutBottomSheetListContact)
 
         tvPagename = findViewById(R.id.tvPageName)
     }
 
     private fun setButtonOnClickListener() {
-        findViewById<MaterialButton>(R.id.buttonListContact)
+        findViewById<MaterialButton>(R.id.mbListContact)
             .setOnClickListener(View.OnClickListener {
-                // show Bottom Sheet Contact
-                setBottomSheetBehaviorContact()
-                findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
-                    .setDuration(0).startDelay = 0
-                tvPagename.text = "Danh sách liên hệ"
-                tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
-                rLayoutBottomSheetListContact.animate().alpha(1F)
-                    .setDuration(0).startDelay = 0
+                listContact = true
+                bottomSheetHomeBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 true
             })
     }
@@ -112,49 +102,36 @@ class HomeActivity : AppCompatActivity() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
+
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
+                            .setDuration(500).startDelay = 0
                         findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(1F)
                             .setDuration(100).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
-                            .setDuration(500).startDelay = 0
 
+                        if (!listContact) {
+                            tvPagename.setTextColor(Color.parseColor("#FFFFFF"))
+                            tvPagename.text = "Username"
+                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+                            findViewById<RelativeLayout>(R.id.rlListContact).visibility =
+                                View.GONE
+                        } else {
+                            tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
+                            tvPagename.text = "Danh sách liên hệ"
+                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.GONE
+                            findViewById<RelativeLayout>(R.id.rlListContact).visibility =
+                                View.VISIBLE
+                        }
+                        listContact = false
                     }
                     else -> {
+
+                        findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+                        findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
+                            .setDuration(500).startDelay = 0
                         findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(0F)
                             .setDuration(100).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
-                            .setDuration(500).startDelay = 0
-                    }
-                }
-            }
 
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-        })
-    }
-
-    private fun setBottomSheetBehaviorContact() {
-        bottomSheetContactBehavior.apply {
-            this.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-        bottomSheetContactBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        rLayoutBottomSheetListContact.animate().alpha(1F)
-                            .setDuration(0).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
-                            .setDuration(0).startDelay = 0
-                        tvPagename.text = "Danh sách liên hệ"
-                        tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
-                    }
-                    else -> {
-                        tvPagename.text = "Username"
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
-                            .setDuration(0).startDelay = 0
-                        tvPagename.setTextColor(Color.parseColor("#FFFFFF"))
-                        rLayoutBottomSheetListContact.animate().alpha(0F)
-                            .setDuration(1000).startDelay = 0
                     }
                 }
             }
@@ -171,7 +148,7 @@ class HomeActivity : AppCompatActivity() {
 
         rvRecent.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvRecent.adapter = RecentAdapter(recent,context)
+        rvRecent.adapter = RecentAdapter(recent, context)
 
         rvListContact.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -182,6 +159,5 @@ class HomeActivity : AppCompatActivity() {
             )
         )
     }
-
 
 }
