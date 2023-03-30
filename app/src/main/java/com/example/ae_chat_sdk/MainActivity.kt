@@ -9,6 +9,7 @@ import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.acti.intro.LoginActivity
+import com.example.ae_chat_sdk.acti.popupwindow.PopUpWindowBoxChat
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.databinding.ActivityMainBinding
@@ -32,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         this.binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        connectSocket()
+//        connectSocket()
         setStartLoginActivity()
     }
 

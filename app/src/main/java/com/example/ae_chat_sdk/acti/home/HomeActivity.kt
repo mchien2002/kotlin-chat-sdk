@@ -1,6 +1,7 @@
 package com.example.ae_chat_sdk.acti.home
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -14,8 +15,10 @@ import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
+import com.example.ae_chat_sdk.acti.profile.ProfileActivity
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
+import de.hdodenhof.circleimageview.CircleImageView
 
 class HomeActivity : AppCompatActivity() {
 
@@ -73,7 +76,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun init() {
         rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
-//        rLayoutBottomSheetListContact = findViewById(R.id.rlBottomSheetListContact)
 
         rvOnstream = findViewById(R.id.rvHorizonalOnstream)
         rvRecent = findViewById(R.id.rvVerticalRecent)
@@ -91,6 +93,12 @@ class HomeActivity : AppCompatActivity() {
                 bottomSheetHomeBehavior.state = BottomSheetBehavior.STATE_EXPANDED
                 true
             })
+
+        findViewById<CircleImageView>(R.id.ivAvatar).setOnClickListener(View.OnClickListener {
+            val intent: Intent = Intent(context, ProfileActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        })
     }
 
     private fun setBottomSheetBehaviorHome() {
@@ -124,18 +132,15 @@ class HomeActivity : AppCompatActivity() {
                         listContact = false
                     }
                     else -> {
-
                         findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
                         findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
                         findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
                             .setDuration(500).startDelay = 0
                         findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(0F)
                             .setDuration(100).startDelay = 0
-
                     }
                 }
             }
-
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })

@@ -26,6 +26,7 @@
     <string name="setting">Cài đặt</string>
     <string name="log_out">Đăng xuất</string>
     <string name="support">Trợ giúp &amp; hỗ trợ</string>
+    <string name="emailAddr">username@gmail.com</string>
 
     <string name="status">Trạng thái hoạt động</string>
     <string name="notification_sound">Thông báo &amp; âm thanh</string>
