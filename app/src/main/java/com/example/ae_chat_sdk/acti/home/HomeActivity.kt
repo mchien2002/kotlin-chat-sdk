@@ -1,7 +1,10 @@
 package com.example.ae_chat_sdk.acti.home
 
+import android.content.Context
 import android.graphics.Color
+import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
@@ -15,12 +18,18 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.findNavController
+=======
+import android.view.View
+import android.widget.RelativeLayout
+import android.widget.TextView
+>>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
+<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
 import com.example.ae_chat_sdk.acti.Adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.Adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.Adapter.RecentAdapter
@@ -30,6 +39,11 @@ import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
+=======
+import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
+import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
+import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
+>>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
@@ -39,9 +53,14 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
 class HomeFragment : Fragment(), View.OnClickListener {
+=======
+class HomeActivity : AppCompatActivity() {
+>>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 
-    lateinit var v: View
+    // Context
+    lateinit var context: Context
 
     // RecyclerView Message Home
     lateinit var rvOnstream: RecyclerView
@@ -70,9 +89,9 @@ class HomeFragment : Fragment(), View.OnClickListener {
 
     lateinit var avatarUser : CircleImageView
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_home)
 
         // set data for list on Stream
         onstream = ArrayList()
@@ -91,27 +110,40 @@ class HomeFragment : Fragment(), View.OnClickListener {
         for (i in 1..20) {
             contact.add("username # $i")
         }
-
-
-        // Inflate the layout for this fragment
-        v = inflater.inflate(R.layout.fragment_home, container, false)
+        
+        context=applicationContext;
 
         init()
         setButtonOnClickListener()
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
+<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
         setData()
+=======
+    }
+>>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 
+    private fun init() {
+        rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
+        rLayoutMessageHome = findViewById(R.id.rlMessageHome)
+        rLayoutBottomSheetListContact = findViewById(R.id.rlBottomSheetListContact)
 
-        return v
+        rvOnstream = findViewById(R.id.rvHorizonalOnstream)
+        rvRecent = findViewById(R.id.rvVerticalRecent)
+        rvListContact = findViewById(R.id.rvHorizonalContact)
+
+        bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
+        bottomSheetContactBehavior = BottomSheetBehavior.from(rLayoutBottomSheetListContact)
+
+        tvPagename = findViewById(R.id.tvPageName)
     }
 
     private fun setButtonOnClickListener() {
-        v.findViewById<MaterialButton>(R.id.buttonListContact)
+        findViewById<MaterialButton>(R.id.buttonListContact)
             .setOnClickListener(View.OnClickListener {
                 // show Bottom Sheet Contact
                 setBottomSheetBehaviorContact()
-                v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
                     .setDuration(0).startDelay = 0
                 tvPagename.text = "Danh sách liên hệ"
                 tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
@@ -120,6 +152,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
             })
     }
 
+<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
 
     private fun init() {
         rLayoutBottomSheetHome = v.findViewById(R.id.rLayoutBottomSheetHome)
@@ -171,6 +204,8 @@ class HomeFragment : Fragment(), View.OnClickListener {
         )
     }
 
+=======
+>>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
     private fun setBottomSheetBehaviorHome() {
         bottomSheetHomeBehavior.apply {
             this.state = BottomSheetBehavior.STATE_EXPANDED
@@ -180,16 +215,16 @@ class HomeFragment : Fragment(), View.OnClickListener {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(1F)
                             .setDuration(100).startDelay = 0
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
                             .setDuration(500).startDelay = 0
 
                     }
                     else -> {
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(0F)
                             .setDuration(100).startDelay = 0
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
                             .setDuration(500).startDelay = 0
                     }
                 }
@@ -211,14 +246,14 @@ class HomeFragment : Fragment(), View.OnClickListener {
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         rLayoutBottomSheetListContact.animate().alpha(1F)
                             .setDuration(0).startDelay = 0
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
                             .setDuration(0).startDelay = 0
                         tvPagename.text = "Danh sách liên hệ"
                         tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
                     }
                     else -> {
                         tvPagename.text = "Username"
-                        v.findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
                             .setDuration(0).startDelay = 0
                         tvPagename.setTextColor(Color.parseColor("#FFFFFF"))
                         rLayoutBottomSheetListContact.animate().alpha(0F)
@@ -232,6 +267,7 @@ class HomeFragment : Fragment(), View.OnClickListener {
         })
     }
 
+<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
     private fun setData() {
         val gson = Gson()
         val type = object : TypeToken<User>() {}.type
@@ -273,10 +309,32 @@ class HomeFragment : Fragment(), View.OnClickListener {
         }
     }
 
+=======
+    private fun renderDataRecyclerView() {
+        rvOnstream.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        rvOnstream.adapter = OnstreamAdapter(onstream, context)
+>>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt
 
+        rvRecent.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvRecent.adapter = RecentAdapter(recent,context)
+
+        rvListContact.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvListContact.adapter = ContactAdapter(contact, context)
+        rvListContact.addItemDecoration(
+            DividerItemDecoration(
+                context, DividerItemDecoration.VERTICAL
+            )
+        )
+    }
+
+
+<<<<<<< HEAD:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeFragment.kt
+
+
+
+=======
 }
-
-
-
-
-
+>>>>>>> UI:app/src/main/java/com/example/ae_chat_sdk/acti/home/HomeActivity.kt

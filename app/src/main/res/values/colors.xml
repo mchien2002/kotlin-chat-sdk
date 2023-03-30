@@ -2,6 +2,7 @@
 <resources>
     <color name="color1">#2F2E41</color>
     <color name="color2">#50C2C9</color>
+    <color name="colorhint">#4D2F2E41</color>
     <color name="white">#FFFFFF</color>
     <color name="black">#000000</color>
     <color name="white2">#F0F0F0</color>
