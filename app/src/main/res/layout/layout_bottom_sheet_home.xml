@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/rLayoutBottomSheetHome"
+    android:id="@+id/rlBottomSheetHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginTop="5dp"
@@ -13,7 +13,7 @@
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
     <ImageView
-        android:id="@+id/iButtonDown"
+        android:id="@+id/ivButtonDown"
         android:layout_width="65dp"
         android:layout_height="8dp"
         android:layout_centerHorizontal="true"
@@ -22,20 +22,20 @@
         android:contentDescription="@string/description_button_down" />
 
     <RelativeLayout
-        android:id="@+id/rLayoutMessageHome"
+        android:id="@+id/rlMessageHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iButtonDown">
+        android:layout_below="@id/ivButtonDown">
 
         <RelativeLayout
-            android:id="@+id/rLayoutSearch"
+            android:id="@+id/rlSearch"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_margin="20dp">
 
             <EditText
-                android:id="@+id/inputSearch"
+                android:id="@+id/etInputSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -53,19 +53,18 @@
         </RelativeLayout>
 
         <RelativeLayout
-
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
-            android:layout_below="@id/rLayoutSearch">
+            android:layout_below="@id/rlSearch">
 
             <RelativeLayout
-                android:id="@+id/rLayoutOnstream"
+                android:id="@+id/rlOnstream"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingBottom="5dp">
 
                 <ImageView
-                    android:id="@+id/iViewOnstream"
+                    android:id="@+id/ivOnstream"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -74,11 +73,11 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/iViewOnstream"
+                    android:layout_below="@id/ivOnstream"
                     android:layout_marginTop="5dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rViewHorizonalOnstream"
+                        android:id="@+id/rvHorizonalOnstream"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="horizontal" />
@@ -89,11 +88,11 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
-                android:layout_below="@id/rLayoutOnstream"
+                android:layout_below="@id/rlOnstream"
                 android:paddingTop="10dp">
 
                 <ImageView
-                    android:id="@+id/iViewRecent"
+                    android:id="@+id/ivRecent"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="15dp"
@@ -102,11 +101,11 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/iViewRecent"
+                    android:layout_below="@id/ivRecent"
                     android:layout_marginTop="5dp">
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/rViewVerticalRecent"
+                        android:id="@+id/rvVerticalRecent"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"

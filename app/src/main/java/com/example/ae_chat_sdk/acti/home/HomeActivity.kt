@@ -1,24 +1,26 @@
 package com.example.ae_chat_sdk.acti.home
 
+import android.content.Context
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.Adapter.ContactAdapter
-import com.example.ae_chat_sdk.acti.Adapter.OnstreamAdapter
-import com.example.ae_chat_sdk.acti.Adapter.RecentAdapter
-import com.example.ae_chat_sdk.acti.IClickListener
+import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
+import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
+import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 
 class HomeActivity : AppCompatActivity() {
+
+    // Context
+    lateinit var context: Context
 
     // RecyclerView Message Home
     lateinit var rvOnstream: RecyclerView
@@ -40,7 +42,7 @@ class HomeActivity : AppCompatActivity() {
 
     //
     lateinit var tvPagename: TextView
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -62,6 +64,8 @@ class HomeActivity : AppCompatActivity() {
         for (i in 1..20) {
             contact.add("username # $i")
         }
+        
+        context=applicationContext;
 
         init()
         setButtonOnClickListener()
@@ -70,18 +74,18 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun init() {
-        rLayoutBottomSheetHome = findViewById(R.id.rLayoutBottomSheetHome)
-        rLayoutMessageHome = findViewById(R.id.rLayoutMessageHome)
-        rLayoutBottomSheetListContact = findViewById(R.id.rLayoutBottomSheetListContact)
+        rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
+        rLayoutMessageHome = findViewById(R.id.rlMessageHome)
+        rLayoutBottomSheetListContact = findViewById(R.id.rlBottomSheetListContact)
 
-        rvOnstream = findViewById(R.id.rViewHorizonalOnstream)
-        rvRecent = findViewById(R.id.rViewVerticalRecent)
-        rvListContact = findViewById(R.id.rViewHorizonalContact)
+        rvOnstream = findViewById(R.id.rvHorizonalOnstream)
+        rvRecent = findViewById(R.id.rvVerticalRecent)
+        rvListContact = findViewById(R.id.rvHorizonalContact)
 
         bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
         bottomSheetContactBehavior = BottomSheetBehavior.from(rLayoutBottomSheetListContact)
 
-        tvPagename = findViewById(R.id.tViewPagename)
+        tvPagename = findViewById(R.id.tvPageName)
     }
 
     private fun setButtonOnClickListener() {
@@ -89,7 +93,7 @@ class HomeActivity : AppCompatActivity() {
             .setOnClickListener(View.OnClickListener {
                 // show Bottom Sheet Contact
                 setBottomSheetBehaviorContact()
-                findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
                     .setDuration(0).startDelay = 0
                 tvPagename.text = "Danh sách liên hệ"
                 tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
@@ -108,16 +112,16 @@ class HomeActivity : AppCompatActivity() {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-                        findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(1F)
                             .setDuration(100).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
                             .setDuration(500).startDelay = 0
 
                     }
                     else -> {
-                        findViewById<RelativeLayout>(R.id.rLayoutMessageHome).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(0F)
                             .setDuration(100).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
                             .setDuration(500).startDelay = 0
                     }
                 }
@@ -139,14 +143,14 @@ class HomeActivity : AppCompatActivity() {
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         rLayoutBottomSheetListContact.animate().alpha(1F)
                             .setDuration(0).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(0F)
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
                             .setDuration(0).startDelay = 0
                         tvPagename.text = "Danh sách liên hệ"
                         tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
                     }
                     else -> {
                         tvPagename.text = "Username"
-                        findViewById<RelativeLayout>(R.id.rLayoutMenuOption).animate().alpha(1F)
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
                             .setDuration(0).startDelay = 0
                         tvPagename.setTextColor(Color.parseColor("#FFFFFF"))
                         rLayoutBottomSheetListContact.animate().alpha(0F)
@@ -161,29 +165,20 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun renderDataRecyclerView() {
-        rvOnstream.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.HORIZONTAL, false)
-        rvOnstream.adapter = OnstreamAdapter(onstream, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(applicationContext, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
+        rvOnstream.layoutManager =
+            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+        rvOnstream.adapter = OnstreamAdapter(onstream, context)
 
-        rvRecent.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
-        rvRecent.adapter = RecentAdapter(recent, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(applicationContext, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
+        rvRecent.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvRecent.adapter = RecentAdapter(recent,context)
 
-        rvListContact.layoutManager = LinearLayoutManager(applicationContext, RecyclerView.VERTICAL, false)
-        rvListContact.adapter = ContactAdapter(contact, object : IClickListener {
-            override fun clickItem(itemObject: String) {
-                Toast.makeText(applicationContext, itemObject, Toast.LENGTH_SHORT).show()
-            }
-        })
+        rvListContact.layoutManager =
+            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvListContact.adapter = ContactAdapter(contact, context)
         rvListContact.addItemDecoration(
             DividerItemDecoration(
-                applicationContext, DividerItemDecoration.VERTICAL
+                context, DividerItemDecoration.VERTICAL
             )
         )
     }

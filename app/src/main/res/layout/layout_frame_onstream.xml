@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/frameOnstream"
+    android:id="@+id/flOnstream"
     android:layout_width="90dp"
     android:layout_height="120dp"
     android:background="@drawable/bg_frame_status">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivAvatar"
         android:layout_width="match_parent"
         android:layout_height="65dp"
         android:layout_marginTop="10dp"

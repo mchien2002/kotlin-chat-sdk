@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/rLayoutMenuOption"
+    android:id="@+id/rlMenuOption"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:alpha="0"
@@ -9,18 +9,19 @@
 
 
     <RelativeLayout
-        android:id="@+id/layoutAvatar"
+        android:id="@+id/rlAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="20dp">
 
         <FrameLayout
-            android:id="@+id/avatar"
+            android:id="@+id/flAvatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
             <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/ivAvatar"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_gravity="left"
@@ -37,10 +38,10 @@
         </FrameLayout>
 
         <TextView
-            android:id="@+id/tViewUsername"
+            android:id="@+id/tvUsername"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/avatar"
+            android:layout_below="@id/flAvatar"
             android:layout_centerHorizontal="true"
             android:fontFamily="More Fonts..."
             android:text="@string/username"
@@ -51,7 +52,7 @@
     <RelativeLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/layoutAvatar"
+        android:layout_below="@id/rlAvatar"
         android:layout_centerInParent="true"
         android:background="@drawable/bg_frame_option"
         android:padding="20dp">
@@ -82,60 +83,6 @@
                 app:iconTint="@color/white"
                 app:rippleColor="#332F2E41" />
 
-            <!--                <com.google.android.material.button.MaterialButton-->
-            <!--                    android:id="@+id/buttonSpam"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_below="@id/buttonFriendList"-->
-            <!--                    android:background="@drawable/bg_option_transparent"-->
-            <!--                    android:fontFamily="@font/roboto"-->
-            <!--                    android:gravity="left|center"-->
-            <!--                    android:text="@string/spam"-->
-            <!--                    android:textAllCaps="false"-->
-            <!--                    android:textColor="@color/white"-->
-
-            <!--                    android:textSize="15dp"-->
-            <!--                    app:elevation="0dp"-->
-            <!--                    app:icon="@drawable/ic_right"-->
-            <!--                    app:iconGravity="end"-->
-            <!--                    app:iconTint="@color/white"-->
-            <!--                    app:rippleColor="#332F2E41" />-->
-
-            <!--                <com.google.android.material.button.MaterialButton-->
-            <!--                    android:id="@+id/buttonAddContact"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_below="@id/buttonSpam"-->
-            <!--                    android:background="@drawable/bg_option_transparent"-->
-            <!--                    android:fontFamily="@font/roboto"-->
-            <!--                    android:gravity="left|center"-->
-            <!--                    android:text="@string/add_contact"-->
-            <!--                    android:textAllCaps="false"-->
-            <!--                    android:textColor="@color/white"-->
-            <!--                    android:textSize="15dp"-->
-            <!--                    app:elevation="0dp"-->
-            <!--                    app:icon="@drawable/ic_right"-->
-            <!--                    app:iconGravity="end"-->
-            <!--                    app:iconTint="@color/white"-->
-            <!--                    app:rippleColor="#332F2E41" />-->
-
-            <!--                <com.google.android.material.button.MaterialButton-->
-            <!--                    android:id="@+id/buttonSetting"-->
-            <!--                    android:layout_width="match_parent"-->
-            <!--                    android:layout_height="wrap_content"-->
-            <!--                    android:layout_below="@id/buttonAddContact"-->
-            <!--                    android:background="@drawable/bg_option_transparent"-->
-            <!--                    android:fontFamily="@font/roboto"-->
-            <!--                    android:gravity="left|center"-->
-            <!--                    android:text="@string/setting"-->
-            <!--                    android:textAllCaps="false"-->
-            <!--                    android:textColor="@color/white"-->
-            <!--                    android:textSize="15dp"-->
-            <!--                    app:elevation="0dp"-->
-            <!--                    app:icon="@drawable/ic_right"-->
-            <!--                    app:iconGravity="end"-->
-            <!--                    app:iconTint="@color/white"-->
-            <!--                    app:rippleColor="#332F2E41" />-->
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchStatus"
                 android:layout_width="match_parent"
@@ -153,7 +100,7 @@
                 app:trackTint="#4DFFFFFF" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonNotificationAndSound"
+                android:id="@+id/mbNotificationAndSound"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/switchStatus"
@@ -171,10 +118,10 @@
                 app:rippleColor="#332F2E41" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonChangeEmail"
+                android:id="@+id/mbChangeEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/buttonNotificationAndSound"
+                android:layout_below="@id/mbNotificationAndSound"
                 android:background="@drawable/bg_option_transparent"
                 android:fontFamily="@font/roboto"
                 android:gravity="left|center"
@@ -189,7 +136,7 @@
                 app:rippleColor="#332F2E41" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonChangeLanguage"
+                android:id="@+id/mbChangeLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
@@ -207,7 +154,7 @@
 
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonHelpAndSupport"
+                android:id="@+id/mbHelpAndSupport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
@@ -224,7 +171,7 @@
                 app:rippleColor="#332F2E41" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonLogOut"
+                android:id="@+id/mbLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"

@@ -1,5 +1,6 @@
 package com.example.ae_chat_sdk.acti.intro
 
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -12,7 +13,6 @@ import android.view.KeyEvent
 import android.view.View
 import android.widget.*
 import androidx.core.widget.addTextChangedListener
-import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
@@ -29,6 +29,9 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
+
+    // Context
+    lateinit var context: Context
 
     // Intro
     lateinit var iViewLogo: ImageView
@@ -47,39 +50,42 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var inputOTP4: EditText
     lateinit var inputOTP5: EditText
     lateinit var inputOTP6: EditText
-    
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        context = applicationContext
+
         init()
         showInputEmail()
+        setListenerOTP()
     }
 
     private fun init() {
         // Intro
-        iViewLogo = findViewById(R.id.iViewIconLogoIntroAfter)
+        iViewLogo = findViewById(R.id.ivIconLogoIntroAfter)
 
         // Email
-        btnSendEmail = findViewById(R.id.buttonSendEmail)
-        eTextEmail = findViewById(R.id.eTextEmail)
-        tLayoutInputEmail = findViewById(R.id.tLayoutInputEmail)
-        rLayoutWrapInputEmail = findViewById(R.id.rLayoutWrapInputEmail)
+        btnSendEmail = findViewById(R.id.mbSendEmail)
+        eTextEmail = findViewById(R.id.etEmail)
+        tLayoutInputEmail = findViewById(R.id.tlInputEmail)
+        rLayoutWrapInputEmail = findViewById(R.id.rlWrapInputEmail)
 
         // OTP
-        rLayoutWrapInputOTP = findViewById(R.id.rLayoutWrapTextInputOTP)
-        inputOTP1 = findViewById(R.id.eTextInputOTP1)
-        inputOTP2 = findViewById(R.id.eTextInputOTP2)
-        inputOTP3 = findViewById(R.id.eTextInputOTP3)
-        inputOTP4 = findViewById(R.id.eTextInputOTP4)
-        inputOTP5 = findViewById(R.id.eTextInputOTP5)
-        inputOTP6 = findViewById(R.id.eTextInputOTP6)
+        rLayoutWrapInputOTP = findViewById(R.id.rlWrapTextInputOTP)
+        inputOTP1 = findViewById(R.id.etInputOTP1)
+        inputOTP2 = findViewById(R.id.etInputOTP2)
+        inputOTP3 = findViewById(R.id.etInputOTP3)
+        inputOTP4 = findViewById(R.id.etInputOTP4)
+        inputOTP5 = findViewById(R.id.etInputOTP5)
+        inputOTP6 = findViewById(R.id.etInputOTP6)
 
         // Email
         btnSendEmail.setOnClickListener(this)
 
         // OTP
-        findViewById<Button>(R.id.buttonInputEmailAgain).setOnClickListener(this)
+        findViewById<Button>(R.id.mbInputEmailAgain).setOnClickListener(this)
 
     }
 
@@ -104,16 +110,17 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
+
     private fun showInputEmail() {
-        findViewById<ImageView>(R.id.iViewLetterLogoIntro).animate().alpha(0F).setDuration(200)
+        findViewById<ImageView>(R.id.ivLetterLogoIntro).animate().alpha(0F).setDuration(200)
             .setStartDelay(2200)
 
-        findViewById<ImageView>(R.id.iViewIconLogoIntroBefore).animate()
+        findViewById<ImageView>(R.id.ivIconLogoIntroBefore).animate()
             .alpha(0F)
             .setDuration(200).setStartDelay(2500)
 
         Handler(Looper.getMainLooper()).postDelayed({
-            BottomSheetBehavior.from(findViewById(R.id.rLayoutInput)).apply {
+            BottomSheetBehavior.from(findViewById(R.id.rlInput)).apply {
                 this.state = BottomSheetBehavior.STATE_EXPANDED
                 this.isDraggable = false
             }
@@ -143,7 +150,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             MainActivity.OTP = inputOTP1.text.toString().trim() + inputOTP2.text.toString()
                 .trim() + inputOTP3.text.toString().trim() + inputOTP4.text.toString()
                 .trim() + inputOTP5.text.toString().trim() + inputOTP6.text.toString().trim()
-            Toast.makeText(applicationContext, MainActivity.OTP, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, MainActivity.OTP, Toast.LENGTH_SHORT).show()
             verifyOTP(MainActivity.OTP)
         })
 
@@ -197,7 +204,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     val gson = Gson()
                     val type = object : TypeToken<User>() {}.type
                     val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                    val appStorage = AppStorage.getInstance(applicationContext!!)
+                    val appStorage = AppStorage.getInstance(context!!)
                     appStorage.saveData("User", gson.toJson(response.body()?.data))
 
 
@@ -206,7 +213,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         "thanh cong $user"
                     )
                     Handler(Looper.getMainLooper()).postDelayed({
-//                        findNavController().navigate(R.id.action_introFragment_to_homeFragment)
                         setStartHomeActivity()
                     }, 1000)
                 }
@@ -241,7 +247,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setKeyListener(fromEditText: EditText, backToEditText: EditText) {
         fromEditText.setOnKeyListener { _, _, event ->
-            if (event!!.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_DEL && fromEditText.id != R.id.eTextInputOTP1 && fromEditText.text.isEmpty()) {
+            if (event!!.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_DEL && fromEditText.id != R.id.etInputOTP1 && fromEditText.text.isEmpty()) {
                 backToEditText.isEnabled = true
                 backToEditText.requestFocus()
                 backToEditText.setText("")
@@ -257,44 +263,37 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(view: View?) {
         when (view?.id) {
-            R.id.buttonSendEmail -> {
+            R.id.mbSendEmail -> {
                 val call = RegisterRepository().registerByMail(MainActivity.Email)
 
                 call.enqueue(object : Callback<MyResponse> {
                     override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                        Log.d(
-                            "Error",
-                            "We can't send OTP to your Email Address. " + t.toString()
-                        )
+                        Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
+                            .show()
                     }
 
                     override fun onResponse(
                         call: Call<MyResponse>,
                         response: Response<MyResponse>
                     ) {
+
+                        resetOTP()
                         rLayoutWrapInputEmail.visibility = View.GONE
                         rLayoutWrapInputOTP.visibility = View.VISIBLE
 
-//                        findNavController().navigate(R.id.action_introFragment_to_homeFragment)
 
-//                        findViewById<TextView>(R.id.tViewEmailInformation).text =
-//                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
-//                        resetOTP()
-//                        setListenerOTP()
-
-                        setStartHomeActivity()
                     }
                 })
 
             }
-            R.id.buttonInputEmailAgain -> {
+            R.id.mbInputEmailAgain -> {
                 rLayoutWrapInputEmail.visibility = View.VISIBLE
                 rLayoutWrapInputOTP.visibility = View.GONE
             }
         }
     }
 
-    private fun setStartHomeActivity(){
+    private fun setStartHomeActivity() {
         val intent: Intent = Intent(this, HomeActivity::class.java)
         this.startActivity(intent);
     }
