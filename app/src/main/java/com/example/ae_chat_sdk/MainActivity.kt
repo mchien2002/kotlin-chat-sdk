@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
         this.binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        connectSocket()
+        connectSocket()
         setStartLoginActivity()
     }
 

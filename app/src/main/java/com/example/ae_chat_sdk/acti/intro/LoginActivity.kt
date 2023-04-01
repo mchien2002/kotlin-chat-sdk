@@ -2,7 +2,6 @@ package com.example.ae_chat_sdk.acti.intro
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,6 +11,7 @@ import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
@@ -29,7 +29,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
-
     // Context
     lateinit var context: Context
 
@@ -54,7 +53,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         context = applicationContext
 
         init()
@@ -92,14 +90,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun setListenerEmail() {
         eTextEmail.addTextChangedListener {
             it?.let { string ->
-                fun String.isValidEmail() =
+                fun isValidEmail() =
                     !TextUtils.isEmpty(string.toString().trim()) && Patterns.EMAIL_ADDRESS.matcher(
                         string.toString().trim()
                     )
                         .matches()
 
-
-                if (!string.toString().trim().isValidEmail()) {
+                if (!isValidEmail()) {
                     tLayoutInputEmail.error = "Email chưa đúng cú pháp!"
                     btnSendEmail.visibility = View.GONE
                 } else {
@@ -130,12 +127,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             iViewLogo.visibility = View.VISIBLE
         }, 3500)
 
-
-
-
         setListenerEmail()
         eTextEmail.isEnabled = true
-
 
 //        iViewLogo.animate().alpha(1F).setDuration(200).setStartDelay(3000)
     }
@@ -163,6 +156,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun resetOTP() {
+        // Disable input OTP
         inputOTP1.isEnabled = false
         inputOTP2.isEnabled = false
         inputOTP3.isEnabled = false
@@ -170,7 +164,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         inputOTP5.isEnabled = false
         inputOTP6.isEnabled = false
 
-
+        // Reset text
         inputOTP1.setText("")
         inputOTP2.setText("")
         inputOTP3.setText("")
@@ -204,7 +198,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     val gson = Gson()
                     val type = object : TypeToken<User>() {}.type
                     val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                    val appStorage = AppStorage.getInstance(context!!)
+                    val appStorage = AppStorage.getInstance(context)
                     appStorage.saveData("User", gson.toJson(response.body()?.data))
 
 
@@ -277,10 +271,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         response: Response<MyResponse>
                     ) {
 
-//                        resetOTP()
-//                        rLayoutWrapInputEmail.visibility = View.GONE
-//                        rLayoutWrapInputOTP.visibility = View.VISIBLE
-                        setStartHomeActivity()
+                        resetOTP()
+                        rLayoutWrapInputEmail.visibility = View.GONE
+                        rLayoutWrapInputOTP.visibility = View.VISIBLE
+//                        setStartHomeActivity()
                     }
                 })
 
@@ -294,6 +288,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun setStartHomeActivity() {
         val intent: Intent = Intent(this, HomeActivity::class.java)
-        this.startActivity(intent);
+        this.startActivity(intent)
     }
 }
