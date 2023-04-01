@@ -1,14 +1,15 @@
 package com.example.ae_chat_sdk.acti.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.acti.popupwindow.PopUpWindowBoxChat
 import de.hdodenhof.circleimageview.CircleImageView
 
 class OnstreamAdapter(val listOnStream: ArrayList<String>, val context: Context) :
@@ -34,12 +35,9 @@ class OnstreamAdapter(val listOnStream: ArrayList<String>, val context: Context)
         val itemObject = listOnStream[position]
         holder.tvUsername.text = itemObject
         holder.fLayoutOnstream.setOnClickListener(View.OnClickListener {
-            Toast.makeText(context,"OnStream", Toast.LENGTH_SHORT).show()
+            val intent: Intent = Intent(context, PopUpWindowBoxChat::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
         })
-//        holder.tvUsername.setOnClickListener(View.OnClickListener {
-//            fun onClick(v:View){
-//                iClickListener.clickItem(itemObject)
-//            }
-//        })
     }
 }

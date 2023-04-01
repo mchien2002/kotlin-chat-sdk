@@ -7,47 +7,57 @@
     android:alpha="0"
     android:background="@drawable/bg_menu_option">
 
-
     <RelativeLayout
         android:id="@+id/rlAvatar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp">
+        android:paddingLeft="40dp"
+        android:paddingTop="20dp"
+        android:paddingRight="40dp">
 
-        <FrameLayout
-            android:id="@+id/flAvatar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/ivAvatar"
-                android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@drawable/avt_1"
-                app:civ_border_color="@color/white"
-                app:civ_border_width="2dp" />
-
-            <ImageButton
-                android:id="@+id/ibChangeAvatar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_gravity="center|bottom"
-                android:layout_marginLeft="35dp"
-                android:background="@drawable/button_camera" />
-        </FrameLayout>
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="start"
+            android:src="@drawable/avt_1"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="2dp" />
 
         <TextView
             android:id="@+id/tvUsername"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/flAvatar"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/roboto_medium"
+            android:layout_below="@id/ivAvatar"
+            android:ellipsize="end"
             android:text="@string/username"
-            android:textColor="@color/white"
-            android:textSize="18dp" />
+            android:fontFamily="@font/roboto_bold"
+            android:letterSpacing="0.05"
+            android:maxLines="1"
+            android:paddingTop="10dp"
+            android:paddingBottom="2dp"
+            android:textAlignment="center"
+            android:textColor="#CCFFFFFF"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/tvEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvUsername"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/roboto"
+            android:letterSpacing="0.05"
+            android:maxLines="1"
+            android:text="@string/emailAddr"
+            android:textAlignment="center"
+            android:textColor="#80FFFFFF"
+            android:textSize="12sp" />
+
     </RelativeLayout>
 
     <RelativeLayout
@@ -70,17 +80,17 @@
             android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonListContact"
+                android:id="@+id/mbListContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="left|center"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="start|center"
                 android:letterSpacing="0.03"
                 android:text="@string/list_contact"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
@@ -90,16 +100,16 @@
                 android:id="@+id/switchStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|right"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="10dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="10dp"
                 android:background="@drawable/bg_option_transparent"
                 android:checked="true"
-                android:fontFamily="@font/roboto_bold"
+                android:fontFamily="@font/roboto_medium"
                 android:letterSpacing="0.03"
                 android:text="@string/status"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:thumbTint="@color/white"
                 app:trackTint="#4DFFFFFF" />
 
@@ -107,52 +117,49 @@
                 android:id="@+id/mbNotificationAndSound"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/switchStatus"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="left|center"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="start|center"
                 android:letterSpacing="0.03"
                 android:text="@string/notification_sound"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
                 app:rippleColor="#332F2E41" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbChangeEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/mbNotificationAndSound"
-                android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="left|center"
-                android:letterSpacing="0.03"
-                android:text="@string/email2"
-                android:textAllCaps="false"
-                android:textColor="@color/white"
-
-                android:textSize="14sp"
-                app:icon="@drawable/ic_right"
-                app:iconGravity="end"
-                app:iconTint="@color/white"
-                app:rippleColor="#332F2E41" />
+            <!--            <com.google.android.material.button.MaterialButton-->
+            <!--                android:id="@+id/mbChangeEmail"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_below="@id/mbNotificationAndSound"-->
+            <!--                android:background="@drawable/bg_option_transparent"-->
+            <!--                android:fontFamily="@font/roboto_medium"-->
+            <!--                android:gravity="left|center"-->
+            <!--                android:letterSpacing="0.03"-->
+            <!--                android:text="@string/email2"-->
+            <!--                android:textAllCaps="false"-->
+            <!--                android:textColor="@color/white"-->
+            <!--                android:textSize="12sp"-->
+            <!--                app:icon="@drawable/ic_right"-->
+            <!--                app:iconGravity="end"-->
+            <!--                app:iconTint="@color/white"-->
+            <!--                app:rippleColor="#332F2E41" />-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbChangeLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="left|center"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="start|center"
                 android:letterSpacing="0.03"
                 android:text="@string/language"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
@@ -164,34 +171,34 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="left|center"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="start|center"
+                android:letterSpacing="0.03"
                 android:text="@string/support"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/white"
-                app:rippleColor="#332F2E41"
-                android:letterSpacing="0.03"/>
+                app:rippleColor="#332F2E41" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_option_transparent"
-                android:fontFamily="@font/roboto_bold"
-                android:gravity="left|center"
+                android:fontFamily="@font/roboto_medium"
+                android:gravity="start|center"
+                android:letterSpacing="0.03"
                 android:text="@string/log_out"
                 android:textAllCaps="false"
                 android:textColor="#CD2323"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 app:icon="@drawable/ic_log_out"
                 app:iconGravity="start"
                 app:iconTint="#FFCD2323"
-                app:rippleColor="#332F2E41"
-                android:letterSpacing="0.03"/>
+                app:rippleColor="#332F2E41" />
         </LinearLayout>
     </RelativeLayout>
 

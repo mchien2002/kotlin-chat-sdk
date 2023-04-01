@@ -26,6 +26,12 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".acti.profile.ProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".acti.popupwindow.PopUpWindowBoxChat"
+            android:exported="false" />
+        <activity
             android:name=".acti.intro.LoginActivity"
             android:exported="false" />
         <activity

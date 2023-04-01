@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">SIGMA</string>
+    <string name="app_name">Talkware</string>
 
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -26,6 +26,7 @@
     <string name="setting">Cài đặt</string>
     <string name="log_out">Đăng xuất</string>
     <string name="support">Trợ giúp &amp; hỗ trợ</string>
+    <string name="emailAddr">username@gmail.com</string>
 
     <string name="status">Trạng thái hoạt động</string>
     <string name="notification_sound">Thông báo &amp; âm thanh</string>
@@ -34,10 +35,12 @@
     <string name="report">Báo cáo sự cố</string>
     <string name="help">Trợ giúp</string>
     <string name="delete_account">Xóa tài khoản</string>
-
+    <string name="change_avatar">Đổi avatar</string>
 
     <string name="type_message_here">Nhập tin nhắn</string>
-
+    <string name="notification">Thông báo</string>
+    <string name="back">Trở về</string>
+    <string name="send_message">Gửi</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

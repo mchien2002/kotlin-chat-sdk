@@ -2,12 +2,8 @@ package com.example.ae_chat_sdk
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import com.example.ae_chat_sdk.acti.intro.LoginActivity
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.socket.SocketConstant
@@ -29,14 +25,16 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 //        setContentView(R.layout.fragment_intro)
 
-        this.binding = ActivityMainBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+//        this.binding = ActivityMainBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
 
         connectSocket()
         setStartLoginActivity()
     }
 
     private fun setStartLoginActivity() {
+        Log.d("notification", "Co vo day")
+
         val intent:Intent= Intent(this, LoginActivity::class.java )
         this.startActivity(intent)
     }

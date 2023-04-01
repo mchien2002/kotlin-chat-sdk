@@ -5,56 +5,60 @@
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/bg_frame_recent"
-        android:paddingLeft="5dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:background="@drawable/bg_frame_recent">
 
         <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/ivAvatar"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="left"
-            android:src="@drawable/avt_1" />
+            android:src="@drawable/avt_1"
+            android:elevation="5dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginLeft="10dp">
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/ivAvatar">
 
             <TextView
                 android:id="@+id/tvUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
+                android:fontFamily="@font/roboto_black"
+                android:letterSpacing="0.02"
                 android:text="@string/username"
                 android:textColor="@color/black"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <TextView
                 android:id="@+id/tvMessage"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvUsername"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
+                android:letterSpacing="0.02"
                 android:text="@string/content_message"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="10sp" />
         </RelativeLayout>
 
         <TextView
             android:id="@+id/tvTimeReceive"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingRight="10dp"
             android:text="@string/time_receive"
-            android:textAlignment="textEnd"
             android:textColor="@color/color2"
-            android:textSize="10sp" />
-    </LinearLayout>
+            android:textSize="10sp"
+            android:layout_alignParentRight="true"
+            android:paddingRight="30dp"
+            android:paddingTop="10dp"
+            />
+    </RelativeLayout>
 
 </FrameLayout>

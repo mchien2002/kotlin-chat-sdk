@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/flMessage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_popup_chat"
-    android:orientation="vertical"
-    android:padding="10dp">
+    android:background="@color/white">
 
 
     <FrameLayout
+        android:id="@+id/flTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|top"
-        android:paddingTop="10dp">
+        android:paddingTop="5dp"
+        android:paddingRight="15dp"
+        android:background="@color/white"
+        android:elevation="5dp"
+        android:paddingLeft="15dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageButton
             android:id="@+id/ibNotification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|top"
-            android:layout_marginLeft="25dp"
-            android:layout_marginTop="15dp"
-            android:background="@drawable/ic_notification" />
+            android:layout_gravity="center_vertical|right"
+            android:background="@drawable/ic_notification"
+            android:contentDescription="@string/notification"
+            android:elevation="5dp" />
 
         <ImageButton
+            android:id="@+id/ibBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right|top"
-            android:layout_marginTop="15dp"
-            android:layout_marginRight="25dp"
-            android:background="@drawable/ic_down" />
+            android:layout_gravity="center_vertical|left"
+            android:background="@drawable/ic_back"
+            android:contentDescription="@string/back"
+            android:elevation="5dp" />
 
         <LinearLayout
+            android:id="@+id/llProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|top"
@@ -42,55 +50,63 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
+                android:elevation="10dp"
                 android:src="@drawable/avt_1" />
 
             <TextView
                 android:id="@+id/tvUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_light_italic"
+                android:fontFamily="@font/roboto_black"
                 android:text="@string/username"
                 android:textAlignment="center"
                 android:textColor="@color/color1"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:letterSpacing="0.02"
+                android:paddingBottom="5dp" />
         </LinearLayout>
     </FrameLayout>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal|bottom"
-        android:orientation="vertical">
+        android:elevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent">
 
         <TextView
             android:id="@+id/tvSender"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left"
+            android:layout_alignParentLeft="true"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginTop="2dp"
             android:background="@drawable/bg_message_receive"
             android:fontFamily="@font/roboto_medium"
             android:padding="10dp"
             android:text="@string/content_message"
             android:textColor="@color/color1"
-            android:textSize="12sp" />
+            android:elevation="5dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/tvReceiver"
+            app:layout_constraintLeft_toLeftOf="parent" />
 
         <TextView
+            android:layout_below="@id/tvSender"
             android:id="@+id/tvReceiver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="5dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="3dp"
             android:layout_marginRight="20dp"
             android:background="@drawable/bg_message_send"
             android:fontFamily="@font/roboto_medium"
             android:padding="10dp"
             android:text="@string/content_message"
             android:textColor="@color/white"
-            android:textSize="12sp" />
+            android:elevation="5dp"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@id/tvTimeReceive"
+            app:layout_constraintRight_toRightOf="parent" />
 
         <TextView
             android:id="@+id/tvTimeReceive"
@@ -101,20 +117,22 @@
             android:text="Bây gờ"
             android:textAlignment="center"
             android:textColor="#4D000000"
-            android:textSize="8sp" />
+            android:layout_centerHorizontal="true"
+            android:textSize="8sp"
+            app:layout_constraintBottom_toTopOf="@id/rlInputMessage" />
 
         <RelativeLayout
+            android:layout_below="@id/tvTimeReceive"
             android:id="@+id/rlInputMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal">
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <EditText
                 android:id="@+id/etInputSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_edit_text"
-                android:drawableEnd="@drawable/ic_send_message"
                 android:fontFamily="@font/roboto"
                 android:gravity="center_vertical"
                 android:hint="@string/type_message_here"
@@ -124,8 +142,24 @@
                 android:textColor="@color/color1"
                 android:textColorHint="#802F2E41"
                 android:textSize="12sp" />
+
+            <ImageButton
+                android:id="@+id/ibSendMessage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="22dp"
+                android:layout_marginBottom="5dp"
+                android:background="@color/transparent"
+                android:contentDescription="@string/send_message"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:src="@drawable/ic_send_message"
+                android:text="" />
         </RelativeLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
-</FrameLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

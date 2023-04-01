@@ -7,14 +7,12 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Color
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -22,24 +20,24 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.data.api.ApiConstant
-import com.example.ae_chat_sdk.data.model.User
-import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
 import com.example.ae_chat_sdk.acti.intro.LoginActivity
+import com.example.ae_chat_sdk.acti.profile.ProfileActivity
+import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.RealPathUtil
+import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.hdodenhof.circleimageview.CircleImageView
-import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -60,7 +58,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var rvListContact: RecyclerView
 
     lateinit var btnLogOut: Button
-    lateinit var ibChangeAvatar: ImageButton
 
 
     lateinit var recent: ArrayList<String>
@@ -71,14 +68,11 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     // lateinit var rLayoutBottomSheetChangeAvatar: LinearLayout
     lateinit var rLayoutMessageHome: RelativeLayout
-    lateinit var rLayoutBottomSheetListContact: RelativeLayout
 
     // BottomSheet
     lateinit var bottomSheetHomeBehavior: BottomSheetBehavior<View>
-    lateinit var bottomSheetContactBehavior: BottomSheetBehavior<View>
 
-    //lateinit var flAvatar : FrameLayout
-    //
+    // Name Page
     lateinit var tvPagename: TextView
     lateinit var tvUserName: TextView
 
@@ -93,6 +87,8 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    var listContact: Boolean = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -102,7 +98,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         for (i in 1..20) {
             onstream.add("username # $i")
         }
-
 
         // set data for recent chat
         recent = ArrayList()
@@ -115,7 +110,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             contact.add("username # $i")
         }
 
-        context = applicationContext;
+        context = applicationContext
 
         init()
         setButtonOnClickListener()
@@ -125,44 +120,51 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
+    //    private fun setButtonOnClickListener() {
+//        findViewById<MaterialButton>(R.id.mbListContact)
+//            .setOnClickListener(View.OnClickListener {
+//                findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
+//                    .setDuration(0).startDelay = 0
+//                tvPagename.text = "Danh sách liên hệ"
+//                tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
+//                listContact = true
+//                true
+//            })
+//    }
     private fun setButtonOnClickListener() {
-        findViewById<MaterialButton>(R.id.buttonListContact)
-            .setOnClickListener(View.OnClickListener {
-                // show Bottom Sheet Contact
-                setBottomSheetBehaviorContact()
-                findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
-                    .setDuration(0).startDelay = 0
-                tvPagename.text = "Danh sách liên hệ"
-                tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
-                rLayoutBottomSheetListContact.animate().alpha(1F).setDuration(0).startDelay = 0
-                true
-            })
+        findViewById<MaterialButton>(R.id.mbListContact).setOnClickListener(View.OnClickListener {
+            listContact = true
+            bottomSheetHomeBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        })
+
+        findViewById<CircleImageView>(R.id.ivAvatar).setOnClickListener(View.OnClickListener {
+            val intent: Intent = Intent(context, ProfileActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        })
     }
+
 
     private fun init() {
         rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
         // rLayoutBottomSheetChangeAvatar = findViewById(R.id.rlBottomSheetChangeAvatar)
         rLayoutMessageHome = findViewById(R.id.rlMessageHome)
-        rLayoutBottomSheetListContact = findViewById(R.id.rlBottomSheetListContact)
 
         rvOnstream = findViewById(R.id.rvHorizonalOnstream)
         rvRecent = findViewById(R.id.rvVerticalRecent)
         rvListContact = findViewById(R.id.rvHorizonalContact)
 
         bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
-        bottomSheetContactBehavior = BottomSheetBehavior.from(rLayoutBottomSheetListContact)
 
         tvPagename = findViewById(R.id.tvPageName)
 
         avatarUser = findViewById(R.id.ivAvatar)
 
-        val flAvatar = findViewById<FrameLayout>(R.id.flAvatar)
-        val ibChangeAvatarUser = flAvatar.findViewById<View>(R.id.ibChangeAvatar)
-        ibChangeAvatarUser.setOnClickListener {
+        val ivAvatar = findViewById<CircleImageView>(R.id.ivAvatar)
+        ivAvatar.setOnClickListener {
             showBottomSheetChangeAvatar()
         }
 
-        ibChangeAvatar = findViewById(R.id.ibChangeAvatar)
 
         tvUserName = findViewById(R.id.tvUsername)
 
@@ -265,11 +267,13 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             }
 
             override fun onFailure(call: Call<MyResponse>?, t: Throwable?) {
-                Toast.makeText(applicationContext, "this is toast message 2", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(
+                    applicationContext, "this is toast message 2", Toast.LENGTH_SHORT
+                ).show()
             }
         })
     }
+
 
     private fun setBottomSheetBehaviorHome() {
         bottomSheetHomeBehavior.apply {
@@ -280,53 +284,36 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
+
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
+                            .setDuration(500).startDelay = 0
                         findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(1F)
                             .setDuration(100).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
-                            .setDuration(500).startDelay = 0
 
+                        if (!listContact) {
+                            tvPagename.setTextColor(Color.parseColor("#FFFFFF"))
+                            tvPagename.text = "Username"
+                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+                            findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
+                        } else {
+                            tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
+                            tvPagename.text = "Danh sách liên hệ"
+                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.GONE
+                            findViewById<RelativeLayout>(R.id.rlListContact).visibility =
+                                View.VISIBLE
+                        }
+                        listContact = false
                     }
                     else -> {
+                        findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+                        findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
+                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
+                            .setDuration(500).startDelay = 0
                         findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(0F)
                             .setDuration(100).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
-                            .setDuration(500).startDelay = 0
                     }
                 }
             }
-
-            override fun onSlide(bottomSheet: View, slideOffset: Float) {
-            }
-        })
-    }
-
-    private fun setBottomSheetBehaviorContact() {
-        bottomSheetContactBehavior.apply {
-            this.state = BottomSheetBehavior.STATE_EXPANDED
-        }
-        bottomSheetContactBehavior.addBottomSheetCallback(object :
-            BottomSheetBehavior.BottomSheetCallback() {
-            override fun onStateChanged(bottomSheet: View, newState: Int) {
-                when (newState) {
-                    BottomSheetBehavior.STATE_EXPANDED -> {
-                        rLayoutBottomSheetListContact.animate().alpha(1F)
-                            .setDuration(0).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
-                            .setDuration(0).startDelay = 0
-                        tvPagename.text = "Danh sách liên hệ"
-                        tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
-                    }
-                    else -> {
-                        tvPagename.text = "Username"
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
-                            .setDuration(0).startDelay = 0
-                        tvPagename.setTextColor(Color.parseColor("#FFFFFF"))
-                        rLayoutBottomSheetListContact.animate().alpha(0F)
-                            .setDuration(1000).startDelay = 0
-                    }
-                }
-            }
-
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
@@ -381,7 +368,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                 val userString = appStorage?.clearData()
                 Log.d("SHOW DATAAAAAA", userString.toString())
             }
-            R.id.ibChangeAvatar -> {
+            R.id.ivAvatar -> {
                 Toast.makeText(applicationContext, "this is toast message 1", Toast.LENGTH_SHORT)
                     .show()
             }
