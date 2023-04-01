@@ -3,7 +3,6 @@ package com.example.ae_chat_sdk.acti.intro
 
 import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,16 +10,14 @@ import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
-import com.example.ae_chat_sdk.data.model.ErrorMessage
 import com.example.ae_chat_sdk.acti.home.HomeActivity
+import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
@@ -33,7 +30,6 @@ import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
-
     // Context
     lateinit var context: Context
 
@@ -60,7 +56,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         context = applicationContext
 
         init()
@@ -100,14 +95,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun setListenerEmail() {
         eTextEmail.addTextChangedListener {
             it?.let { string ->
-                fun String.isValidEmail() =
+                fun isValidEmail() =
                     !TextUtils.isEmpty(string.toString().trim()) && Patterns.EMAIL_ADDRESS.matcher(
                         string.toString().trim()
                     )
                         .matches()
 
-
-                if (!string.toString().trim().isValidEmail()) {
+                if (!isValidEmail()) {
                     tLayoutInputEmail.error = "Email chưa đúng cú pháp!"
                     btnSendEmail.visibility = View.GONE
                 } else {
@@ -120,12 +114,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showInputEmail() {
-        findViewById<ImageView>(R.id.ivLetterLogoIntro).animate().alpha(0F).setDuration(200)
-            .setStartDelay(2200)
+        findViewById<ImageView>(R.id.ivLetterLogoIntro).animate().alpha(0F)
+            .setDuration(200).startDelay =
+            2200
 
         findViewById<ImageView>(R.id.ivIconLogoIntroBefore).animate()
             .alpha(0F)
-            .setDuration(200).setStartDelay(2500)
+            .setDuration(200).startDelay = 2500
 
         Handler(Looper.getMainLooper()).postDelayed({
             BottomSheetBehavior.from(findViewById(R.id.rlInput)).apply {
@@ -138,12 +133,8 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             iViewLogo.visibility = View.VISIBLE
         }, 3500)
 
-
-
-
         setListenerEmail()
         eTextEmail.isEnabled = true
-
 
 //        iViewLogo.animate().alpha(1F).setDuration(200).setStartDelay(3000)
     }
@@ -170,6 +161,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun resetOTP() {
+        // Disable input OTP
         inputOTP1.isEnabled = false
         inputOTP2.isEnabled = false
         inputOTP3.isEnabled = false
@@ -177,7 +169,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         inputOTP5.isEnabled = false
         inputOTP6.isEnabled = false
 
-
+        // Reset text
         inputOTP1.setText("")
         inputOTP2.setText("")
         inputOTP3.setText("")
@@ -191,6 +183,42 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun initFocusOTP() {
         inputOTP1.isEnabled = true
         inputOTP1.requestFocus()
+    }
+
+    private fun verifyOTP(OTP: String) {
+        Log.d("OTP", OTP)
+        resetOTP()
+        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
+        call.enqueue(object : Callback<MyResponse> {
+            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                Log.d(
+                    "Error",
+                    t.toString()
+                )
+            }
+
+            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
+                if (response.code() == 200) {
+                    //val user: User = response.body()?.data as User
+                    val gson = Gson()
+                    val type = object : TypeToken<User>() {}.type
+                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
+                    val appStorage = AppStorage.getInstance(context)
+                    appStorage.saveData("User", gson.toJson(response.body()?.data))
+
+
+                    Log.d(
+                        "Success",
+                        "thanh cong $user"
+                    )
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        setStartHomeActivity()
+                    }, 1000)
+                }
+
+            }
+        })
+
     }
 
     private fun setTextChangeListener(
@@ -255,6 +283,11 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         setListenerOTP()
 
                         verifyOTP(MainActivity.OTP)
+                        resetOTP()
+                        rLayoutWrapInputEmail.visibility = View.GONE
+                        rLayoutWrapInputOTP.visibility = View.VISIBLE
+//                        setStartHomeActivity()
+
                     }
                 })
 
@@ -267,65 +300,19 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    private fun verifyOTP(OTP: String) {
-        Log.d("OTP", OTP)
-        resetOTP()
-        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
-        call.enqueue(object : Callback<MyResponse> {
-            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                Log.d(
-                    "Error",
-                    t.toString()
-                )
-            }
-
-            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
-                if (response.code() == 200) {
-                    //val user: User = response.body()?.data as User
-                    val gson = Gson()
-                    val type = object : TypeToken<User>() {}.type
-//                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                    val appStorage = AppStorage.getInstance(context!!)
-                    appStorage.saveData("User", gson.toJson(response.body()?.data))
-                    val userString: String = appStorage.getData("User", "").toString()
-                    val user = gson.fromJson<User>(userString, type)
-                    Log.d(
-                        "Success",
-                        "thanh cong $user"
-                    )
-                    Handler(Looper.getMainLooper()).postDelayed({
-//                        v.findNavController().navigate(R.id.action_introFragment_to_homeFragment)
-                        setStartHomeActivity()
-                    }, 1000)
-
-                } else if (response.code() == 401) {
-                    val message: String? = "Bạn đã nhập sai OTP!!"
-
-                    Toast.makeText(
-                        context, message, Toast.LENGTH_LONG
-                    ).show()
-                    resetOTP()
-                }
-
-            }
-        })
-
-    }
-
     private fun checkNewLogin() {
-        val appStorage = context?.let { AppStorage.getInstance(it) }
-        val userString = appStorage?.getData("User", "").toString()
+        val appStorage = context.let { AppStorage.getInstance(it) }
+        val userString = appStorage.getData("User", "").toString()
         Log.d("Lengggggggggg", userString.length.toString())
         if (userString.length > 10) {
-
             setStartHomeActivity()
         }
 
-        Log.d("SHOW DATAAAAAA", userString.toString())
+        Log.d("SHOW DATAAAAAA", userString)
     }
 
     private fun setStartHomeActivity() {
         val intent: Intent = Intent(this, HomeActivity::class.java)
-        this.startActivity(intent);
+        this.startActivity(intent)
     }
 }
