@@ -10,8 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.popupwindow.PopUpWindowBoxChat
-import de.hdodenhof.circleimageview.CircleImageView
+import com.example.ae_chat_sdk.acti.popupwindow.BoxChatActivity
 
 class OnstreamAdapter(val listOnStream: ArrayList<String>, val context: Context) :
     RecyclerView.Adapter<OnstreamAdapter.ViewHolder>() {
@@ -36,7 +35,7 @@ class OnstreamAdapter(val listOnStream: ArrayList<String>, val context: Context)
         val itemObject = listOnStream[position]
         holder.tvUsername.text = itemObject
         holder.fLayoutOnstream.setOnClickListener(View.OnClickListener {
-            val intent: Intent = Intent(context, PopUpWindowBoxChat::class.java)
+            val intent: Intent = Intent(context, BoxChatActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         })

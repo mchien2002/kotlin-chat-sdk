@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.popupwindow.PopUpWindowBoxChat
+import com.example.ae_chat_sdk.acti.popupwindow.BoxChatActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ContactAdapter(val listContact: ArrayList<String>, val context: Context) :
@@ -33,7 +32,7 @@ class ContactAdapter(val listContact: ArrayList<String>, val context: Context) :
         val itemObject = listContact[position]
         holder.tvUsername.text = itemObject
         holder.fLayoutContact.setOnClickListener(View.OnClickListener {
-            val intent: Intent = Intent(context, PopUpWindowBoxChat::class.java)
+            val intent: Intent = Intent(context, BoxChatActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         })

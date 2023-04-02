@@ -9,7 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.ae_chat_sdk.R
 
 @Suppress("DEPRECATION")
-class PopUpWindowBoxChat: AppCompatActivity() {
+class BoxChatActivity: AppCompatActivity() {
 
     lateinit var btnBack: ImageButton
     lateinit var btnNotification: ImageButton
@@ -17,7 +17,7 @@ class PopUpWindowBoxChat: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.popup_box_chat)
+        setContentView(R.layout.activity_box_chat)
 
         val displayMetrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(displayMetrics)
