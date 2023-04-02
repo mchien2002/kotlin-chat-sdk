@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
@@ -18,7 +19,7 @@ class OnstreamAdapter(val listOnStream: ArrayList<String>, val context: Context)
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvUsername: TextView = itemView.findViewById<TextView>(R.id.tvUsername)
         val fLayoutOnstream:FrameLayout=itemView.findViewById<FrameLayout>(R.id.flOnstream)
-        val ivAvatar:CircleImageView=itemView.findViewById<CircleImageView>(R.id.ivAvatar)
+        val ivAvatar:ImageView=itemView.findViewById<ImageView>(R.id.ivAvatar)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {

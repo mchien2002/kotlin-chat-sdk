@@ -4,8 +4,8 @@
     android:id="@+id/rlMenuOption"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:alpha="0"
-    android:background="@drawable/bg_menu_option">
+    android:background="@color/Primary95"
+    android:alpha="0">
 
     <RelativeLayout
         android:id="@+id/rlAvatar"
@@ -22,9 +22,7 @@
             android:layout_height="80dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="start"
-            android:src="@drawable/avt_1"
-            app:civ_border_color="@color/white"
-            app:civ_border_width="2dp" />
+            android:src="@drawable/avt_1" />
 
         <TextView
             android:id="@+id/tvUsername"
@@ -39,8 +37,8 @@
             android:paddingTop="10dp"
             android:paddingBottom="2dp"
             android:textAlignment="center"
-            android:textColor="#CCFFFFFF"
-            android:textSize="16sp" />
+            android:textColor="@color/Primary10"
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tvEmail"
@@ -50,12 +48,12 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:ellipsize="end"
-            android:fontFamily="@font/roboto"
+            android:fontFamily="@font/roboto_bold"
             android:letterSpacing="0.05"
             android:maxLines="1"
             android:text="@string/emailAddr"
             android:textAlignment="center"
-            android:textColor="#80FFFFFF"
+            android:textColor="#4D400012"
             android:textSize="12sp" />
 
     </RelativeLayout>
@@ -65,69 +63,66 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rlAvatar"
         android:layout_centerInParent="true"
-        android:background="@drawable/bg_frame_option"
         android:padding="20dp">
-
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="20dp"
-            android:layout_marginBottom="20dp"
             android:orientation="vertical">
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbListContact"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_option_transparent"
+                android:background="@drawable/bg_button_top"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="start|center"
                 android:letterSpacing="0.03"
                 android:text="@string/list_contact"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/Primary10"
                 android:textSize="12sp"
+                app:backgroundTint="@color/White"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
-                app:iconTint="@color/white"
-                app:rippleColor="#332F2E41" />
+                app:iconTint="@color/Primary10"
+                app:rippleColor="@color/Primary90" />
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchStatus"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="10dp"
-                android:background="@drawable/bg_option_transparent"
+                android:paddingStart="15dp"
+                android:paddingEnd="10dp"
+                android:background="@color/White"
                 android:checked="true"
                 android:fontFamily="@font/roboto_medium"
                 android:letterSpacing="0.03"
                 android:text="@string/status"
-                android:textColor="@color/white"
+                android:textColor="@color/Primary10"
                 android:textSize="12sp"
-                app:thumbTint="@color/white"
-                app:trackTint="#4DFFFFFF" />
+                app:thumbTint="@color/Primary10"
+                app:trackTint="@color/Outline"
+                android:elevation="2dp"/>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbNotificationAndSound"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_option_transparent"
+                android:background="@drawable/bg_button_body"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="start|center"
                 android:letterSpacing="0.03"
                 android:text="@string/notification_sound"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/Primary10"
                 android:textSize="12sp"
+                app:backgroundTint="@color/White"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
-                app:iconTint="@color/white"
+                app:iconTint="@color/Primary10"
                 app:rippleColor="#332F2E41" />
 
             <!--            <com.google.android.material.button.MaterialButton-->
@@ -141,28 +136,29 @@
             <!--                android:letterSpacing="0.03"-->
             <!--                android:text="@string/email2"-->
             <!--                android:textAllCaps="false"-->
-            <!--                android:textColor="@color/white"-->
+            <!--                android:textColor="@color/Primary10"-->
             <!--                android:textSize="12sp"-->
             <!--                app:icon="@drawable/ic_right"-->
             <!--                app:iconGravity="end"-->
-            <!--                app:iconTint="@color/white"-->
+            <!--                app:iconTint="@color/Primary10"-->
             <!--                app:rippleColor="#332F2E41" />-->
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbChangeLanguage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_option_transparent"
+                android:background="@drawable/bg_button_body"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="start|center"
                 android:letterSpacing="0.03"
                 android:text="@string/language"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/Primary10"
                 android:textSize="12sp"
+                app:backgroundTint="@color/White"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
-                app:iconTint="@color/white"
+                app:iconTint="@color/Primary10"
                 app:rippleColor="#332F2E41" />
 
 
@@ -170,34 +166,36 @@
                 android:id="@+id/mbHelpAndSupport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_option_transparent"
+                android:background="@drawable/bg_button_body"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="start|center"
                 android:letterSpacing="0.03"
                 android:text="@string/support"
                 android:textAllCaps="false"
-                android:textColor="@color/white"
+                android:textColor="@color/Primary10"
                 android:textSize="12sp"
+                app:backgroundTint="@color/White"
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
-                app:iconTint="@color/white"
+                app:iconTint="@color/Primary10"
                 app:rippleColor="#332F2E41" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbLogOut"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_option_transparent"
+                android:background="@drawable/bg_button_bottom"
                 android:fontFamily="@font/roboto_medium"
                 android:gravity="start|center"
                 android:letterSpacing="0.03"
                 android:text="@string/log_out"
                 android:textAllCaps="false"
-                android:textColor="#CD2323"
+                android:textColor="@color/Primary40"
                 android:textSize="12sp"
+                app:backgroundTint="@color/White"
                 app:icon="@drawable/ic_log_out"
                 app:iconGravity="start"
-                app:iconTint="#FFCD2323"
+                app:iconTint="@color/Primary40"
                 app:rippleColor="#332F2E41" />
         </LinearLayout>
     </RelativeLayout>

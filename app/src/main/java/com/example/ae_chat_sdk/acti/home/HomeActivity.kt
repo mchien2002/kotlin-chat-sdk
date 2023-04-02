@@ -116,7 +116,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         setButtonOnClickListener()
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
-        setData()
+//        setData()
     }
 
 
@@ -291,12 +291,12 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                             .setDuration(100).startDelay = 0
 
                         if (!listContact) {
-                            tvPagename.setTextColor(Color.parseColor("#FFFFFF"))
+                            tvPagename.setTextColor(Color.parseColor("#FFB0294B"))
                             tvPagename.text = "Username"
                             findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
                             findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
                         } else {
-                            tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
+                            tvPagename.setTextColor(Color.parseColor("#FF400012"))
                             tvPagename.text = "Danh sách liên hệ"
                             findViewById<RelativeLayout>(R.id.rlHome).visibility = View.GONE
                             findViewById<RelativeLayout>(R.id.rlListContact).visibility =
@@ -319,36 +319,37 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         })
     }
 
-    private fun setData() {
-        val gson = Gson()
-        val type = object : TypeToken<User>() {}.type
-        val appStorage = AppStorage.getInstance(context)
-        val userString: String = appStorage.getData("User", "").toString()
-        val user = gson.fromJson<User>(userString, type)
-        tvUserName.text = user.userName.toString()
-        Log.d("Notify", user.userName.toString())
+//    private fun setData() {
+//        val gson = Gson()
+//        val type = object : TypeToken<User>() {}.type
+//        val appStorage = AppStorage.getInstance(context)
+//        val userString: String = appStorage.getData("User", "").toString()
+//        val user = gson.fromJson<User>(userString, type)
+//        tvUserName.text = user.userName.toString()
+//        Log.d("Notify", user.userName.toString())
+//
+//        val imgLocal = appStorage?.getData("avatar", "").toString()
+//        if(imgLocal.length > 1)
+//        {
+//            Glide.with(this)
+//                .load(imgLocal)
+//                .into(avatarUser)
+//        }
+//        else if (user.avatar == null) {
+//            val imageUrl =
+//                "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
+//            Glide.with(this)
+//                .load(imageUrl)
+//                .into(avatarUser)
+//        } else {
+//            val imageUrl = ApiConstant.URL_AVATAR + user.avatar
+//            Log.d("link", imageUrl.toString())
+//            Glide.with(this)
+//                .load(imageUrl)
+//                .into(avatarUser)
+//        }
+//    }
 
-        val imgLocal = appStorage?.getData("avatar", "").toString()
-        if(imgLocal.length > 1)
-        {
-            Glide.with(this)
-                .load(imgLocal)
-                .into(avatarUser)
-        }
-        else if (user.avatar == null) {
-            val imageUrl =
-                "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
-            Glide.with(this)
-                .load(imageUrl)
-                .into(avatarUser)
-        } else {
-            val imageUrl = ApiConstant.URL_AVATAR + user.avatar
-            Log.d("link", imageUrl.toString())
-            Glide.with(this)
-                .load(imageUrl)
-                .into(avatarUser)
-        }
-    }
     private fun setLocalAvatar()
     {
         val imageUrl = IMAGE_PATH

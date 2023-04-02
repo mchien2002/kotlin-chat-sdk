@@ -20,6 +20,14 @@
             android:paddingTop="10dp"
             android:paddingBottom="10dp"/>
 
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_online"
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="45dp"
+            android:elevation="10dp"/>
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -30,10 +38,10 @@
                 android:id="@+id/tvUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_black"
+                android:fontFamily="@font/roboto"
                 android:letterSpacing="0.02"
                 android:text="@string/username"
-                android:textColor="@color/black"
+                android:textColor="@color/Black"
                 android:textSize="12sp" />
 
             <TextView
@@ -41,11 +49,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tvUsername"
-                android:fontFamily="@font/roboto"
+                android:fontFamily="@font/roboto_bold"
                 android:letterSpacing="0.02"
                 android:text="@string/content_message"
-                android:textColor="@color/black"
-                android:textSize="10sp" />
+                android:textColor="@color/Black"
+                android:textSize="12sp" />
         </RelativeLayout>
 
         <TextView
@@ -53,7 +61,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/time_receive"
-            android:textColor="@color/color2"
+            android:textColor="@color/Primary40"
             android:textSize="10sp"
             android:layout_alignParentRight="true"
             android:paddingRight="30dp"

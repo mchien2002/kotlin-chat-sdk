@@ -44,4 +44,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="menu">menu</string>
+    <string name="logo">Logo</string>
+    <string name="input_email_again">Nhập lại email</string>
 </resources>

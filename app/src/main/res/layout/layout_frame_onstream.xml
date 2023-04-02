@@ -1,39 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/flOnstream"
-    android:layout_width="90dp"
-    android:layout_height="120dp"
-    android:background="@drawable/bg_frame_status">
+    android:layout_width="75dp"
+    android:layout_height="100dp">
 
-    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/ivAvatar"
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="85dp"
-        android:src="@drawable/avt_1"
-        android:elevation="5dp"
-        android:padding="10dp"/>
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:background="@drawable/avt_1"
+        android:elevation="1dp"
+        app:cardCornerRadius="15dp">
+
+        <!--    <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"-->
+        <!--        android:id="@+id/ivAvatar"-->
+        <!--        android:layout_width="match_parent"-->
+        <!--        android:layout_height="85dp"-->
+        <!--        android:src="@drawable/avt_1"-->
+        <!--        android:elevation="5dp"-->
+        <!--        android:padding="10dp"/>-->
+        <ImageView
+            android:id="@+id/ivAvatar"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/avt_1" />
+    </androidx.cardview.widget.CardView>
 
     <ImageView
         android:layout_width="20dp"
         android:layout_height="20dp"
+        android:src="@drawable/ic_online"
+        android:elevation="10dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="65dp"
-        android:background="@drawable/ic_add"
-        android:elevation="10dp"/>
+        android:layout_marginTop="55dp"/>
 
     <TextView
         android:id="@+id/tvUsername"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="85dp"
         android:ellipsize="end"
-        android:fontFamily="@font/roboto_bold"
+        android:fontFamily="@font/roboto_medium"
         android:letterSpacing="0.02"
         android:maxLines="1"
         android:text="@string/username"
-        android:textAlignment="center"
-        android:textColor="@color/color1"
-        android:textSize="10sp" />
+        android:elevation="2dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/Black"
+        android:textSize="10sp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="15dp"/>
 
 </FrameLayout>

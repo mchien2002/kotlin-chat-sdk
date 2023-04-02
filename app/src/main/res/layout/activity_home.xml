@@ -4,20 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_menu_option"
+    android:background="@color/Primary95"
     tools:context=".acti.home.HomeActivity">
 
     <TextView
         android:id="@+id/tvPageName"
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:fontFamily="@font/roboto_bold"
         android:text="@string/username"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="16sp"
-        android:visibility="visible" />
+        android:textColor="@color/Primary40"
+        android:textSize="14sp"
+        android:visibility="visible"
+        tools:ignore="VisualLintOverlap" />
 
     <include
         layout="@layout/layout_menu_option"
