@@ -65,9 +65,8 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var btnLogOut: Button
 
-
     lateinit var recent: ArrayList<String>
-    lateinit var onstream: ArrayList<String>
+    lateinit var onstream: List<User>
     lateinit var contact: ArrayList<String>
 
     lateinit var rLayoutBottomSheetHome: RelativeLayout
@@ -81,6 +80,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     // Name Page
     lateinit var tvPagename: TextView
     lateinit var tvUserName: TextView
+    lateinit var tvEmail: TextView
 
     lateinit var etSearch: EditText
 
@@ -97,10 +97,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_home)
 
         // set data for list on Stream
-        onstream = ArrayList()
-        for (i in 1..20) {
-            onstream.add("username # $i")
-        }
+        searchUser("")
 
         // set data for recent chat
         recent = ArrayList()
@@ -119,8 +116,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         setButtonOnClickListener()
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
-//<<<<<<< HEAD
-//        setData()
         onStart()
 
         etSearch.setOnTouchListener { _, event ->
@@ -131,9 +126,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             }
             false
         }
-//=======
-////        setData()
-//>>>>>>> New-UI
+      setData()
     }
 
     override fun onStart() {
@@ -158,41 +151,17 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                 val gson = Gson()
                 val type = object : TypeToken<List<User>>() {}.type
                 val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
-                Log.d("RESPONSE", user.size.toString())
-                val listUserId = mutableListOf<String>()
-                for (i in 0..user.size - 1) {
-                    val data = user[i].userName
-                    listUserId.add(data)
-                    Log.d("USER", user[i].userName.toString())
-                }
-                for (i in 0..listUserId.size - 1) {
-                    Log.d("USERID", listUserId[i].toString())
-                }
+                Log.d("RESPONSE", user.toString())
+                val listUserId: List<User>
+                listUserId = user
                 rvOnstream.layoutManager =
                     LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                rvOnstream.adapter = OnstreamAdapter(listUserId as ArrayList<String>, context)
+                rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)
             }
         })
 
     }
-//    private fun renderSearchUser()
-//    {
-//        rvOnstream.layoutManager =
-//            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-//        rvOnstream.adapter = OnstreamAdapter(onstream, context)
-//    }
 
-    //    private fun setButtonOnClickListener() {
-//        findViewById<MaterialButton>(R.id.mbListContact)
-//            .setOnClickListener(View.OnClickListener {
-//                findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
-//                    .setDuration(0).startDelay = 0
-//                tvPagename.text = "Danh sách liên hệ"
-//                tvPagename.setTextColor(Color.parseColor("#80FFFFFF"))
-//                listContact = true
-//                true
-//            })
-//    }
     private fun setButtonOnClickListener() {
         findViewById<MaterialButton>(R.id.mbListContact).setOnClickListener(View.OnClickListener {
             listContact = true
@@ -205,7 +174,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             context.startActivity(intent)
         })
     }
-
 
     private fun init() {
         rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
@@ -224,22 +192,12 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
         avatarUser = findViewById(R.id.ivAvatar)
 
-//        iViewAvatarUser = findViewById(R.id.ivAvatarUser)
-
-//        val ivAvatar = findViewById<CircleImageView>(R.id.ivAvatar)
-//        ivAvatar.setOnClickListener {
-//            showBottomSheetChangeAvatar()
-//        }
-
-
         tvUserName = findViewById(R.id.tvUsername)
+        tvEmail = findViewById(R.id.tvEmail)
 
         btnLogOut = findViewById(R.id.mbLogOut)
         btnLogOut.setOnClickListener(this)
     }
-
-
-
 
     private fun setBottomSheetBehaviorHome() {
         bottomSheetHomeBehavior.apply {
@@ -292,6 +250,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         val userString: String = appStorage.getData("User", "").toString()
         val user = gson.fromJson<User>(userString, type)
         tvUserName.text = user.userName.toString()
+        tvEmail.text = user.email.toString()
         Log.d("Notify", user.userName.toString())
 
         val imgLocal = appStorage?.getData("avatar", "").toString()
@@ -316,42 +275,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-//<<<<<<< HEAD
-//        val imgLocal = appStorage?.getData("avatar", "").toString()
-//        if(imgLocal.length > 1)
-//        {
-//            Glide.with(this)
-//                .load(imgLocal)
-//                .into(avatarUser)
-//        }
-//        else if (user.avatar == null) {
-//            val imageUrl =
-//                "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
-//            Glide.with(this)
-//                .load(imageUrl)
-//                .into(avatarUser)
-//        } else {
-//            val imageUrl = ApiConstant.URL_AVATAR + user.avatar
-//            Log.d("link", imageUrl.toString())
-//            Glide.with(this)
-//                .load(imageUrl)
-//                .into(avatarUser)
-//        }
-//    }
-//
-//=======
-//    private fun setLocalAvatar()
-//    {
-//        val imageUrl = IMAGE_PATH
-//        Log.d("link", imageUrl.toString())
-//        Glide.with(this)
-//            .load(imageUrl)
-//            .into(avatarUser)
-//        val appStorage = AppStorage.getInstance(context!!)
-//        appStorage.saveData("avatar", IMAGE_PATH)
-//    }
-//>>>>>>> New-UI
-
     override fun onClick(view: View) {
         when (view?.id) {
             R.id.mbLogOut -> {
@@ -368,10 +291,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun renderDataRecyclerView() {
-        rvOnstream.layoutManager =
-            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-        rvOnstream.adapter = OnstreamAdapter(onstream, context)
-
         rvRecent.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvRecent.adapter = RecentAdapter(recent, context)
