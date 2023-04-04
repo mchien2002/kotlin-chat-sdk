@@ -77,6 +77,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <ImageView
+            android:id="@+id/ivAvatarUser"
             android:layout_width="match_parent"
             android:layout_height="300dp"
             android:adjustViewBounds="true"
@@ -88,6 +89,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageButton
+            android:id="@+id/ibChangeAvatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginRight="20dp"

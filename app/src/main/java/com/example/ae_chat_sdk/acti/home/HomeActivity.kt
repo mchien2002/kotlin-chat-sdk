@@ -1,6 +1,7 @@
 package com.example.ae_chat_sdk.acti.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -10,7 +11,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
+import android.widget.EditText
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
@@ -19,6 +22,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
@@ -27,7 +31,9 @@ import com.example.ae_chat_sdk.acti.intro.LoginActivity
 import com.example.ae_chat_sdk.acti.profile.ProfileActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
+import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
+import com.example.ae_chat_sdk.data.model.ApiResponse
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.RealPathUtil
 import com.example.ae_chat_sdk.data.model.User
@@ -76,19 +82,16 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var tvPagename: TextView
     lateinit var tvUserName: TextView
 
+    lateinit var etSearch: EditText
+
     lateinit var avatarUser: CircleImageView
 
-    private val REQUEST_IMAGE_CAPTURE = 1
-    private val REQUEST_IMAGE_PICK = 2
-    private var IMAGE_PATH = ""
 
-    companion object {
-        const val MY_IMAGES = "imgFile"
-    }
-
+    lateinit var iViewAvatarUser: ImageView
 
     var listContact: Boolean = false
 
+    @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
@@ -117,8 +120,63 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
         setData()
+        onStart()
+
+        etSearch.setOnTouchListener { _, event ->
+            if (event.action == MotionEvent.ACTION_UP) {
+                val textSearch = etSearch.text
+                searchUser(textSearch.toString())
+                Log.d("SEARCH",textSearch.toString())
+            }
+            false
+        }
     }
 
+    override fun onStart() {
+        super.onStart()
+        setData()
+    }
+
+    private fun searchUser(searchText : String)
+    {
+        val token = RestClient().getToken()
+        val call = UserRepository().searchUser(token,searchText)
+        var userList : List<User>
+        call.enqueue(object : Callback<ApiResponse> {
+            override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
+                Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+            override fun onResponse(
+                call: Call<ApiResponse>,
+                response: Response<ApiResponse>
+            ) {
+                val gson = Gson()
+                val type = object : TypeToken<List<User>>() {}.type
+                val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
+                Log.d("RESPONSE", user.size.toString())
+                val listUserId = mutableListOf<String>()
+                for (i in 0..user.size - 1) {
+                    val data = user[i].userName
+                    listUserId.add(data)
+                    Log.d("USER", user[i].userName.toString())
+                }
+                for (i in 0..listUserId.size - 1) {
+                    Log.d("USERID", listUserId[i].toString())
+                }
+                rvOnstream.layoutManager =
+                    LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                rvOnstream.adapter = OnstreamAdapter(listUserId as ArrayList<String>, context)
+            }
+        })
+
+    }
+//    private fun renderSearchUser()
+//    {
+//        rvOnstream.layoutManager =
+//            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+//        rvOnstream.adapter = OnstreamAdapter(onstream, context)
+//    }
 
     //    private fun setButtonOnClickListener() {
 //        findViewById<MaterialButton>(R.id.mbListContact)
@@ -158,12 +216,16 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
         tvPagename = findViewById(R.id.tvPageName)
 
+        etSearch = findViewById(R.id.etInputSearch)
+
         avatarUser = findViewById(R.id.ivAvatar)
 
-        val ivAvatar = findViewById<CircleImageView>(R.id.ivAvatar)
-        ivAvatar.setOnClickListener {
-            showBottomSheetChangeAvatar()
-        }
+//        iViewAvatarUser = findViewById(R.id.ivAvatarUser)
+
+//        val ivAvatar = findViewById<CircleImageView>(R.id.ivAvatar)
+//        ivAvatar.setOnClickListener {
+//            showBottomSheetChangeAvatar()
+//        }
 
 
         tvUserName = findViewById(R.id.tvUsername)
@@ -172,107 +234,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         btnLogOut.setOnClickListener(this)
     }
 
-    private fun showBottomSheetChangeAvatar() {
-        val bottomSheet = BottomSheetDialog(this)
-        val view = layoutInflater.inflate(R.layout.layout_bottom_sheet_change_avatar, null)
-        bottomSheet.setContentView(view)
 
-        val btnChupAnh = view.findViewById<Button>(R.id.btnChupAnh)
-        val btnChonAnh = view.findViewById<Button>(R.id.btnChonAnh)
-        val btnXoaAnh = view.findViewById<Button>(R.id.btnXoaAnh)
-
-        btnChupAnh.setOnClickListener {
-            openCamera()
-            bottomSheet.dismiss()
-        }
-
-        btnChonAnh.setOnClickListener {
-            openGallery()
-            bottomSheet.dismiss()
-        }
-
-        btnXoaAnh.setOnClickListener {
-            // Do something when Button 3 is clicked
-            bottomSheet.dismiss()
-        }
-
-        bottomSheet.show()
-    }
-
-    fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_IMAGE_PICK)
-    }
-
-    fun openCamera() {
-        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        this.startActivityForResult(intent, REQUEST_IMAGE_CAPTURE)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK) {
-            when (requestCode) {
-                REQUEST_IMAGE_CAPTURE -> {
-                    val imageBitmap = data?.extras?.get("data") as Bitmap
-                    Log.d("DANG1", imageBitmap.toString())
-                }
-                REQUEST_IMAGE_PICK -> {
-
-                    val uri: Uri? = data?.data
-                    IMAGE_PATH =
-                        uri?.let { RealPathUtil.getRealPath(this, it).toString() }.toString()
-                    if (ContextCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
-                        ) == PackageManager.PERMISSION_GRANTED
-                    ) {
-                        // Ứng dụng đã được cấp quyền
-                        // Tiến hành đọc tệp tin
-                        Log.d("DANG111", "Doc duoc")
-                    } else {
-                        Log.d("DANG222", "Khong doc duoc")
-                        ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                            1
-                        )
-                    }
-                    ChangeAvatarUser()
-                }
-            }
-        }
-    }
-
-    fun ChangeAvatarUser() {
-
-        val file = File(IMAGE_PATH)
-        val requestFile: RequestBody =
-            RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
-        val partbodyavatar = MultipartBody.Part.createFormData("imgFile", file.name, requestFile)
-        val token2 = RestClient().getToken()
-        val userId = RestClient().getUserId()
-        Log.d("TOKEN",token2)
-        Log.d("USERID",userId)
-        val call =
-            UserRepository().uploadAvatarUser(
-                token2,
-                userId,
-                partbodyavatar
-            )
-        call.enqueue(object : Callback<MyResponse> {
-            override fun onResponse(call: Call<MyResponse>?, response: Response<MyResponse>?) {
-                setLocalAvatar()
-            }
-
-            override fun onFailure(call: Call<MyResponse>?, t: Throwable?) {
-                Toast.makeText(
-                    applicationContext, "this is toast message 2", Toast.LENGTH_SHORT
-                ).show()
-            }
-        })
-    }
 
 
     private fun setBottomSheetBehaviorHome() {
@@ -349,16 +311,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                 .into(avatarUser)
         }
     }
-    private fun setLocalAvatar()
-    {
-        val imageUrl = IMAGE_PATH
-        Log.d("link", imageUrl.toString())
-        Glide.with(this)
-            .load(imageUrl)
-            .into(avatarUser)
-        val appStorage = AppStorage.getInstance(context!!)
-        appStorage.saveData("avatar", IMAGE_PATH)
-    }
+
 
     override fun onClick(view: View) {
         when (view?.id) {
@@ -399,3 +352,4 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         this.startActivity(intent);
     }
 }
+
