@@ -43,7 +43,6 @@ class ProfileActivity : AppCompatActivity() {
 
     lateinit var tvUserName: TextView
     lateinit var tvEmail: TextView
-    lateinit var tvAccount: TextView
 
     lateinit var iViewAvatarUser: ImageView
 
@@ -70,10 +69,9 @@ class ProfileActivity : AppCompatActivity() {
         val appStorage = AppStorage.getInstance(context)
         val userString: String = appStorage.getData("User", "").toString()
         val user = gson.fromJson<User>(userString, type)
-        tvUserName.text = user.fullName.toString()
-        tvEmail.text = user.userName.toString()
-        tvAccount.text = user.email.toString()
-        Log.d("Notify", user.userName.toString())
+//        tvUserName.text = user.userName.toString()
+//        tvEmail.text = user.email.toString()
+//        Log.d("Notify", user.userName.toString())
 
         val imgLocal = appStorage?.getData("avatar", "").toString()
         if(imgLocal.length > 1)
@@ -98,11 +96,10 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun init(){
-        iViewAvatarUser = findViewById(R.id.ivAvatarUser)
+        iViewAvatarUser = findViewById(R.id.ivAvatar)
         // avatarUser = findViewById(R.id.ivAvatar)
         tvUserName = findViewById(R.id.tvUsername)
         tvEmail = findViewById(R.id.tvEmail)
-        tvAccount = findViewById(R.id.tvAccount)
         setButtonOnClickListener()
     }
 

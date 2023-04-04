@@ -17,9 +17,17 @@ import androidx.core.widget.addTextChangedListener
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
+import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
+import com.example.ae_chat_sdk.data.model.MyResponse
+import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
     // Context
@@ -183,37 +191,37 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun verifyOTP(OTP: String) {
         Log.d("OTP", OTP)
         resetOTP()
-//        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
-//        call.enqueue(object : Callback<MyResponse> {
-//            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-//                Log.d(
-//                    "Error",
-//                    t.toString()
-//                )
-//            }
-//
-//            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
-//                if (response.code() == 200) {
-//                    //val user: User = response.body()?.data as User
-//                    val gson = Gson()
-//                    val type = object : TypeToken<User>() {}.type
-//                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-//                    val appStorage = AppStorage.getInstance(context)
-//                    appStorage.saveData("User", gson.toJson(response.body()?.data))
-//
-//
-//                    Log.d(
-//                        "Success",
-//                        "thanh cong $user"
-//                    )
-//                    Handler(Looper.getMainLooper()).postDelayed({
-//                        setStartHomeActivity()
-//                    }, 1000)
-//                }
-//
-//            }
-//        })
-        setStartHomeActivity()
+        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
+        call.enqueue(object : Callback<MyResponse> {
+            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                Log.d(
+                    "Error",
+                    t.toString()
+                )
+            }
+
+            override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
+                if (response.code() == 200) {
+                    //val user: User = response.body()?.data as User
+                    val gson = Gson()
+                    val type = object : TypeToken<User>() {}.type
+                    val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
+                    val appStorage = AppStorage.getInstance(context)
+                    appStorage.saveData("User", gson.toJson(response.body()?.data))
+
+
+                    Log.d(
+                        "Success",
+                        "thanh cong $user"
+                    )
+                    Handler(Looper.getMainLooper()).postDelayed({
+                        setStartHomeActivity()
+                    }, 1000)
+                }
+
+            }
+        })
+//        setStartHomeActivity()
     }
 
     private fun setTextChangeListener(
@@ -258,31 +266,31 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.bSendEmail -> {
-//                val call = RegisterRepository().registerByMail(MainActivity.Email)
-//
-//                call.enqueue(object : Callback<MyResponse> {
-//                    override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-//                        Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
-//                            .show()
-//                    }
-//
-//                    override fun onResponse(
-//                        call: Call<MyResponse>,
-//                        response: Response<MyResponse>
-//                    ) {
-//                        rLayoutWrapInputEmail.visibility = View.GONE
-//                        rLayoutWrapInputOTP.visibility = View.VISIBLE
-//                        findViewById<TextView>(R.id.tvEmailInformation).text =
-//                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
-//                        resetOTP()
-//                        setListenerOTP()
-//
-//                        rLayoutWrapInputEmail.visibility = View.GONE
-//                        rLayoutWrapInputOTP.visibility = View.VISIBLE
-////                        setStartHomeActivity()
-//
-//                    }
-//                })
+                val call = RegisterRepository().registerByMail(MainActivity.Email)
+
+                call.enqueue(object : Callback<MyResponse> {
+                    override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                        Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                    override fun onResponse(
+                        call: Call<MyResponse>,
+                        response: Response<MyResponse>
+                    ) {
+                        rLayoutWrapInputEmail.visibility = View.GONE
+                        rLayoutWrapInputOTP.visibility = View.VISIBLE
+                        findViewById<TextView>(R.id.tvEmailInformation).text =
+                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
+                        resetOTP()
+                        setListenerOTP()
+
+                        rLayoutWrapInputEmail.visibility = View.GONE
+                        rLayoutWrapInputOTP.visibility = View.VISIBLE
+//                        setStartHomeActivity()
+
+                    }
+                })
                 rLayoutWrapInputEmail.visibility = View.GONE
                 rLayoutWrapInputOTP.visibility = View.VISIBLE
                 findViewById<TextView>(R.id.tvEmailInformation).text =
