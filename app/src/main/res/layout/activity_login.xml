@@ -5,134 +5,168 @@
     android:id="@+id/cLayoutIntro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color1"
+    android:background="@color/Primary95"
     tools:context=".acti.intro.LoginActivity">
 
 
-    <ImageView
-        android:id="@+id/ivIconLogoIntroBefore"
+    <ImageButton
+        android:id="@+id/ibIconChat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:background="@drawable/logo_sigma" />
+        android:background="@drawable/ic_chat"
+        android:contentDescription="@string/logo"
+        tools:ignore="DuplicateSpeakableTextCheck" />
 
 
-    <ImageView
-        android:id="@+id/ivLetterLogoIntro"
+    <ImageButton
+        android:id="@+id/ibIconTalkWave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center|bottom"
         android:layout_marginBottom="20dp"
-        android:background="@drawable/logo_letter_sigma1" />
-
-    <ImageView
-        android:id="@+id/ivIconLogoIntroAfter"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_gravity="center|top"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/logo_sigma"
-        android:visibility="invisible" />
+        android:background="@drawable/ic_talkwave"
+        android:contentDescription="@string/logo" />
 
     <RelativeLayout
-        android:id="@+id/rlInput"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#33000000"
-        android:paddingTop="120dp"
+        android:id="@+id/rlInput"
+        android:layout_height="match_parent"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="0dp"
+        app:behavior_peekHeight="1000dp"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
+        <TextView
+            android:id="@+id/ibIconLogoIntroAfter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:contentDescription="@string/logo"
+            android:fontFamily="@font/roboto_black"
+            android:letterSpacing="0.01"
+            android:text="Đăng nhập"
+            android:textAllCaps="true"
+            android:textColor="@color/Primary40"
+            android:textSize="14sp"
+            android:visibility="visible" />
 
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/bg_frame_bottom_sheet">
+            android:layout_below="@id/ibIconLogoIntroAfter"
+            android:background="@drawable/bg_frame_bottom_sheet"
+            android:paddingTop="100dp">
 
-            <RelativeLayout
-                android:id="@+id/rlWrapInputEmail"
+            <ImageView
+                android:id="@+id/ivLogo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/ic_chat"
+                android:contentDescription="@string/logo"
+                android:scaleType="center"
+                android:visibility="visible" />
+
+            <LinearLayout
+                android:id="@+id/llWrapInputEmail"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
+                android:layout_below="@id/ivLogo"
+                android:layout_marginTop="20dp"
+                android:orientation="horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:visibility="visible">
 
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/tlInputEmail"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:background="@color/white"
+                    android:layout_weight="0.7"
+                    android:background="@color/White"
                     android:hint="@string/email"
-                    android:textColorHint="#9950C2C9"
                     app:boxCornerRadiusBottomEnd="10dp"
                     app:boxCornerRadiusBottomStart="10dp"
                     app:boxCornerRadiusTopEnd="10dp"
                     app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="#802F2E41"
+                    app:boxStrokeColor="@color/Outline"
                     app:boxStrokeWidth="1dp"
                     app:boxStrokeWidthFocused="2dp"
                     app:errorEnabled="false"
-                    app:hintTextColor="@color/color2"
-                    app:placeholderText="@string/inputEmail">
+                    app:hintTextColor="@color/Primary40"
+                    app:placeholderText="@string/inputEmail"
+                    app:placeholderTextColor="@color/Outline">
 
                     <EditText
                         android:id="@+id/etEmail"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:importantForAutofill="no"
                         android:inputType="textEmailAddress"
-                        android:textColor="@color/color1"
-                        android:textSize="12sp" />
+                        android:textColor="@color/Black"
+                        android:textSize="12sp"
+                        tools:ignore="LabelFor" />
                 </com.google.android.material.textfield.TextInputLayout>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/mbSendEmail"
+                <Button
+                    android:id="@+id/bSendEmail"
                     android:layout_width="wrap_content"
-                    android:layout_height="40dp"
-                    android:layout_below="@id/tlInputEmail"
-                    android:layout_alignParentRight="true"
-                    android:layout_marginTop="40dp"
-                    android:background="@drawable/button_sign_in"
-                    android:elevation="2dp"
-                    android:insetTop="0dp"
-                    android:insetBottom="0dp"
-                    android:visibility="invisible"
-                    app:cornerRadius="5dp"
-                    app:rippleColor="@color/color1" />
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_margin="10dp"
+                    android:backgroundTint="@color/Primary40"
+                    android:contentDescription="@string/signIn"
+                    android:fontFamily="@font/roboto"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/signIn"
+                    android:textAllCaps="false"
+                    android:textColor="@color/White"
+                    android:textSize="12sp"
+                    android:visibility="gone"
+                    app:cornerRadius="10dp"
+                    app:rippleColor="@color/White" />
 
 
-            </RelativeLayout>
+            </LinearLayout>
 
             <RelativeLayout
                 android:id="@+id/rlWrapTextInputOTP"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_below="@id/ivLogo"
+                android:paddingTop="20dp"
                 android:visibility="invisible">
-
-                <TextView
-                    android:id="@+id/tvEmailInformation"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto"
-                    android:gravity="center"
-                    android:text="@string/UserEmail"
-                    android:textColor="@color/color1" />
 
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/tvEmailInformation"
-                    android:layout_centerInParent="true">
+                    android:layout_alignParentTop="true">
+
+                    <TextView
+                        android:id="@+id/tvEmailInformation"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_light_italic"
+                        android:gravity="center"
+                        android:text="@string/UserEmail"
+                        android:textColor="@color/Primary10"
+                        android:textSize="12sp" />
 
                     <LinearLayout
                         android:id="@+id/llTextInputOTP"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true">
+                        android:layout_below="@id/tvEmailInformation"
+                        android:layout_centerHorizontal="true"
+                        android:orientation="horizontal">
+
 
                         <com.google.android.material.textfield.TextInputLayout
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -140,7 +174,7 @@
                             android:layout_height="55dp"
                             android:clickable="false"
                             android:enabled="false"
-                            app:boxStrokeColor="@color/color1"
+                            app:boxStrokeColor="@color/Primary40"
                             app:boxStrokeWidth="1dp"
                             app:boxStrokeWidthFocused="2dp">
 
@@ -148,13 +182,14 @@
                                 android:id="@+id/etInputOTP1"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:autofillHints=""
                                 android:cursorVisible="false"
                                 android:fontFamily="@font/roboto_bold"
                                 android:gravity="center"
                                 android:inputType="number"
                                 android:maxLength="1"
                                 android:padding="0dp"
-                                android:textColor="@color/color1"
+                                android:textColor="@color/Primary40"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -162,24 +197,25 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
                             android:layout_height="55dp"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:clickable="false"
                             android:enabled="false"
-                            app:boxStrokeColor="@color/color1"
+                            app:boxStrokeColor="@color/Primary40"
                             app:boxStrokeWidth="1dp"
                             app:boxStrokeWidthFocused="2dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <EditText
                                 android:id="@+id/etInputOTP2"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:cursorVisible="false"
                                 android:fontFamily="@font/roboto_bold"
                                 android:gravity="center"
+                                android:importantForAutofill="no"
                                 android:inputType="number"
                                 android:maxLength="1"
                                 android:padding="0dp"
-                                android:textColor="#000000"
+                                android:textColor="@color/Primary40"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -187,24 +223,25 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
                             android:layout_height="55dp"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:clickable="false"
                             android:enabled="false"
-                            app:boxStrokeColor="@color/color1"
+                            app:boxStrokeColor="@color/Primary40"
                             app:boxStrokeWidth="1dp"
                             app:boxStrokeWidthFocused="2dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <EditText
                                 android:id="@+id/etInputOTP3"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:cursorVisible="false"
                                 android:fontFamily="@font/roboto_bold"
                                 android:gravity="center"
+                                android:importantForAutofill="no"
                                 android:inputType="number"
                                 android:maxLength="1"
                                 android:padding="0dp"
-                                android:textColor="#000000"
+                                android:textColor="@color/Primary40"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -213,24 +250,25 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
                             android:layout_height="55dp"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:clickable="false"
                             android:enabled="false"
-                            app:boxStrokeColor="@color/color1"
+                            app:boxStrokeColor="@color/Primary40"
                             app:boxStrokeWidth="1dp"
                             app:boxStrokeWidthFocused="2dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <EditText
                                 android:id="@+id/etInputOTP4"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:cursorVisible="false"
                                 android:fontFamily="@font/roboto_bold"
                                 android:gravity="center"
+                                android:importantForAutofill="no"
                                 android:inputType="number"
                                 android:maxLength="1"
                                 android:padding="0dp"
-                                android:textColor="#000000"
+                                android:textColor="@color/Primary40"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -239,24 +277,25 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
                             android:layout_height="55dp"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:clickable="false"
                             android:enabled="false"
-                            app:boxStrokeColor="@color/color1"
+                            app:boxStrokeColor="@color/Primary40"
                             app:boxStrokeWidth="1dp"
                             app:boxStrokeWidthFocused="2dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <EditText
                                 android:id="@+id/etInputOTP5"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:cursorVisible="false"
                                 android:fontFamily="@font/roboto_bold"
                                 android:gravity="center"
+                                android:importantForAutofill="no"
                                 android:inputType="number"
                                 android:maxLength="1"
                                 android:padding="0dp"
-                                android:textColor="#000000"
+                                android:textColor="@color/Primary40"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -264,24 +303,25 @@
                             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                             android:layout_width="45dp"
                             android:layout_height="55dp"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:clickable="false"
                             android:enabled="false"
-                            app:boxStrokeColor="@color/color1"
+                            app:boxStrokeColor="@color/Primary40"
                             app:boxStrokeWidth="1dp"
                             app:boxStrokeWidthFocused="2dp">
 
-                            <com.google.android.material.textfield.TextInputEditText
+                            <EditText
                                 android:id="@+id/etInputOTP6"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
                                 android:cursorVisible="false"
                                 android:fontFamily="@font/roboto_bold"
                                 android:gravity="center"
+                                android:importantForAutofill="no"
                                 android:inputType="number"
                                 android:maxLength="1"
                                 android:padding="0dp"
-                                android:textColor="#000000"
+                                android:textColor="@color/Primary40"
                                 android:textSize="14sp" />
                         </com.google.android.material.textfield.TextInputLayout>
 
@@ -289,14 +329,15 @@
 
                     <TextView
                         android:id="@+id/txtCountdown"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_below="@id/llTextInputOTP"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="10dp"
-                        android:fontFamily="@font/roboto"
-                        android:gravity="center"
+                        android:fontFamily="@font/roboto_bold"
                         android:text="@string/timedown"
-                        android:textColor="@color/color1" />
+                        android:textColor="@color/Outline"
+                        android:textSize="14sp" />
 
                     <LinearLayout
                         android:id="@+id/llOTPRequest"
@@ -309,38 +350,50 @@
                             android:id="@+id/tvUnVerify"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_bold"
+                            android:fontFamily="@font/roboto_medium"
                             android:text="@string/OTP_Info"
-                            android:textColor="#992F2E41"
-                            android:textSize="12sp" />
+                            android:textColor="@color/Primary40"
+                            android:textSize="12sp"
+                            tools:ignore="TextContrastCheck" />
 
                         <TextView
                             android:id="@+id/tvButtonSendOTPAgain"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_marginStart="5dp"
                             android:clickable="true"
-                            android:fontFamily="@font/roboto_bold"
+                            android:focusable="true"
+                            android:fontFamily="@font/roboto_medium"
                             android:text="@string/OTP_Request"
-                            android:textColor="#9950C2C9"
-                            android:textSize="12sp" />
+                            android:textColor="@color/Secondary80"
+                            android:textSize="12sp"
+                            tools:ignore="TextContrastCheck" />
                     </LinearLayout>
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/mbInputEmailAgain"
-                        android:layout_width="wrap_content"
-                        android:layout_height="40dp"
-                        android:layout_below="@id/llOTPRequest"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginTop="20dp"
-                        android:background="@drawable/button_return_input_email"
-                        android:elevation="2dp"
-                        android:insetTop="0dp"
-                        android:insetBottom="0dp"
-                        app:cornerRadius="5dp"
-                        app:rippleColor="@color/color1" />
                 </RelativeLayout>
+
+                <Button
+                    android:id="@+id/bInputEmailAgain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="250dp"
+                    android:layout_centerHorizontal="true"
+                    android:backgroundTint="@color/Secondary40"
+                    android:clickable="true"
+                    android:contentDescription="@string/input_email_again"
+                    android:focusable="true"
+                    android:fontFamily="@font/roboto"
+                    android:paddingLeft="10dp"
+                    android:paddingTop="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingBottom="10dp"
+                    android:text="@string/input_email_again"
+                    android:textAllCaps="false"
+                    android:textColor="@color/White"
+                    android:textSize="12sp"
+                    app:cornerRadius="10dp"
+                    app:rippleColor="@color/White" />
+
             </RelativeLayout>
         </RelativeLayout>
     </RelativeLayout>

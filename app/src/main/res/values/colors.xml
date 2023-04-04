@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="color1">#2F2E41</color>
-    <color name="color2">#50C2C9</color>
-    <color name="colorhint">#4D2F2E41</color>
-    <color name="white">#FFFFFF</color>
-    <color name="black">#000000</color>
+    <color name="Primary95">#FFECED</color>
+    <color name="Primary90">#FFD9DD</color>
+    <color name="Primary40">#B0294B</color>
+    <color name="Primary30">#8E0935</color>
+    <color name="Primary10">#400012</color>
+
+    <color name="Secondary80">#E5BDC1</color>
+    <color name="Secondary60">#AC888B</color>
+    <color name="Secondary40">#76565A</color>
+    <color name="Secondary30">#5C3F43</color>
+    <color name="Secondary10">#2C1518</color>
+
+    <color name="Tertiary95">#FFEEDE</color>
+    <color name="Tertiary90">#FFDDB8</color>
+    <color name="Tertiary40">#785831</color>
+    <color name="Tertiary30">#5E411C</color>
+    <color name="Tertiary20">#452B07</color>
+
+    <color name="Outline">#847374</color>
+    <color name="Online">#31a24c</color>
+    <color name="White">#FFFFFF</color>
+    <color name="Black">#000000</color>
+
     <color name="white2">#F0F0F0</color>
     <color name="transparent">#00F0F0F0</color>
     <color name="red">#FF0000</color>
