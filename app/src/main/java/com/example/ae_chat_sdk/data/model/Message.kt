@@ -1,59 +1,91 @@
 package com.example.ae_chat_sdk.data.model
 
+import com.google.gson.annotations.SerializedName
 import java.util.*
 
 class Message {
-    enum class Type{
-        TEXT,
-        CALL,
-        IMAGE,
-        AUDIO,
-        VIDEO,
-        FIRST_MESSAGE,
-        GROUP_UPDATE,
-        LEAVE_GROUP,
-        REPLY,
-        FORWARD,
-        STICKER,
-        FILE,
-        SCREEN_SHOT,
-        LOCATION,
-        LIVE_LOCATION,
-        GROUP_CALL
+    enum class Type(val type: Int) {
+        TEXT(0),
+        CALL(1),
+        IMAGE(2),
+        AUDIO(3),
+        VIDEO(4),
+        FIRST_MESSAGE(5),
+        GROUP_UPDATE(6),
+        LEAVE_GROUP(7),
+        REPLY(8),
+        FORWARD(9),
+        STICKER(10),
+        FILE(11),
+        SCREEN_SHOT(12),
+        LOCATION(13),
+        LIVE_LOCATION(14),
+        GROUP_CALL(15)
 
     }
-    enum class Status{
-        UNKNOWN,
-        SENT,
-        RECEIVED,
-        SEEN,
-        DELETED,
-        SENDING
-    }
-    enum class GroupType{
-        UNKOWN,
-        PRIVATE,
-        GROUP,
-        PUBLIC,
-        CHANNEL,
-        OFFICICAL
+
+    enum class Status(val status: Int) {
+        UNKNOWN(0),
+        SENT(1),
+        RECEIVED(2),
+        SEEN(3),
+        DELETED(4),
+        SENDING(5)
     }
 
-    lateinit var id: String
-    lateinit var type: Type
-    lateinit var status: Status
-    lateinit var groupType: GroupType
-    lateinit var groupId: String
-    lateinit var message: String
-    lateinit var createdAt: Date
-    lateinit var updateAt: Date
-    lateinit var senderName: String
-    lateinit var senderUin: String
-    lateinit var senderAvatar: String
-    lateinit var nonce: String
-    lateinit var seenUins: List<String>
-    lateinit var deletedUins: List<String>
-    lateinit var attachments: Any
+    enum class GroupType(val groupType: Int) {
+        UNKOWN(0),
+        PRIVATE(1),
+        GROUP(2),
+        PUBLIC(3),
+        CHANNEL(4),
+        OFFICICAL(5)
+    }
+
+    @SerializedName("id")
+    var id: String = ""
+
+    @SerializedName("type")
+    var type: String = Type.TEXT.type.toString()
+
+    @SerializedName("status")
+    var status: String = Status.UNKNOWN.status.toString()
+
+    @SerializedName("groupType")
+    var groupType: String = GroupType.UNKOWN.groupType.toString()
+
+    @SerializedName("groupId")
+    var groupId: String = ""
+
+    @SerializedName("message")
+    var message: String = ""
+
+    @SerializedName("createAt")
+    var createdAt: Date = Date(2023)
+
+    @SerializedName("updateAt")
+    var updateAt: Date = Date(2023)
+
+    @SerializedName("senderName")
+    var senderName: String = ""
+
+    @SerializedName("senderUin")
+    var senderUin: String = ""
+
+    @SerializedName("senderAvatar")
+    var senderAvatar: String = ""
+
+    @SerializedName("nonce")
+    var nonce: String = ""
+
+    @SerializedName("seenUins")
+    var seenUins: ArrayList<String> = ArrayList()
+
+    @SerializedName("deleteUins")
+    var deletedUins: ArrayList<String> = ArrayList()
+
+    @SerializedName("attachments")
+    var attachments: Any = ""
 
 
 }

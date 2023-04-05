@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -165,8 +164,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                 val gson = Gson()
                 val type = object : TypeToken<List<User>>() {}.type
                 val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
-                val listUserId: List<User>
-                listUserId = user
+                val listUserId: List<User> = user
                 rvOnstream.layoutManager =
                     LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
                 rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)

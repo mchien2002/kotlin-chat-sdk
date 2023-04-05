@@ -2,16 +2,15 @@ package com.example.ae_chat_sdk
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ae_chat_sdk.acti.intro.LoginActivity
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
-import com.example.ae_chat_sdk.data.model.SocketRequest
 import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.databinding.ActivityMainBinding
-import okhttp3.*
-import org.json.JSONObject
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 
 class MainActivity : AppCompatActivity(){
 
@@ -20,6 +19,7 @@ class MainActivity : AppCompatActivity(){
     companion object {
         var Email: String = ""
         var OTP: String = ""
+        lateinit var webSocket: WebSocket;
     }
 
     //    private lateinit var appBarConfiguration: AppBarConfiguration
@@ -55,7 +55,8 @@ class MainActivity : AppCompatActivity(){
         val webSocketListener = WebSocketListener()
         val ws: WebSocket = client.newWebSocket(request, webSocketListener)
 
-        webSocketListener.receiveMessage(ws)
+        webSocket = ws
+
     }
 
 }
