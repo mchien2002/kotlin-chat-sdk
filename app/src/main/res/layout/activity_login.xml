@@ -5,396 +5,387 @@
     android:id="@+id/cLayoutIntro"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Primary95"
+    android:background="@drawable/background"
     tools:context=".acti.intro.LoginActivity">
 
 
-    <ImageButton
-        android:id="@+id/ibIconChat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/ic_chat"
-        android:contentDescription="@string/logo"
-        tools:ignore="DuplicateSpeakableTextCheck" />
 
-
-    <ImageButton
-        android:id="@+id/ibIconTalkWave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center|bottom"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/ic_talkwave"
-        android:contentDescription="@string/logo" />
-
-    <RelativeLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_height="500dp"
         android:layout_width="match_parent"
         android:id="@+id/rlInput"
-        android:layout_height="match_parent"
+        android:layout_marginTop="35dp"
         app:behavior_hideable="false"
-        app:behavior_peekHeight="1000dp"
+        app:behavior_peekHeight="0dp"
+        android:background="@drawable/bg_bottom_sheet"
+        android:backgroundTint="#33000000"
+        android:visibility="visible"
         app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
 
-        <TextView
-            android:id="@+id/ibIconLogoIntroAfter"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/logo"
-            android:fontFamily="@font/roboto_black"
-            android:letterSpacing="0.01"
-            android:text="Đăng nhập"
-            android:textAllCaps="true"
-            android:textColor="@color/Primary40"
-            android:textSize="14sp"
-            android:visibility="visible" />
 
-        <RelativeLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/ibIconLogoIntroAfter"
-            android:background="@drawable/bg_frame_bottom_sheet"
-            android:paddingTop="100dp">
+            android:foreground="?android:attr/selectableItemBackground"
+            app:cardBackgroundColor="@color/transparent"
+            app:cardCornerRadius="35dp"
+            app:cardElevation="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/ivLogo"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/ic_chat"
-                android:contentDescription="@string/logo"
-                android:scaleType="center"
-                android:visibility="visible" />
-
-            <LinearLayout
-                android:id="@+id/llWrapInputEmail"
+            <eightbitlab.com.blurview.BlurView
+                android:id="@+id/blurView"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ivLogo"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:visibility="visible">
+                android:layout_height="match_parent"
+                app:blurOverlayColor="@color/transparent">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/tlInputEmail"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.7"
-                    android:background="@color/White"
-                    android:hint="@string/email"
-                    app:boxCornerRadiusBottomEnd="10dp"
-                    app:boxCornerRadiusBottomStart="10dp"
-                    app:boxCornerRadiusTopEnd="10dp"
-                    app:boxCornerRadiusTopStart="10dp"
-                    app:boxStrokeColor="@color/Outline"
-                    app:boxStrokeWidth="1dp"
-                    app:boxStrokeWidthFocused="2dp"
-                    app:errorEnabled="false"
-                    app:hintTextColor="@color/Primary40"
-                    app:placeholderText="@string/inputEmail"
-                    app:placeholderTextColor="@color/Outline">
-
-                    <EditText
-                        android:id="@+id/etEmail"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:importantForAutofill="no"
-                        android:inputType="textEmailAddress"
-                        android:textColor="@color/Black"
-                        android:textSize="12sp"
-                        tools:ignore="LabelFor" />
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <Button
-                    android:id="@+id/bSendEmail"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_margin="10dp"
-                    android:backgroundTint="@color/Primary40"
-                    android:contentDescription="@string/signIn"
-                    android:fontFamily="@font/roboto"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="@string/signIn"
-                    android:textAllCaps="false"
-                    android:textColor="@color/White"
-                    android:textSize="12sp"
-                    android:visibility="gone"
-                    app:cornerRadius="10dp"
-                    app:rippleColor="@color/White" />
-
-
-            </LinearLayout>
+            </eightbitlab.com.blurview.BlurView>
 
             <RelativeLayout
-                android:id="@+id/rlWrapTextInputOTP"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ivLogo"
-                android:paddingTop="20dp"
-                android:visibility="invisible">
+                android:layout_height="match_parent">
 
-                <RelativeLayout
+                <ImageView
+                    android:id="@+id/ivLogo"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:background="@drawable/ic_chat"
+                    android:contentDescription="@string/logo"
+                    android:scaleType="center"
+                    android:visibility="invisible" />
+
+                <LinearLayout
+                    android:id="@+id/llWrapInputEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentTop="true">
+                    android:layout_below="@id/ivLogo"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:visibility="visible">
 
-                    <TextView
-                        android:id="@+id/tvEmailInformation"
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/tlInputEmail"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="0.7"
+                        android:background="@color/transparent"
+                        android:hint="@string/email"
+                        app:boxCornerRadiusBottomEnd="10dp"
+                        app:boxCornerRadiusBottomStart="10dp"
+                        app:boxCornerRadiusTopEnd="10dp"
+                        app:boxCornerRadiusTopStart="10dp"
+                        app:boxStrokeColor="@color/Outline"
+                        app:boxStrokeWidth="1dp"
+                        app:boxStrokeWidthFocused="2dp"
+                        app:errorEnabled="false"
+                        app:hintTextColor="@color/Primary40"
+                        app:placeholderText="@string/inputEmail"
+                        app:placeholderTextColor="@color/Outline">
+
+                        <EditText
+                            android:id="@+id/etEmail"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:importantForAutofill="no"
+                            android:inputType="textEmailAddress"
+                            android:textColor="@color/Black"
+                            android:textSize="12sp"
+                            tools:ignore="LabelFor" />
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/bSendEmail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_margin="10dp"
+                        android:backgroundTint="@color/Primary40"
+                        android:contentDescription="@string/signIn"
+                        android:fontFamily="@font/roboto"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/signIn"
+                        android:textAllCaps="false"
+                        android:textColor="@color/White"
+                        android:textSize="12sp"
+                        android:visibility="gone"
+                        app:cornerRadius="10dp"
+                        app:rippleColor="@color/White" />
+
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rlWrapTextInputOTP"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ivLogo"
+                    android:paddingTop="20dp"
+                    android:visibility="invisible">
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto_light_italic"
-                        android:gravity="center"
-                        android:text="@string/UserEmail"
-                        android:textColor="@color/Primary10"
-                        android:textSize="12sp" />
-
-                    <LinearLayout
-                        android:id="@+id/llTextInputOTP"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/tvEmailInformation"
-                        android:layout_centerHorizontal="true"
-                        android:orientation="horizontal">
-
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="45dp"
-                            android:layout_height="55dp"
-                            android:clickable="false"
-                            android:enabled="false"
-                            app:boxStrokeColor="@color/Primary40"
-                            app:boxStrokeWidth="1dp"
-                            app:boxStrokeWidthFocused="2dp">
-
-                            <EditText
-                                android:id="@+id/etInputOTP1"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:autofillHints=""
-                                android:cursorVisible="false"
-                                android:fontFamily="@font/roboto_bold"
-                                android:gravity="center"
-                                android:inputType="number"
-                                android:maxLength="1"
-                                android:padding="0dp"
-                                android:textColor="@color/Primary40"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="45dp"
-                            android:layout_height="55dp"
-                            android:layout_marginStart="5dp"
-                            android:clickable="false"
-                            android:enabled="false"
-                            app:boxStrokeColor="@color/Primary40"
-                            app:boxStrokeWidth="1dp"
-                            app:boxStrokeWidthFocused="2dp">
-
-                            <EditText
-                                android:id="@+id/etInputOTP2"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:cursorVisible="false"
-                                android:fontFamily="@font/roboto_bold"
-                                android:gravity="center"
-                                android:importantForAutofill="no"
-                                android:inputType="number"
-                                android:maxLength="1"
-                                android:padding="0dp"
-                                android:textColor="@color/Primary40"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="45dp"
-                            android:layout_height="55dp"
-                            android:layout_marginStart="5dp"
-                            android:clickable="false"
-                            android:enabled="false"
-                            app:boxStrokeColor="@color/Primary40"
-                            app:boxStrokeWidth="1dp"
-                            app:boxStrokeWidthFocused="2dp">
-
-                            <EditText
-                                android:id="@+id/etInputOTP3"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:cursorVisible="false"
-                                android:fontFamily="@font/roboto_bold"
-                                android:gravity="center"
-                                android:importantForAutofill="no"
-                                android:inputType="number"
-                                android:maxLength="1"
-                                android:padding="0dp"
-                                android:textColor="@color/Primary40"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="45dp"
-                            android:layout_height="55dp"
-                            android:layout_marginStart="5dp"
-                            android:clickable="false"
-                            android:enabled="false"
-                            app:boxStrokeColor="@color/Primary40"
-                            app:boxStrokeWidth="1dp"
-                            app:boxStrokeWidthFocused="2dp">
-
-                            <EditText
-                                android:id="@+id/etInputOTP4"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:cursorVisible="false"
-                                android:fontFamily="@font/roboto_bold"
-                                android:gravity="center"
-                                android:importantForAutofill="no"
-                                android:inputType="number"
-                                android:maxLength="1"
-                                android:padding="0dp"
-                                android:textColor="@color/Primary40"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="45dp"
-                            android:layout_height="55dp"
-                            android:layout_marginStart="5dp"
-                            android:clickable="false"
-                            android:enabled="false"
-                            app:boxStrokeColor="@color/Primary40"
-                            app:boxStrokeWidth="1dp"
-                            app:boxStrokeWidthFocused="2dp">
-
-                            <EditText
-                                android:id="@+id/etInputOTP5"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:cursorVisible="false"
-                                android:fontFamily="@font/roboto_bold"
-                                android:gravity="center"
-                                android:importantForAutofill="no"
-                                android:inputType="number"
-                                android:maxLength="1"
-                                android:padding="0dp"
-                                android:textColor="@color/Primary40"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.google.android.material.textfield.TextInputLayout
-                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                            android:layout_width="45dp"
-                            android:layout_height="55dp"
-                            android:layout_marginStart="5dp"
-                            android:clickable="false"
-                            android:enabled="false"
-                            app:boxStrokeColor="@color/Primary40"
-                            app:boxStrokeWidth="1dp"
-                            app:boxStrokeWidthFocused="2dp">
-
-                            <EditText
-                                android:id="@+id/etInputOTP6"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:cursorVisible="false"
-                                android:fontFamily="@font/roboto_bold"
-                                android:gravity="center"
-                                android:importantForAutofill="no"
-                                android:inputType="number"
-                                android:maxLength="1"
-                                android:padding="0dp"
-                                android:textColor="@color/Primary40"
-                                android:textSize="14sp" />
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                    </LinearLayout>
-
-                    <TextView
-                        android:id="@+id/txtCountdown"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/llTextInputOTP"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="10dp"
-                        android:fontFamily="@font/roboto_bold"
-                        android:text="@string/timedown"
-                        android:textColor="@color/Outline"
-                        android:textSize="14sp" />
-
-                    <LinearLayout
-                        android:id="@+id/llOTPRequest"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/txtCountdown"
-                        android:layout_centerHorizontal="true">
+                        android:layout_alignParentTop="true">
 
                         <TextView
-                            android:id="@+id/tvUnVerify"
+                            android:id="@+id/tvEmailInformation"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/roboto_light_italic"
+                            android:gravity="center"
+                            android:text="@string/UserEmail"
+                            android:textColor="@color/Primary10"
+                            android:textSize="12sp" />
+
+                        <LinearLayout
+                            android:id="@+id/llTextInputOTP"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="@string/OTP_Info"
-                            android:textColor="@color/Primary40"
-                            android:textSize="12sp"
-                            tools:ignore="TextContrastCheck" />
+                            android:layout_below="@id/tvEmailInformation"
+                            android:layout_centerHorizontal="true"
+                            android:orientation="horizontal">
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="45dp"
+                                android:layout_height="55dp"
+                                android:clickable="false"
+                                android:enabled="false"
+                                app:boxStrokeColor="@color/Primary40"
+                                app:boxStrokeWidth="1dp"
+                                app:boxStrokeWidthFocused="2dp">
+
+                                <EditText
+                                    android:id="@+id/etInputOTP1"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:autofillHints=""
+                                    android:cursorVisible="false"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:gravity="center"
+                                    android:inputType="number"
+                                    android:maxLength="1"
+                                    android:padding="0dp"
+                                    android:textColor="@color/Primary40"
+                                    android:textSize="14sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="45dp"
+                                android:layout_height="55dp"
+                                android:layout_marginStart="5dp"
+                                android:clickable="false"
+                                android:enabled="false"
+                                app:boxStrokeColor="@color/Primary40"
+                                app:boxStrokeWidth="1dp"
+                                app:boxStrokeWidthFocused="2dp">
+
+                                <EditText
+                                    android:id="@+id/etInputOTP2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:cursorVisible="false"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:gravity="center"
+                                    android:importantForAutofill="no"
+                                    android:inputType="number"
+                                    android:maxLength="1"
+                                    android:padding="0dp"
+                                    android:textColor="@color/Primary40"
+                                    android:textSize="14sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="45dp"
+                                android:layout_height="55dp"
+                                android:layout_marginStart="5dp"
+                                android:clickable="false"
+                                android:enabled="false"
+                                app:boxStrokeColor="@color/Primary40"
+                                app:boxStrokeWidth="1dp"
+                                app:boxStrokeWidthFocused="2dp">
+
+                                <EditText
+                                    android:id="@+id/etInputOTP3"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:cursorVisible="false"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:gravity="center"
+                                    android:importantForAutofill="no"
+                                    android:inputType="number"
+                                    android:maxLength="1"
+                                    android:padding="0dp"
+                                    android:textColor="@color/Primary40"
+                                    android:textSize="14sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="45dp"
+                                android:layout_height="55dp"
+                                android:layout_marginStart="5dp"
+                                android:clickable="false"
+                                android:enabled="false"
+                                app:boxStrokeColor="@color/Primary40"
+                                app:boxStrokeWidth="1dp"
+                                app:boxStrokeWidthFocused="2dp">
+
+                                <EditText
+                                    android:id="@+id/etInputOTP4"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:cursorVisible="false"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:gravity="center"
+                                    android:importantForAutofill="no"
+                                    android:inputType="number"
+                                    android:maxLength="1"
+                                    android:padding="0dp"
+                                    android:textColor="@color/Primary40"
+                                    android:textSize="14sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="45dp"
+                                android:layout_height="55dp"
+                                android:layout_marginStart="5dp"
+                                android:clickable="false"
+                                android:enabled="false"
+                                app:boxStrokeColor="@color/Primary40"
+                                app:boxStrokeWidth="1dp"
+                                app:boxStrokeWidthFocused="2dp">
+
+                                <EditText
+                                    android:id="@+id/etInputOTP5"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:cursorVisible="false"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:gravity="center"
+                                    android:importantForAutofill="no"
+                                    android:inputType="number"
+                                    android:maxLength="1"
+                                    android:padding="0dp"
+                                    android:textColor="@color/Primary40"
+                                    android:textSize="14sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                            <com.google.android.material.textfield.TextInputLayout
+                                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                                android:layout_width="45dp"
+                                android:layout_height="55dp"
+                                android:layout_marginStart="5dp"
+                                android:clickable="false"
+                                android:enabled="false"
+                                app:boxStrokeColor="@color/Primary40"
+                                app:boxStrokeWidth="1dp"
+                                app:boxStrokeWidthFocused="2dp">
+
+                                <EditText
+                                    android:id="@+id/etInputOTP6"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:cursorVisible="false"
+                                    android:fontFamily="@font/roboto_bold"
+                                    android:gravity="center"
+                                    android:importantForAutofill="no"
+                                    android:inputType="number"
+                                    android:maxLength="1"
+                                    android:padding="0dp"
+                                    android:textColor="@color/Primary40"
+                                    android:textSize="14sp" />
+                            </com.google.android.material.textfield.TextInputLayout>
+
+                        </LinearLayout>
 
                         <TextView
-                            android:id="@+id/tvButtonSendOTPAgain"
+                            android:id="@+id/txtCountdown"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="5dp"
-                            android:clickable="true"
-                            android:focusable="true"
-                            android:fontFamily="@font/roboto_medium"
-                            android:text="@string/OTP_Request"
-                            android:textColor="@color/Secondary80"
-                            android:textSize="12sp"
-                            tools:ignore="TextContrastCheck" />
-                    </LinearLayout>
+                            android:layout_below="@id/llTextInputOTP"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="10dp"
+                            android:fontFamily="@font/roboto_bold"
+                            android:text="@string/timedown"
+                            android:textColor="@color/Outline"
+                            android:textSize="14sp" />
+
+                        <LinearLayout
+                            android:id="@+id/llOTPRequest"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@id/txtCountdown"
+                            android:layout_centerHorizontal="true">
+
+                            <TextView
+                                android:id="@+id/tvUnVerify"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/OTP_Info"
+                                android:textColor="@color/Primary40"
+                                android:textSize="12sp"
+                                tools:ignore="TextContrastCheck" />
+
+                            <TextView
+                                android:id="@+id/tvButtonSendOTPAgain"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="5dp"
+                                android:clickable="true"
+                                android:focusable="true"
+                                android:fontFamily="@font/roboto_medium"
+                                android:text="@string/OTP_Request"
+                                android:textColor="@color/Secondary80"
+                                android:textSize="12sp"
+                                tools:ignore="TextContrastCheck" />
+                        </LinearLayout>
+
+                    </RelativeLayout>
+
+                    <Button
+                        android:id="@+id/bInputEmailAgain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="250dp"
+                        android:backgroundTint="@color/Secondary40"
+                        android:clickable="true"
+                        android:contentDescription="@string/input_email_again"
+                        android:focusable="true"
+                        android:fontFamily="@font/roboto"
+                        android:paddingLeft="10dp"
+                        android:paddingTop="10dp"
+                        android:paddingRight="10dp"
+                        android:paddingBottom="10dp"
+                        android:text="@string/input_email_again"
+                        android:textAllCaps="false"
+                        android:textColor="@color/White"
+                        android:textSize="12sp"
+                        app:cornerRadius="10dp"
+                        app:rippleColor="@color/White" />
 
                 </RelativeLayout>
-
-                <Button
-                    android:id="@+id/bInputEmailAgain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="48dp"
-                    android:layout_marginTop="250dp"
-                    android:layout_centerHorizontal="true"
-                    android:backgroundTint="@color/Secondary40"
-                    android:clickable="true"
-                    android:contentDescription="@string/input_email_again"
-                    android:focusable="true"
-                    android:fontFamily="@font/roboto"
-                    android:paddingLeft="10dp"
-                    android:paddingTop="10dp"
-                    android:paddingRight="10dp"
-                    android:paddingBottom="10dp"
-                    android:text="@string/input_email_again"
-                    android:textAllCaps="false"
-                    android:textColor="@color/White"
-                    android:textSize="12sp"
-                    app:cornerRadius="10dp"
-                    app:rippleColor="@color/White" />
-
             </RelativeLayout>
-        </RelativeLayout>
-    </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

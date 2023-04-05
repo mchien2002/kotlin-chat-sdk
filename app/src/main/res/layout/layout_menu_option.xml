@@ -4,7 +4,7 @@
     android:id="@+id/rlMenuOption"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Primary95"
+    android:background="@color/transparent"
     android:alpha="0">
 
     <RelativeLayout
@@ -63,6 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rlAvatar"
         android:layout_centerInParent="true"
+        android:layout_centerVertical="true"
         android:padding="20dp">
 
         <LinearLayout

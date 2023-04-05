@@ -3,6 +3,7 @@ package com.example.ae_chat_sdk.acti.intro
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -11,6 +12,7 @@ import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -25,6 +27,8 @@ import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import eightbitlab.com.blurview.BlurView
+import eightbitlab.com.blurview.RenderScriptBlur
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,7 +38,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var context: Context
 
     // Intro
-    lateinit var ibLogo: TextView
+//    lateinit var ibLogo: TextView
 
     // Email
     lateinit var btnSendEmail: Button
@@ -58,6 +62,26 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         setContentView(R.layout.activity_login)
         context = applicationContext
 
+        val radius: Float = 20f;
+
+        val decorView: View = window.decorView
+        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
+        val rootView: ViewGroup = decorView.findViewById(android.R.id.content)
+
+        // Optional:
+        // Set drawable to draw in the beginning of each blurred frame.
+        // Can be used in case your layout has a lot of transparent space and your content
+        // gets a too low alpha value after blur is applied.
+        val windowBackground: Drawable = decorView.background
+
+
+        findViewById<BlurView>(R.id.blurView).setupWith(rootView)
+            .setFrameClearDrawable(windowBackground)
+            .setBlurAlgorithm(RenderScriptBlur(this))
+            .setBlurRadius(radius)
+            .setBlurAutoUpdate(true)
+
+
         init()
         showInputEmail()
         setListenerOTP()
@@ -66,7 +90,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
     private fun init() {
         // Intro
-        ibLogo = findViewById(R.id.ibIconLogoIntroAfter)
+//        ibLogo = findViewById(R.id.ibIconLogoIntroAfter)
 
         // Email
         btnSendEmail = findViewById(R.id.bSendEmail)
@@ -117,13 +141,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun showInputEmail() {
-        findViewById<ImageButton>(R.id.ibIconTalkWave).animate().alpha(0F)
-            .setDuration(200).startDelay =
-            2200
-
-        findViewById<ImageView>(R.id.ibIconChat).animate()
-            .alpha(0F)
-            .setDuration(200).startDelay = 2500
+//        findViewById<ImageButton>(R.id.ibIconTalkWave).animate().alpha(0F)
+//            .setDuration(200).startDelay =
+//            2200
+//
+//        findViewById<ImageView>(R.id.ibIconChat).animate()
+//            .alpha(0F)
+//            .setDuration(200).startDelay = 2500
 
         Handler(Looper.getMainLooper()).postDelayed({
             BottomSheetBehavior.from(findViewById(R.id.rlInput)).apply {
@@ -132,9 +156,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             }
         }, 3000)
 
-        Handler(Looper.getMainLooper()).postDelayed({
-            ibLogo.visibility = View.VISIBLE
-        }, 3500)
+//        Handler(Looper.getMainLooper()).postDelayed({
+//            ibLogo.visibility = View.VISIBLE
+//        }, 3500)
 
         setListenerEmail()
         eTextEmail.isEnabled = true

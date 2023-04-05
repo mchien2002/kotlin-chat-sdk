@@ -25,5 +25,6 @@
 
     <color name="white2">#F0F0F0</color>
     <color name="transparent">#00F0F0F0</color>
+    <color name="white_50">#80FFFFFF</color>
     <color name="red">#FF0000</color>
 </resources>

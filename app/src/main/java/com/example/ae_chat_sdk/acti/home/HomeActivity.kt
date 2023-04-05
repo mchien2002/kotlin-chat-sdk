@@ -1,28 +1,22 @@
 package com.example.ae_chat_sdk.acti.home
 
-import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.graphics.Color
-import android.net.Uri
+import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.widget.EditText
+import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
@@ -31,26 +25,20 @@ import com.example.ae_chat_sdk.acti.intro.LoginActivity
 import com.example.ae_chat_sdk.acti.profile.ProfileActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
-import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.model.ApiResponse
-import com.example.ae_chat_sdk.data.model.MyResponse
-import com.example.ae_chat_sdk.data.model.RealPathUtil
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.hdodenhof.circleimageview.CircleImageView
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import eightbitlab.com.blurview.BlurView
+import eightbitlab.com.blurview.RenderScriptBlur
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
 
 @Suppress("DEPRECATION")
 class HomeActivity : AppCompatActivity(), View.OnClickListener {
@@ -69,7 +57,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var onstream: List<User>
     lateinit var contact: ArrayList<String>
 
-    lateinit var rLayoutBottomSheetHome: RelativeLayout
+    lateinit var ctLayoutBottomSheetHome: ConstraintLayout
 
     // lateinit var rLayoutBottomSheetChangeAvatar: LinearLayout
     lateinit var rLayoutMessageHome: RelativeLayout
@@ -95,6 +83,31 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+
+        val radius: Float = 20f;
+
+        val decorView: View = window.decorView
+        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
+        val rootView: ViewGroup = decorView.findViewById(android.R.id.content)
+
+        // Optional:
+        // Set drawable to draw in the beginning of each blurred frame.
+        // Can be used in case your layout has a lot of transparent space and your content
+        // gets a too low alpha value after blur is applied.
+        val windowBackground: Drawable = decorView.background
+
+
+        findViewById<BlurView>(R.id.blurView).setupWith(rootView)
+            .setFrameClearDrawable(windowBackground)
+            .setBlurAlgorithm(RenderScriptBlur(this))
+            .setBlurRadius(radius)
+            .setBlurAutoUpdate(true)
+        findViewById<BlurView>(R.id.blurViewBottomSheet).setupWith(rootView)
+            .setFrameClearDrawable(windowBackground)
+            .setBlurAlgorithm(RenderScriptBlur(this))
+            .setBlurRadius(radius)
+            .setBlurAutoUpdate(true)
 
         // set data for list on Stream
         searchUser("")
@@ -176,7 +189,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun init() {
-        rLayoutBottomSheetHome = findViewById(R.id.rlBottomSheetHome)
+        ctLayoutBottomSheetHome = findViewById(R.id.ctBottomSheetHome)
         // rLayoutBottomSheetChangeAvatar = findViewById(R.id.rlBottomSheetChangeAvatar)
         rLayoutMessageHome = findViewById(R.id.rlMessageHome)
 
@@ -184,7 +197,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         rvRecent = findViewById(R.id.rvVerticalRecent)
         rvListContact = findViewById(R.id.rvHorizonalContact)
 
-        bottomSheetHomeBehavior = BottomSheetBehavior.from(rLayoutBottomSheetHome)
+        bottomSheetHomeBehavior = BottomSheetBehavior.from(ctLayoutBottomSheetHome)
 
         tvPagename = findViewById(R.id.tvPageName)
 
@@ -226,9 +239,11 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                             findViewById<RelativeLayout>(R.id.rlListContact).visibility =
                                 View.VISIBLE
                         }
+                        tvPagename.visibility = View.VISIBLE
                         listContact = false
                     }
                     else -> {
+                        tvPagename.visibility = View.INVISIBLE
                         findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
                         findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
                         findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)

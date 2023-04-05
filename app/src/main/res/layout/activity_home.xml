@@ -4,8 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/Primary95"
+    android:background="@drawable/background"
     tools:context=".acti.home.HomeActivity">
+
+    <eightbitlab.com.blurview.BlurView
+        android:id="@+id/blurView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:blurOverlayColor="@color/transparent">
+
+    </eightbitlab.com.blurview.BlurView>
 
     <TextView
         android:id="@+id/tvPageName"

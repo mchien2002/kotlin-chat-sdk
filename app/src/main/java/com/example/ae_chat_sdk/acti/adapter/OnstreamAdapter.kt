@@ -11,7 +11,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.popupwindow.BoxChatActivity
+import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.model.User
 

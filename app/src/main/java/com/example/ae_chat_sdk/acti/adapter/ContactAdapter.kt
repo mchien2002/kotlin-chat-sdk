@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.popupwindow.BoxChatActivity
+import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import de.hdodenhof.circleimageview.CircleImageView
 
 class ContactAdapter(val listContact: ArrayList<String>, val context: Context) :

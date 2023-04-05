@@ -29,7 +29,7 @@
             android:name=".acti.profile.ProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".acti.popupwindow.BoxChatActivity"
+            android:name=".acti.boxchat.BoxChatActivity"
             android:exported="false" />
         <activity
             android:name=".acti.intro.LoginActivity"
