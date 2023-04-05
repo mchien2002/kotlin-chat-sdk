@@ -83,31 +83,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
-
-        val radius: Float = 20f;
-
-        val decorView: View = window.decorView
-        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
-        val rootView: ViewGroup = decorView.findViewById(android.R.id.content)
-
-        // Optional:
-        // Set drawable to draw in the beginning of each blurred frame.
-        // Can be used in case your layout has a lot of transparent space and your content
-        // gets a too low alpha value after blur is applied.
-        val windowBackground: Drawable = decorView.background
-
-
-        findViewById<BlurView>(R.id.blurView).setupWith(rootView)
-            .setFrameClearDrawable(windowBackground)
-            .setBlurAlgorithm(RenderScriptBlur(this))
-            .setBlurRadius(radius)
-            .setBlurAutoUpdate(true)
-        findViewById<BlurView>(R.id.blurViewBottomSheet).setupWith(rootView)
-            .setFrameClearDrawable(windowBackground)
-            .setBlurAlgorithm(RenderScriptBlur(this))
-            .setBlurRadius(radius)
-            .setBlurAutoUpdate(true)
+        setBlur()
 
         // set data for list on Stream
         searchUser("")
@@ -135,11 +111,36 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             if (event.action == MotionEvent.ACTION_UP) {
                 val textSearch = etSearch.text
                 searchUser(textSearch.toString())
-                Log.d("SEARCH",textSearch.toString())
             }
             false
         }
       setData()
+    }
+
+    private fun setBlur() {
+        val radius: Float = 20f;
+
+        val decorView: View = window.decorView
+        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
+        val rootView: ViewGroup = decorView.findViewById(android.R.id.content)
+
+        // Optional:
+        // Set drawable to draw in the beginning of each blurred frame.
+        // Can be used in case your layout has a lot of transparent space and your content
+        // gets a too low alpha value after blur is applied.
+        val windowBackground: Drawable = decorView.background
+
+
+        findViewById<BlurView>(R.id.blurView).setupWith(rootView)
+            .setFrameClearDrawable(windowBackground)
+            .setBlurAlgorithm(RenderScriptBlur(this))
+            .setBlurRadius(radius)
+            .setBlurAutoUpdate(true)
+        findViewById<BlurView>(R.id.blurViewBottomSheet).setupWith(rootView)
+            .setFrameClearDrawable(windowBackground)
+            .setBlurAlgorithm(RenderScriptBlur(this))
+            .setBlurRadius(radius)
+            .setBlurAutoUpdate(true)
     }
 
     override fun onStart() {
@@ -164,7 +165,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                 val gson = Gson()
                 val type = object : TypeToken<List<User>>() {}.type
                 val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
-                Log.d("RESPONSE", user.toString())
                 val listUserId: List<User>
                 listUserId = user
                 rvOnstream.layoutManager =
@@ -266,7 +266,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         val user = gson.fromJson<User>(userString, type)
         tvUserName.text = user.userName.toString()
         tvEmail.text = user.email.toString()
-        Log.d("Notify", user.userName.toString())
 
         val imgLocal = appStorage?.getData("avatar", "").toString()
         if(imgLocal.length > 1)
@@ -283,7 +282,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                 .into(avatarUser)
         } else {
             val imageUrl = ApiConstant.URL_AVATAR + user.avatar
-            Log.d("link", imageUrl.toString())
             Glide.with(this)
                 .load(imageUrl)
                 .into(avatarUser)
@@ -296,7 +294,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                 setStartLoginActivity()
                 val appStorage = context?.let { AppStorage.getInstance(it) }
                 val userString = appStorage?.clearData()
-                Log.d("SHOW DATAAAAAA", userString.toString())
             }
             R.id.ivAvatar -> {
                 Toast.makeText(applicationContext, "this is toast message 1", Toast.LENGTH_SHORT)

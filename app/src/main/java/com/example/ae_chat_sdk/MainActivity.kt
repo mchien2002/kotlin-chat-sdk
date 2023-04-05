@@ -2,19 +2,16 @@ package com.example.ae_chat_sdk
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.View
 import android.widget.ImageButton
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.ae_chat_sdk.acti.intro.LoginActivity
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
+import com.example.ae_chat_sdk.data.model.SocketRequest
 import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.databinding.ActivityMainBinding
-import okhttp3.OkHttpClient
-import okhttp3.Request
+import okhttp3.*
+import org.json.JSONObject
 
 class MainActivity : AppCompatActivity(){
 
@@ -45,16 +42,20 @@ class MainActivity : AppCompatActivity(){
         this.startActivity(intent)
     }
 
-    private fun connectSocket(){
-        val client=OkHttpClient()
+    private fun connectSocket() {
+        val client = OkHttpClient()
 
-        val apiKey=""
+        val apiKey = ""
 
-        val chanelId=1
+        val chanelId = 1
 
-        val request:Request=Request.Builder().url(SocketConstant.URL).build()
-        val webSocketListener= WebSocketListener()
-        val ws =client.newWebSocket(request,webSocketListener)
+        val request: Request = Request.Builder().url(SocketConstant.URL).build()
+//        val body:RequestBody=FormBody.Builder().add("groupId", "abc").build()
+//        val request:Request = Request.Builder().url(SocketConstant.URL).method("GET",null).build()
+        val webSocketListener = WebSocketListener()
+        val ws: WebSocket = client.newWebSocket(request, webSocketListener)
+
+        webSocketListener.receiveMessage(ws)
     }
 
 }

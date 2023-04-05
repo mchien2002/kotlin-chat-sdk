@@ -213,7 +213,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun verifyOTP(OTP: String) {
-        Log.d("OTP", OTP)
         resetOTP()
         val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
         call.enqueue(object : Callback<MyResponse> {
@@ -282,7 +281,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 fromEditText.isEnabled = false
 
             }
-            Log.d("KeyCode", event.keyCode.toString())
             false
         }
     }
@@ -337,12 +335,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun checkNewLogin() {
         val appStorage = context.let { AppStorage.getInstance(it) }
         val userString = appStorage.getData("User", "").toString()
-        Log.d("Lengggggggggg", userString.length.toString())
         if (userString.length > 10) {
             setStartHomeActivity()
         }
 
-        Log.d("SHOW DATAAAAAA", userString)
     }
 
     private fun setStartHomeActivity() {
