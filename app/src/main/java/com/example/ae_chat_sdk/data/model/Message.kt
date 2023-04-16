@@ -61,10 +61,10 @@ class Message {
     var message: String = ""
 
     @SerializedName("createAt")
-    var createdAt: Date = Date(2023)
+    var createdAt: String = ""
 
     @SerializedName("updateAt")
-    var updateAt: Date = Date(2023)
+    var updateAt: String = ""
 
     @SerializedName("senderName")
     var senderName: String = ""

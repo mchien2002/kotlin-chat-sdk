@@ -20,8 +20,10 @@ import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
+import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
@@ -29,6 +31,9 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -231,8 +236,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
                     val appStorage = AppStorage.getInstance(context)
                     appStorage.saveData("User", gson.toJson(response.body()?.data))
-
-
+                    connectSocket()
+                    Log.e("USERID5",user.userId)
+                    val webSocketListener: WebSocketListener = WebSocketListener()
+                    webSocketListener.getListGroup(MainActivity.webSocket,user.userId)
                     Log.d(
                         "Success",
                         "thanh cong $user"
@@ -344,5 +351,22 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun setStartHomeActivity() {
         val intent: Intent = Intent(this, HomeActivity::class.java)
         this.startActivity(intent)
+    }
+
+    private fun connectSocket() {
+        val client = OkHttpClient()
+
+        val apiKey = ""
+
+        val chanelId = 1
+
+        val request: Request = Request.Builder().url(SocketConstant.URL).build()
+//        val body:RequestBody=FormBody.Builder().add("groupId", "abc").build()
+//        val request:Request = Request.Builder().url(SocketConstant.URL).method("GET",null).build()
+        val webSocketListener = WebSocketListener()
+        val ws: WebSocket = client.newWebSocket(request, webSocketListener)
+
+        MainActivity.webSocket = ws
+
     }
 }

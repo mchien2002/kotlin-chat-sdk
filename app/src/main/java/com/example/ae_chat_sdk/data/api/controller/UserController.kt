@@ -13,4 +13,7 @@ interface UserController {
 
     @GET("search_user")
     fun searchUser(@Header("token") token: String,@Query("key") key : String) : Call<ApiResponse>
+
+    @GET("user_profile")
+    fun getUserProfile(@Header("token") token:String, @Query("id") id:String) : Call<MyResponse>
 }

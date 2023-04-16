@@ -4,6 +4,5 @@ import java.util.Objects
 
 class SocketRequest constructor(
     val event: String,
-    val id: String,
     val payload: MutableMap<String, Any>
 )

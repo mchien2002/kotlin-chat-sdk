@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
@@ -25,6 +26,7 @@ import com.example.ae_chat_sdk.acti.profile.ProfileActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
+import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.ApiResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
@@ -78,6 +80,10 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     var listContact: Boolean = false
 
+    companion object{
+        lateinit var recentAdapter: RecentAdapter
+    }
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -87,11 +93,11 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         // set data for list on Stream
         searchUser("")
 
-        // set data for recent chat
-        recent = ArrayList()
-        for (i in 1..20) {
-            recent.add("username # $i")
-        }
+//        // set data for recent chat
+//        recent = ArrayList()
+//        for (i in 1..20) {
+//            recent.add("username # $i")
+//        }
 
         contact = ArrayList()
         for (i in 1..20) {
@@ -105,6 +111,14 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
         onStart()
+
+        val gson = Gson()
+        val type = object : TypeToken<User>() {}.type
+        val appStorage = AppStorage.getInstance(context)
+        val userString: String = appStorage.getData("User", "").toString()
+        val user = gson.fromJson<User>(userString, type)
+        val webSocketListener: WebSocketListener = WebSocketListener()
+        webSocketListener.getListGroup(MainActivity.webSocket,user.userId)
 
         etSearch.setOnTouchListener { _, event ->
             if (event.action == MotionEvent.ACTION_UP) {
@@ -301,18 +315,17 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun renderDataRecyclerView() {
-        rvRecent.layoutManager =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvRecent.adapter = RecentAdapter(recent, context)
-
-        rvListContact.layoutManager =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvListContact.adapter = ContactAdapter(contact, context)
-        rvListContact.addItemDecoration(
-            DividerItemDecoration(
-                context, DividerItemDecoration.VERTICAL
-            )
-        )
+//        val gson = Gson()
+//        val type = object : TypeToken<User>() {}.type
+//        val appStorage = AppStorage.getInstance(context)
+//        val userString: String = appStorage.getData("User", "").toString()
+//        val user = gson.fromJson<User>(userString, type)
+//        val webSocketListener: WebSocketListener = WebSocketListener()
+//        webSocketListener.getListGroup(MainActivity.webSocket,user.userId.toString())
+        recentAdapter = RecentAdapter(context)
+        rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvRecent.adapter = recentAdapter
+        recentAdapter.notifyDataSetChanged()
     }
 
     private fun setStartLoginActivity() {

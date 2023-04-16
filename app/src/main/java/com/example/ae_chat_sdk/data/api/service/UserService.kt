@@ -20,4 +20,8 @@ public class UserService constructor() : UserController {
     override fun searchUser(token: String, key: String): Call<ApiResponse> {
         return userService.searchUser(token, key)
     }
+
+    override fun getUserProfile(token: String, id: String): Call<MyResponse> {
+        return userService.getUserProfile(token, id)
+    }
 }

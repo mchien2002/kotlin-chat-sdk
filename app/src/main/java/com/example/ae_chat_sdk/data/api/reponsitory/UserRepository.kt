@@ -19,4 +19,8 @@ class UserRepository constructor(){
     {
         return userService.searchUser(token, key)
     }
+
+    public fun getUserProfile(token: String,id:String):Call<MyResponse>{
+        return userService.getUserProfile(token, id)
+    }
 }
