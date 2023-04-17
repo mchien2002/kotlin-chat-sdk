@@ -42,17 +42,17 @@ class Message {
         OFFICICAL(5)
     }
 
-    @SerializedName("id")
-    var id: String = ""
+    @SerializedName("messageId")
+    var messageId: String = ""
 
     @SerializedName("type")
-    var type: String = Type.TEXT.type.toString()
+    var type: Int = Type.TEXT.ordinal
 
     @SerializedName("status")
-    var status: String = Status.UNKNOWN.status.toString()
+    var status: Int = Status.UNKNOWN.ordinal
 
     @SerializedName("groupType")
-    var groupType: String = GroupType.UNKOWN.groupType.toString()
+    var groupType: Int = GroupType.UNKOWN.ordinal
 
     @SerializedName("groupId")
     var groupId: String = ""
@@ -60,7 +60,7 @@ class Message {
     @SerializedName("message")
     var message: String = ""
 
-    @SerializedName("createAt")
+    @SerializedName("createdAt")
     var createdAt: String = ""
 
     @SerializedName("updateAt")

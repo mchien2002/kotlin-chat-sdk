@@ -239,7 +239,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                     connectSocket()
                     Log.e("USERID5",user.userId)
                     val webSocketListener: WebSocketListener = WebSocketListener()
-                    webSocketListener.getListGroup(MainActivity.webSocket,user.userId)
+                    //webSocketListener.getListGroup(MainActivity.webSocket,user.userId)
                     Log.d(
                         "Success",
                         "thanh cong $user"

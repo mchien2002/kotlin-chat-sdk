@@ -170,18 +170,28 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                 Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
                     .show()
+
             }
             override fun onResponse(
                 call: Call<ApiResponse>,
                 response: Response<ApiResponse>
             ) {
-                val gson = Gson()
-                val type = object : TypeToken<List<User>>() {}.type
-                val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
-                val listUserId: List<User> = user
-                rvOnstream.layoutManager =
-                    LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)
+               if(response.code() == 403){
+                   setStartLoginActivity()
+                   val appStorage = context?.let { AppStorage.getInstance(it) }
+                   val userString = appStorage?.clearData()
+               }else if(response.code() == 200){
+                   val gson = Gson()
+                   val type = object : TypeToken<List<User>>() {}.type
+                   val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
+                   if(user != null){
+                       val listUserId: List<User> = user
+                       rvOnstream.layoutManager =
+                           LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                       rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)
+                   }
+               }
+
             }
         })
 

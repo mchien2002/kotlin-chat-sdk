@@ -6,6 +6,7 @@ data class Group(
     val groupType: Int,
     val theme: Int,
     val groupStatus: Int,
-    val members: List<String>
+    val members: List<String>,
+    val lastMessage: Message
 )
 data class ListGroupResponse(val listGroup: List<Group>)

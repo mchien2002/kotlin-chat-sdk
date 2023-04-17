@@ -108,7 +108,7 @@
             app:layout_constraintRight_toRightOf="parent">
 
             <EditText
-                android:id="@+id/etInputSearch"
+                android:id="@+id/etInputMessage"
                 android:layout_width="match_parent"
                 android:layout_height="55dp"
                 android:background="@drawable/bg_frame_input"
@@ -135,7 +135,8 @@
                 android:minWidth="48dp"
                 android:minHeight="48dp"
                 android:src="@drawable/ic_send_message"
-                android:text="" />
+                android:text=""
+                android:clickable="true"/>
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,17 +5,22 @@ import android.content.Context
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.Message
+import de.hdodenhof.circleimageview.CircleImageView
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
 import java.util.*
@@ -31,6 +36,14 @@ class BoxChatActivity: AppCompatActivity() {
     lateinit var btnNotification: ImageButton
     lateinit var btnSendMessage: ImageButton
 
+    lateinit var ivAvatar : CircleImageView
+
+    lateinit var tvUsername : TextView
+    lateinit var etInputMessage : EditText
+
+    lateinit var groupId : String
+
+    val webSocketListener: WebSocketListener = WebSocketListener()
 
     companion object {
         lateinit var messageAdapter: MessageAdapter
@@ -48,13 +61,15 @@ class BoxChatActivity: AppCompatActivity() {
         init()
         setOnClickListener()
 
+        setAvartar()
 
-        val webSocketListener: WebSocketListener = WebSocketListener()
-        webSocketListener.receiveMessage(MainActivity.webSocket)
+        val extras = intent.extras
+        groupId = extras?.getString("GroupId").toString()
+
+        webSocketListener.receiveMessage(MainActivity.webSocket,groupId.toString())
 
 //        val list:ArrayList<String> =ArrayList()
 //        listMessage.add(Message("1", Message.Type.FIRST_MESSAGE,Message.Status.RECEIVED,Message.GroupType.PRIVATE,"fdfsfds", "", Date(2023,4,6),Date(2023,4,6),"TanPhat","fsfsdfad","","",list,list, ""))
-
 
         messageAdapter =MessageAdapter( context)
         rvMessage.layoutManager =
@@ -65,6 +80,14 @@ class BoxChatActivity: AppCompatActivity() {
 //            findViewById<RecyclerView>(R.id.rvMessage).apply{
 //            adapter = MessageAdapter(listMessage, context)
 //        }
+    }
+
+    private fun setAvartar(){
+        val extras = intent.extras
+        val imageUrl = extras?.getString("avatar")
+        Glide.with(context).load(imageUrl).into(ivAvatar)
+        val username = extras?.getString("username")
+        tvUsername.text = username
     }
 
     private fun setBlur() {
@@ -111,5 +134,21 @@ class BoxChatActivity: AppCompatActivity() {
         btnNotification = findViewById(R.id.ibNotification)
         btnSendMessage = findViewById(R.id.ibSendMessage)
         rvMessage = findViewById(R.id.rvMessage)
+        ivAvatar = findViewById(R.id.ivAvatar)
+        tvUsername = findViewById(R.id.tvUsername)
+        etInputMessage = findViewById(R.id.etInputMessage)
+
+        btnSendMessage.setOnClickListener(View.OnClickListener {
+            if (etInputMessage.text.trim() != "" && etInputMessage.text.trim() != null){
+                val message : Message = Message()
+                message.type = Message.Type.TEXT.ordinal
+                message.groupType = Message.GroupType.PUBLIC.ordinal
+                message.message = etInputMessage.text.toString()
+                message.groupId = groupId
+                webSocketListener.sendMessage(MainActivity.webSocket, message)
+            }
+            Log.e("CHECKK","ooooooooooooo|")
+
+        })
     }
 }

@@ -64,7 +64,7 @@ class WebSocketListener : WebSocketListener() {
                     listGroupJsonArray?.map { gson.fromJson(gson.toJson(it), Group::class.java) }
                 Log.e("LISTGROUP", listGroup!!.size.toString())
                 listGroup.forEach { group ->
-                    Log.d("Group", "Group ID: ${group.groupId}, Name: ${group.members}")
+                    Log.d("Group", "Group ID: ${group.groupId}, Name: ${group.lastMessage.type.toString()}")
                 }
                 recentAdapter.clearItems()
                 if (listGroup != null) {
@@ -98,10 +98,47 @@ class WebSocketListener : WebSocketListener() {
 
 //        when{
 //            response.event.equals("list_group",true) -> {
-//
+//                android.os.Handler(Looper.getMainLooper()).post {
+//                    Log.e("EVENTT", response.event.toString())
+//                    Log.e("CHECK", "CO VAO HAM IF")
+//                    val gson = Gson()
+//                    val typeToken = object : TypeToken<Map<String, Any>>() {}.type
+//                    val jsonObject = gson.fromJson(text, typeToken) as Map<String, Any>
+//                    val listGroupJsonArray =
+//                        (jsonObject["payload"] as? Map<String, Any>)?.get("listGroup") as? List<Map<String, Any>>
+//                    val listGroup =
+//                        listGroupJsonArray?.map { gson.fromJson(gson.toJson(it), Group::class.java) }
+//                    Log.e("LISTGROUP", listGroup!!.size.toString())
+//                    listGroup.forEach { group ->
+//                        Log.d("Group", "Group ID: ${group.groupId}, Name: ${group.members}")
+//                    }
+//                    recentAdapter.clearItems()
+//                    if (listGroup != null) {
+//                        (listGroup as ArrayList<Group>).forEach { gr ->
+//                            recentAdapter.addItem(gr)
+//                        }
+//                    }
+//                }
 //            }
 //            response.event.equals("list_message",true) -> {
+//                Handler(Looper.getMainLooper()).post(Runnable {
+//                    val gson = Gson()
+//                    val typeToken = object : TypeToken<Map<String, Any>>() {}.type
+//                    val jsonObject = gson.fromJson<Map<String, Any>>(text, typeToken)
 //
+//                    var lm: ArrayList<Message> = ArrayList()
+//
+//                    val messageJsonArray =
+//                        (jsonObject["payload"] as? Map<String, Any>)?.get("listMessage") as? List<Map<String, Any>>
+//                    val mess =
+//                        messageJsonArray?.map { gson.fromJson(gson.toJson(it), Message::class.java) }
+//                    if (mess != null) {
+//                        (mess as ArrayList<Message>).forEach { m ->
+//                            Log.d("as", m.type.toString())
+//                            BoxChatActivity.messageAdapter.addItem(m)
+//                        }
+//                    }
+//                })
 //            }
 //        }
 
@@ -133,10 +170,10 @@ class WebSocketListener : WebSocketListener() {
     }
 
 
-    fun receiveMessage(webSocket: WebSocket) {
+    fun receiveMessage(webSocket: WebSocket,groupId: String) {
 
         val map: MutableMap<String, Any> = HashMap<String, Any>()
-        map["groupId"] = "4028818b86a7ca870186a7cc2bfd0003"
+        map["groupId"] = groupId
         val request: SocketRequest = SocketRequest("list_message", map)
 
         val gson = Gson()
@@ -147,6 +184,14 @@ class WebSocketListener : WebSocketListener() {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["userId"] = userId.toString()
         val request: SocketRequest = SocketRequest("list_group", map)
+        val gson = Gson()
+        webSocket.send(gson.toJson(request))
+    }
+
+    fun sendMessage(webSocket: WebSocket, message: Message){
+        val map: MutableMap<String, Any> = HashMap<String, Any>()
+        map["message"] = message
+        val request: SocketRequest = SocketRequest("create_message", map)
         val gson = Gson()
         webSocket.send(gson.toJson(request))
     }
