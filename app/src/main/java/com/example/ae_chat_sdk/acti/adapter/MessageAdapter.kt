@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.model.Message
+import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageReceiverFooterBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageSenderFooterBinding
 
@@ -25,6 +26,8 @@ class MessageAdapter(val context: Context) :
     inner class SendMessageFooterHolder(private val binding: LayoutFrameMessageSenderFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Message) {
+            Log.d("Check Begin", "Send")
+
             binding.tvSenderFooter.text = data.message
         }
     }
@@ -32,6 +35,8 @@ class MessageAdapter(val context: Context) :
     inner class ReceiveMessageFooterHolder(private val binding: LayoutFrameMessageReceiverFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Message) {
+            Log.d("Check Begin", "Receive")
+
             binding.tvReceiverFooter.text = data.message
             try {
                 Glide.with(context)
@@ -43,8 +48,23 @@ class MessageAdapter(val context: Context) :
         }
     }
 
+    inner class BeginMessageHolder(private val binding: LayoutFrameMessageBeginBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind() {
+            Log.d("Check Begin", "Begin")
+            binding.tvMessageBegin.text = "Bạn đã bắt đầu cuộc trò chuyện."
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return if (viewType == TypeView.FIRST_MESSAGE.typeView || viewType == TypeView.RECEIVE.typeView) {
+        return if (viewType == TypeView.FIRST_MESSAGE.ordinal) {
+            val view = LayoutFrameMessageBeginBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+            BeginMessageHolder(view)
+        } else if (viewType == TypeView.RECEIVE.ordinal) {
             val view = LayoutFrameMessageReceiverFooterBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
@@ -66,9 +86,8 @@ class MessageAdapter(val context: Context) :
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        if (getItemViewType(position) == TypeView.FIRST_MESSAGE.typeView) {
-            listMessage[position].message="Bạn đã bắt đầu cuộc trò chuyện."
-            (holder as ReceiveMessageFooterHolder).bind(listMessage[position])
+        if (getItemViewType(position) == TypeView.FIRST_MESSAGE.ordinal) {
+            (holder as BeginMessageHolder).bind()
         } else if (getItemViewType(position) == TypeView.RECEIVE.typeView) {
             (holder as ReceiveMessageFooterHolder).bind(listMessage[position])
 
@@ -80,13 +99,13 @@ class MessageAdapter(val context: Context) :
     override fun getItemViewType(position: Int): Int {
         val ms: Message = listMessage[position]
         Log.d("message", ms.message)
-        Log.d("type", ms.type)
-        if (ms.message == "" && ms.type.toFloat().toInt() == Message.Type.FIRST_MESSAGE.type) {
-            return TypeView.FIRST_MESSAGE.typeView
+        Log.d("type", ms.type.toString())
+        if (ms.message == "" && ms.type == Message.Type.FIRST_MESSAGE.ordinal) {
+            return TypeView.FIRST_MESSAGE.ordinal
         } else if (ms.senderUin == RestClient().getUserId()) {
-            return TypeView.SEND.typeView
+            return TypeView.SEND.ordinal
         }
-        return TypeView.RECEIVE.typeView
+        return TypeView.RECEIVE.ordinal
     }
 
     fun addItem(message: Message){

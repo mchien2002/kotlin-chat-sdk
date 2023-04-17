@@ -16,11 +16,6 @@ class MainActivity : AppCompatActivity(){
 
     lateinit var ibLogo:ImageButton
 
-    companion object {
-        var Email: String = ""
-        var OTP: String = ""
-        lateinit var webSocket: WebSocket;
-    }
 
     //    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
@@ -32,7 +27,6 @@ class MainActivity : AppCompatActivity(){
         this.binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        connectSocket()
         setStartLoginActivity()
     }
 
@@ -42,21 +36,6 @@ class MainActivity : AppCompatActivity(){
         this.startActivity(intent)
     }
 
-    private fun connectSocket() {
-        val client = OkHttpClient()
 
-        val apiKey = ""
-
-        val chanelId = 1
-
-        val request: Request = Request.Builder().url(SocketConstant.URL).build()
-//        val body:RequestBody=FormBody.Builder().add("groupId", "abc").build()
-//        val request:Request = Request.Builder().url(SocketConstant.URL).method("GET",null).build()
-        val webSocketListener = WebSocketListener()
-        val ws: WebSocket = client.newWebSocket(request, webSocketListener)
-
-        webSocket = ws
-
-    }
 
 }

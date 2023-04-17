@@ -12,13 +12,12 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.adapter.ContactAdapter
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
 import com.example.ae_chat_sdk.acti.intro.LoginActivity
@@ -29,6 +28,7 @@ import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.ApiResponse
 import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
@@ -37,6 +37,9 @@ import com.google.gson.reflect.TypeToken
 import de.hdodenhof.circleimageview.CircleImageView
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.WebSocket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -54,13 +57,9 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var btnLogOut: Button
 
-    lateinit var recent: ArrayList<String>
-    lateinit var onstream: List<User>
-    lateinit var contact: ArrayList<String>
 
     lateinit var ctLayoutBottomSheetHome: ConstraintLayout
 
-    // lateinit var rLayoutBottomSheetChangeAvatar: LinearLayout
     lateinit var rLayoutMessageHome: RelativeLayout
 
     // BottomSheet
@@ -76,33 +75,25 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var avatarUser: CircleImageView
 
 
-    lateinit var iViewAvatarUser: ImageView
-
     var listContact: Boolean = false
 
     companion object{
         lateinit var recentAdapter: RecentAdapter
+        lateinit var webSocket: WebSocket
     }
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
+
+        connectSocket()
+
         setBlur()
 
         // set data for list on Stream
         searchUser("")
 
-//        // set data for recent chat
-//        recent = ArrayList()
-//        for (i in 1..20) {
-//            recent.add("username # $i")
-//        }
-
-        contact = ArrayList()
-        for (i in 1..20) {
-            contact.add("username # $i")
-        }
 
         context = applicationContext
 
@@ -117,17 +108,28 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         val appStorage = AppStorage.getInstance(context)
         val userString: String = appStorage.getData("User", "").toString()
         val user = gson.fromJson<User>(userString, type)
-        val webSocketListener: WebSocketListener = WebSocketListener()
-        webSocketListener.getListGroup(MainActivity.webSocket,user.userId)
+        val webSocketListener = WebSocketListener()
+        webSocketListener.getListGroup(webSocket, user.userId)
 
-        etSearch.setOnTouchListener { _, event ->
-            if (event.action == MotionEvent.ACTION_UP) {
-                val textSearch = etSearch.text
-                searchUser(textSearch.toString())
+
+        etSearch.addTextChangedListener {
+            it?.let { string ->
+                searchUser(etSearch.text.toString())
             }
-            false
         }
-      setData()
+        setData()
+    }
+
+
+    private fun connectSocket() {
+        val client = OkHttpClient()
+
+        val request: Request = Request.Builder().url(SocketConstant.URL).build()
+        val webSocketListener = WebSocketListener()
+        val ws: WebSocket = client.newWebSocket(request, webSocketListener)
+
+        webSocket = ws
+
     }
 
     private fun setBlur() {
@@ -170,18 +172,28 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                 Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
                     .show()
+
             }
             override fun onResponse(
                 call: Call<ApiResponse>,
                 response: Response<ApiResponse>
             ) {
-                val gson = Gson()
-                val type = object : TypeToken<List<User>>() {}.type
-                val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
-                val listUserId: List<User> = user
-                rvOnstream.layoutManager =
-                    LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)
+               if(response.code() == 403){
+                   setStartLoginActivity()
+                   val appStorage = context?.let { AppStorage.getInstance(it) }
+                   val userString = appStorage?.clearData()
+               }else if(response.code() == 200){
+                   val gson = Gson()
+                   val type = object : TypeToken<List<User>>() {}.type
+                   val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
+                   if(user != null){
+                       val listUserId: List<User> = user
+                       rvOnstream.layoutManager =
+                           LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                       rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)
+                   }
+               }
+
             }
         })
 
@@ -315,13 +327,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun renderDataRecyclerView() {
-//        val gson = Gson()
-//        val type = object : TypeToken<User>() {}.type
-//        val appStorage = AppStorage.getInstance(context)
-//        val userString: String = appStorage.getData("User", "").toString()
-//        val user = gson.fromJson<User>(userString, type)
-//        val webSocketListener: WebSocketListener = WebSocketListener()
-//        webSocketListener.getListGroup(MainActivity.webSocket,user.userId.toString())
         recentAdapter = RecentAdapter(context)
         rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvRecent.adapter = recentAdapter
