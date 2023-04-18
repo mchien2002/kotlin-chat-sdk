@@ -21,10 +21,7 @@ import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
-import com.example.ae_chat_sdk.data.model.ApiResponse
-import com.example.ae_chat_sdk.data.model.Group
-import com.example.ae_chat_sdk.data.model.MyResponse
-import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -66,38 +63,38 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemObject = listRecent[position]
-        holder.tvMessage.text = itemObject.lastMessage.message
+
+        if(itemObject.lastMessage.type == Message.Type.FIRST_MESSAGE.ordinal){
+            holder.tvMessage.text = "Hãy bắt đầu cuộc trò chuyện"
+        }else if(itemObject.lastMessage.type == Message.Type.TEXT.ordinal){
+            holder.tvMessage.text = itemObject.lastMessage.message
+        }
 
 
         val createdAtString = itemObject.lastMessage.createdAt.toString()
         val dateFormat = SimpleDateFormat("MMM d, yyyy, h:mm:ss a", Locale.ENGLISH)
         val createdAtDate = dateFormat.parse(createdAtString)
-
         val outputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
         val formattedDateString = outputDateFormat.format(createdAtDate)
-        Log.e("TIMERRR",formattedDateString.toString())
 
         val currentDate = LocalDate.now()
-        val dateFormat1 = DateTimeFormatter.ofPattern("yyyy/MM/dd")
+        val dateFormat1 = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formattedDate = currentDate.format(dateFormat1)
-        Log.e("TIMETTT",formattedDate.toString())
 
-        val date2 = LocalDate.of(2023, 3, 3).toString()
-        val formattedDate2 = date2.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
-        Log.e("TIMEEE",formattedDate2.toString() )
-
-        if (formattedDateString.equals(formattedDate2)){
+        if (formattedDateString.equals(formattedDate)){
             val inputDate = itemObject.lastMessage.createdAt.toString()
             val inputFormat = SimpleDateFormat("MMM d, yyyy, h:mm:ss a", Locale.US)
             val date = inputFormat.parse(inputDate)
-            val outputFormat = SimpleDateFormat("h:mm:ss a", Locale.US)
+            val outputFormat = SimpleDateFormat("h:mm a", Locale.US)
             val time = outputFormat.format(date)
             holder.tvTimeReceive.text = time
         }else{
-            holder.tvTimeReceive.text = formattedDateString
+            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+            val date = LocalDate.parse(formattedDateString, formatter)
+            val newFormatter = DateTimeFormatter.ofPattern("dd MMM", Locale("vi", "VN"))
+            val newDateString = date.format(newFormatter)
+            holder.tvTimeReceive.text = newDateString
         }
-
-
 
 
         val gson = Gson()
@@ -124,7 +121,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                         ) {
                             val userTemp =
                                 gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                            Log.e("CCCCC", userTemp.fullName)
+                            //Log.e("CCCCC", userTemp.fullName)
                             holder.tvUsername.text = userTemp.fullName
                             username = userTemp.userName
                             if (userTemp.avatar != null) {

@@ -194,5 +194,6 @@ class WebSocketListener : WebSocketListener() {
         val request: SocketRequest = SocketRequest("create_message", map)
         val gson = Gson()
         webSocket.send(gson.toJson(request))
+        Log.e("LOGGGG",gson.toJson(request))
     }
 }

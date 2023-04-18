@@ -2,10 +2,13 @@ package com.example.ae_chat_sdk.data.storage
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.example.ae_chat_sdk.data.model.User
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
-class AppStorage private constructor(context: Context)
-{
-    private val sharedPreferences: SharedPreferences = context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+class AppStorage private constructor(context: Context) {
+    private val sharedPreferences: SharedPreferences =
+        context.getSharedPreferences("myPref", Context.MODE_PRIVATE)
 
     companion object {
         private var instance: AppStorage? = null
@@ -32,5 +35,14 @@ class AppStorage private constructor(context: Context)
 
     fun clearData() {
         sharedPreferences.edit().clear().apply()
+    }
+
+     fun getUserLocal(): User {
+        val gson = Gson()
+        val type = object : TypeToken<User>() {}.type
+        val appStorage = AppStorage.getInstance()
+        val userString: String = appStorage.getData("User", "").toString()
+        val user = gson.fromJson<User>(userString, type)
+        return user
     }
 }

@@ -20,6 +20,8 @@ import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.Message
+import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.storage.AppStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
@@ -56,15 +58,15 @@ class BoxChatActivity: AppCompatActivity() {
         context = applicationContext
 
 
-
+        val extras = intent.extras
+        groupId = extras?.getString("GroupId").toString()
         setBlur()
         init()
         setOnClickListener()
 
         setAvartar()
 
-        val extras = intent.extras
-        groupId = extras?.getString("GroupId").toString()
+
 
         webSocketListener.receiveMessage(MainActivity.webSocket,groupId.toString())
 
@@ -137,17 +139,27 @@ class BoxChatActivity: AppCompatActivity() {
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
-
+        val myUser: User = AppStorage.getInstance(context).getUserLocal()
+        val message : Message = Message()
+        message.type = Message.Type.TEXT.ordinal
+        message.groupType = Message.GroupType.PUBLIC.ordinal
+        message.message = "Hello chien dep trai"
+        message.groupId = groupId
+        message.senderUin = myUser.userId
+        message.senderAvatar = myUser.avatar.toString()
+        message.senderName = myUser.userName
+        webSocketListener.sendMessage(MainActivity.webSocket, message)
+        Log.e("CHECKK","ooooooooooooo|")
         btnSendMessage.setOnClickListener(View.OnClickListener {
             if (etInputMessage.text.trim() != "" && etInputMessage.text.trim() != null){
-                val message : Message = Message()
-                message.type = Message.Type.TEXT.ordinal
-                message.groupType = Message.GroupType.PUBLIC.ordinal
-                message.message = etInputMessage.text.toString()
-                message.groupId = groupId
-                webSocketListener.sendMessage(MainActivity.webSocket, message)
+//                val message : Message = Message()
+//                message.type = Message.Type.TEXT.ordinal
+//                message.groupType = Message.GroupType.PUBLIC.ordinal
+//                message.message = etInputMessage.text.toString()
+//                message.groupId = groupId
+//                webSocketListener.sendMessage(MainActivity.webSocket, message)
             }
-            Log.e("CHECKK","ooooooooooooo|")
+
 
         })
     }

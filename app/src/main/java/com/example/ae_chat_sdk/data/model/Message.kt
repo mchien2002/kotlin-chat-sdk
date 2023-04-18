@@ -43,49 +43,49 @@ class Message {
     }
 
     @SerializedName("messageId")
-    var messageId: String = ""
+    var messageId: String? = null
 
     @SerializedName("type")
-    var type: Int = Type.TEXT.ordinal
+    var type: Int? = null
 
     @SerializedName("status")
-    var status: Int = Status.UNKNOWN.ordinal
+    var status: Int? = null
 
     @SerializedName("groupType")
-    var groupType: Int = GroupType.UNKOWN.ordinal
+    var groupType: Int? = null
 
     @SerializedName("groupId")
-    var groupId: String = ""
+    var groupId: String? = null
 
     @SerializedName("message")
-    var message: String = ""
+    var message: String? = null
 
     @SerializedName("createdAt")
-    var createdAt: String = ""
+    var createdAt: String? = null
 
     @SerializedName("updateAt")
-    var updateAt: String = ""
+    var updateAt: String? = null
 
     @SerializedName("senderName")
-    var senderName: String = ""
+    var senderName: String? = null
 
     @SerializedName("senderUin")
-    var senderUin: String = ""
+    var senderUin: String? = null
 
     @SerializedName("senderAvatar")
-    var senderAvatar: String = ""
+    var senderAvatar: String? = null
 
     @SerializedName("nonce")
-    var nonce: String = ""
+    var nonce: String? = null
 
     @SerializedName("seenUins")
-    var seenUins: ArrayList<String> = ArrayList()
+    var seenUins: ArrayList<String>? = null
 
     @SerializedName("deleteUins")
-    var deletedUins: ArrayList<String> = ArrayList()
+    var deletedUins: ArrayList<String>? = null
 
     @SerializedName("attachments")
-    var attachments: Any = ""
+    var attachments: Any? = null
 
 
 }

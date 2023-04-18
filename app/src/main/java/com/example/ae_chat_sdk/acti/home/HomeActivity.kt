@@ -28,6 +28,7 @@ import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.ApiResponse
+import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior

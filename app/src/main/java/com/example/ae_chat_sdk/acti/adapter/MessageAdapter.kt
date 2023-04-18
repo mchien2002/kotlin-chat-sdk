@@ -79,9 +79,9 @@ class MessageAdapter(val context: Context) :
 
     override fun getItemViewType(position: Int): Int {
         val ms: Message = listMessage[position]
-        Log.d("message", ms.message)
+        ms.message?.let { Log.d("message", it) }
         Log.d("type", ms.type.toString())
-        if (ms.message == "" && ms.type.toFloat().toInt() == Message.Type.FIRST_MESSAGE.type) {
+        if (ms.message == "" && ms.type?.toFloat()!!.toInt() == Message.Type.FIRST_MESSAGE.type) {
             return TypeView.FIRST_MESSAGE.typeView
         } else if (ms.senderUin == RestClient().getUserId()) {
             return TypeView.SEND.typeView
