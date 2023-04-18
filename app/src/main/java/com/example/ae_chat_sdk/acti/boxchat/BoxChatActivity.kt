@@ -149,5 +149,4 @@ class BoxChatActivity : AppCompatActivity(){
 
 
     }
-
 }

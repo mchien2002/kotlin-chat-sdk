@@ -4,7 +4,7 @@
     android:id="@+id/flMessage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/White"
+    android:background="@drawable/background"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".acti.boxchat.BoxChatActivity">
 
