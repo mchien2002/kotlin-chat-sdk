@@ -132,12 +132,6 @@ class BoxChatActivity : AppCompatActivity(){
 
         btnSendMessage.setOnClickListener(View.OnClickListener {
         if (etInputMessage.text.trim() != "") {
-//            val message: Message = Message()
-//            message.type = Message.Type.TEXT.ordinal
-//            message.groupType = Message.GroupType.PUBLIC.ordinal
-//            message.message = etInputMessage.text.toString()
-//            message.groupId = groupId
-//            webSocketListener.sendMessage(HomeActivity.webSocket, message)
             val myUser: User = AppStorage.getInstance(context).getUserLocal()
             val message : Message = Message()
             message.type = Message.Type.TEXT.ordinal
@@ -148,6 +142,9 @@ class BoxChatActivity : AppCompatActivity(){
             message.senderAvatar = myUser.avatar.toString()
             message.senderName = myUser.userName
             webSocketListener.sendMessage(HomeActivity.webSocket, message)
+            rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
+            etInputMessage.text.clear()
+            messageAdapter.notifyDataSetChanged()
         }
         })
     }
@@ -160,17 +157,9 @@ class BoxChatActivity : AppCompatActivity(){
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
-
-        Log.e("CHECKK","ooooooooooooo|")
-//        btnSendMessage.setOnClickListener(View.OnClickListener {
-//            if (etInputMessage.text.trim() != "" && etInputMessage.text.trim() != null) {
-//                val message : Message = Message()
-//                message.type = Message.Type.TEXT.ordinal
-//                message.groupType = Message.GroupType.PUBLIC.ordinal
-//                message.message = etInputMessage.text.toString()
-//                message.groupId = groupId
-//                webSocketListener.sendMessage(MainActivity.webSocket, message)
-//            }
-//        })
+    }
+    fun addMessage(message: Message) {
+        messageAdapter.addItem(message)
+        rvMessage.scrollToPosition(messageAdapter.itemCount - 1)
     }
 }

@@ -93,6 +93,8 @@ class WebSocketListener : WebSocketListener() {
                         BoxChatActivity.messageAdapter.addItem(m)
                     }
                 }
+//                BoxChatActivity.messageAdapter.addItem(m as Message)
+//                BoxChatActivity.messageAdapter.addItem(mess!![mess.size-1])
             })
         }
 
@@ -145,9 +147,7 @@ class WebSocketListener : WebSocketListener() {
 
 
 
-//        BoxChatActivity.messageAdapter.addItem(m as Message)
 
-//        BoxChatActivity.messageAdapter.addItem(mess!![mess.size-1])
 
 
         outPut("Received: $text")

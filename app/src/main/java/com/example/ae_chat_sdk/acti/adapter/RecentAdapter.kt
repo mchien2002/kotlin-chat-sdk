@@ -23,6 +23,7 @@ import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
+import com.example.ae_chat_sdk.utils.DataTimeUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -67,47 +68,29 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
         if(itemObject.lastMessage.type == Message.Type.FIRST_MESSAGE.ordinal){
             holder.tvMessage.text = "Hãy bắt đầu cuộc trò chuyện"
         }else if(itemObject.lastMessage.type == Message.Type.TEXT.ordinal){
-            holder.tvMessage.text = itemObject.lastMessage.message
+            val senderUin = itemObject.lastMessage.senderUin
+            if (itemObject.lastMessage != null && holder.tvMessage != null) {
+                if (senderUin == RestClient().getUserId()) {
+                    holder.tvMessage.text = "Bạn: " + itemObject.lastMessage.message
+                } else {
+                    holder.tvMessage.text = itemObject.lastMessage.message
+                }
+            }
         }
-
 
         val createdAtString = itemObject.lastMessage.createdAt.toString()
-        val dateFormat = SimpleDateFormat("MMM d, yyyy, h:mm:ss a", Locale.ENGLISH)
-        val createdAtDate = dateFormat.parse(createdAtString)
-        val outputDateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH)
-        val formattedDateString = outputDateFormat.format(createdAtDate)
-
-        val currentDate = LocalDate.now()
-        val dateFormat1 = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-        val formattedDate = currentDate.format(dateFormat1)
-
-        if (formattedDateString.equals(formattedDate)){
-            val inputDate = itemObject.lastMessage.createdAt.toString()
-            val inputFormat = SimpleDateFormat("MMM d, yyyy, h:mm:ss a", Locale.US)
-            val date = inputFormat.parse(inputDate)
-            val outputFormat = SimpleDateFormat("h:mm a", Locale.US)
-            val time = outputFormat.format(date)
-            holder.tvTimeReceive.text = time
-        }else{
-            val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-            val date = LocalDate.parse(formattedDateString, formatter)
-            val newFormatter = DateTimeFormatter.ofPattern("dd MMM", Locale("vi", "VN"))
-            val newDateString = date.format(newFormatter)
-            holder.tvTimeReceive.text = newDateString
-        }
-
+        val timeString = DataTimeUtil().getTimeFromDate(createdAtString)
+        holder.tvTimeReceive.text = timeString
 
         val gson = Gson()
         val type = object : TypeToken<User>() {}.type
-        val appStorage = AppStorage.getInstance(context)
-        val userString: String = appStorage.getData("User", "").toString()
-        val user = gson.fromJson<User>(userString, type)
+        val myUser: User = AppStorage.getInstance(context).getUserLocal()
         var username = ""
         var imageUrl =
             "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
         if (itemObject.groupType == TypeView.PUBLIC.typeView) {
             for (item in itemObject.members) {
-                if (item == user.userId) {
+                if (item == myUser.userId) {
                     continue
                 } else {
                     val call = UserRepository().getUserProfile(RestClient().getToken(), item)

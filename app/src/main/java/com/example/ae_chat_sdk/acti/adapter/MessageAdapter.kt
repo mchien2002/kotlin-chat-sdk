@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity.Companion.messageAdapter
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding

@@ -78,7 +78,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     var listContact: Boolean = false
 
-    companion object{
+    companion object {
         lateinit var recentAdapter: RecentAdapter
         lateinit var webSocket: WebSocket
     }
@@ -104,13 +104,14 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         setBottomSheetBehaviorHome()
         onStart()
 
-        val gson = Gson()
-        val type = object : TypeToken<User>() {}.type
-        val appStorage = AppStorage.getInstance(context)
-        val userString: String = appStorage.getData("User", "").toString()
-        val user = gson.fromJson<User>(userString, type)
+//        val gson = Gson()
+//        val type = object : TypeToken<User>() {}.type
+//        val appStorage = AppStorage.getInstance(context)
+//        val userString: String = appStorage.getData("User", "").toString()
+//        val user = gson.fromJson<User>(userString, type)
+        val myUser: User = AppStorage.getInstance(context).getUserLocal()
         val webSocketListener = WebSocketListener()
-        webSocketListener.getListGroup(webSocket, user.userId)
+        webSocketListener.getListGroup(webSocket, myUser.userId)
 
 
         etSearch.addTextChangedListener {
@@ -148,15 +149,11 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
 
         findViewById<BlurView>(R.id.blurView).setupWith(rootView)
-            .setFrameClearDrawable(windowBackground)
-            .setBlurAlgorithm(RenderScriptBlur(this))
-            .setBlurRadius(radius)
-            .setBlurAutoUpdate(true)
+            .setFrameClearDrawable(windowBackground).setBlurAlgorithm(RenderScriptBlur(this))
+            .setBlurRadius(radius).setBlurAutoUpdate(true)
         findViewById<BlurView>(R.id.blurViewBottomSheet).setupWith(rootView)
-            .setFrameClearDrawable(windowBackground)
-            .setBlurAlgorithm(RenderScriptBlur(this))
-            .setBlurRadius(radius)
-            .setBlurAutoUpdate(true)
+            .setFrameClearDrawable(windowBackground).setBlurAlgorithm(RenderScriptBlur(this))
+            .setBlurRadius(radius).setBlurAutoUpdate(true)
     }
 
     override fun onStart() {
@@ -164,36 +161,34 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         setData()
     }
 
-    private fun searchUser(searchText : String)
-    {
+    private fun searchUser(searchText: String) {
         val token = RestClient().getToken()
-        val call = UserRepository().searchUser(token,searchText)
-        var userList : List<User>
+        val call = UserRepository().searchUser(token, searchText)
+        var userList: List<User>
         call.enqueue(object : Callback<ApiResponse> {
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
-                    .show()
+                Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT).show()
 
             }
+
             override fun onResponse(
-                call: Call<ApiResponse>,
-                response: Response<ApiResponse>
+                call: Call<ApiResponse>, response: Response<ApiResponse>
             ) {
-               if(response.code() == 403){
-                   setStartLoginActivity()
-                   val appStorage = context?.let { AppStorage.getInstance(it) }
-                   val userString = appStorage?.clearData()
-               }else if(response.code() == 200){
-                   val gson = Gson()
-                   val type = object : TypeToken<List<User>>() {}.type
-                   val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
-                   if(user != null){
-                       val listUserId: List<User> = user
-                       rvOnstream.layoutManager =
-                           LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                       rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)
-                   }
-               }
+                if (response.code() == 403) {
+                    setStartLoginActivity()
+                    val appStorage = context?.let { AppStorage.getInstance(it) }
+                    val userString = appStorage?.clearData()
+                } else if (response.code() == 200) {
+                    val gson = Gson()
+                    val type = object : TypeToken<List<User>>() {}.type
+                    val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
+                    if (user != null) {
+                        val listUserId: List<User> = user
+                        rvOnstream.layoutManager =
+                            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
+                        rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)
+                    }
+                }
 
             }
         })
@@ -278,38 +273,29 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
                     }
                 }
             }
+
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
     }
 
     private fun setData() {
-        val gson = Gson()
-        val type = object : TypeToken<User>() {}.type
         val appStorage = AppStorage.getInstance(context)
-        val userString: String = appStorage.getData("User", "").toString()
-        val user = gson.fromJson<User>(userString, type)
-        tvUserName.text = user.userName.toString()
-        tvEmail.text = user.email.toString()
+
+        val myUser: User = AppStorage.getInstance(context).getUserLocal()
+        tvUserName.text = myUser.userName.toString()
+        tvEmail.text = myUser.email.toString()
 
         val imgLocal = appStorage?.getData("avatar", "").toString()
-        if(imgLocal.length > 1)
-        {
-            Glide.with(this)
-                .load(imgLocal)
-                .into(avatarUser)
-        }
-        else if (user.avatar == null) {
+        if (imgLocal.length > 1) {
+            Glide.with(this).load(imgLocal).into(avatarUser)
+        } else if (myUser.avatar == null) {
             val imageUrl =
                 "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
-            Glide.with(this)
-                .load(imageUrl)
-                .into(avatarUser)
+            Glide.with(this).load(imageUrl).into(avatarUser)
         } else {
-            val imageUrl = ApiConstant.URL_AVATAR + user.avatar
-            Glide.with(this)
-                .load(imageUrl)
-                .into(avatarUser)
+            val imageUrl = ApiConstant.URL_AVATAR + myUser.avatar
+            Glide.with(this).load(imageUrl).into(avatarUser)
         }
     }
 

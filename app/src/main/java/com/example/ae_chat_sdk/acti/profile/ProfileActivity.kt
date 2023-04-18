@@ -57,47 +57,32 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         context = applicationContext
-
-
-
         init()
         setAvatar()
     }
 
     private fun setAvatar() {
-        val gson = Gson()
-        val type = object : TypeToken<User>() {}.type
         val appStorage = AppStorage.getInstance(context)
-        val userString: String = appStorage.getData("User", "").toString()
-        val user = gson.fromJson<User>(userString, type)
-        tvUserName.text = user.userName.toString()
-        tvEmail.text = user.email.toString()
-        tvInputEmail.text = user.email.toString()
-//        Log.d("Notify", user.userName.toString())
+        val myUser: User = AppStorage.getInstance(context).getUserLocal()
+        tvUserName.text = myUser.userName.toString()
+        tvEmail.text = myUser.email.toString()
+        tvInputEmail.text = myUser.email.toString()
 
         val imgLocal = appStorage?.getData("avatar", "").toString()
-        if(imgLocal.length > 1)
-        {
-            Glide.with(this)
-                .load(imgLocal)
-                .into(iViewAvatarUser)
-        }
-        else if (user.avatar == null) {
+        if (imgLocal.length > 1) {
+            Glide.with(this).load(imgLocal).into(iViewAvatarUser)
+        } else if (myUser.avatar == null) {
             val imageUrl =
                 "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
-            Glide.with(this)
-                .load(imageUrl)
-                .into(iViewAvatarUser)
+            Glide.with(this).load(imageUrl).into(iViewAvatarUser)
         } else {
-            val imageUrl = ApiConstant.URL_AVATAR + user.avatar
+            val imageUrl = ApiConstant.URL_AVATAR + myUser.avatar
             Log.d("link", imageUrl.toString())
-            Glide.with(this)
-                .load(imageUrl)
-                .into(iViewAvatarUser)
+            Glide.with(this).load(imageUrl).into(iViewAvatarUser)
         }
     }
 
-    private fun init(){
+    private fun init() {
         iViewAvatarUser = findViewById(R.id.ivAvatar)
         // avatarUser = findViewById(R.id.ivAvatar)
         tvUserName = findViewById(R.id.tvUsername)
@@ -167,8 +152,7 @@ class ProfileActivity : AppCompatActivity() {
                     IMAGE_PATH =
                         uri?.let { RealPathUtil.getRealPath(this, it).toString() }.toString()
                     if (ContextCompat.checkSelfPermission(
-                            this,
-                            Manifest.permission.WRITE_EXTERNAL_STORAGE
+                            this, Manifest.permission.WRITE_EXTERNAL_STORAGE
                         ) == PackageManager.PERMISSION_GRANTED
                     ) {
                         // Ứng dụng đã được cấp quyền
@@ -177,9 +161,7 @@ class ProfileActivity : AppCompatActivity() {
                     } else {
                         Log.d("DANG222", "Khong doc duoc")
                         ActivityCompat.requestPermissions(
-                            this,
-                            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-                            1
+                            this, arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE), 1
                         )
                     }
                     ChangeAvatarUser()
@@ -196,14 +178,11 @@ class ProfileActivity : AppCompatActivity() {
         val partbodyavatar = MultipartBody.Part.createFormData("imgFile", file.name, requestFile)
         val token2 = RestClient().getToken()
         val userId = RestClient().getUserId()
-        Log.d("TOKEN",token2)
-        Log.d("USERID",userId)
-        val call =
-            UserRepository().uploadAvatarUser(
-                token2,
-                userId,
-                partbodyavatar
-            )
+        Log.d("TOKEN", token2)
+        Log.d("USERID", userId)
+        val call = UserRepository().uploadAvatarUser(
+            token2, userId, partbodyavatar
+        )
         call.enqueue(object : Callback<MyResponse> {
             override fun onResponse(call: Call<MyResponse>?, response: Response<MyResponse>?) {
                 setLocalAvatar()
@@ -216,16 +195,11 @@ class ProfileActivity : AppCompatActivity() {
             }
         })
     }
-    private fun setLocalAvatar()
-    {
+
+    private fun setLocalAvatar() {
         val imageUrl = IMAGE_PATH
         Log.d("link", imageUrl.toString())
-        Glide.with(this)
-            .load(imageUrl)
-            .into(iViewAvatarUser)
-//        Glide.with(this)
-//            .load(imageUrl)
-//            .into(avatarUser)
+        Glide.with(this).load(imageUrl).into(iViewAvatarUser)
         val appStorage = AppStorage.getInstance(context!!)
         appStorage.saveData("avatar", IMAGE_PATH)
     }
