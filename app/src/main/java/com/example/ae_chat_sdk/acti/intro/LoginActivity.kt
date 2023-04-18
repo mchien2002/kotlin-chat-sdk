@@ -20,10 +20,8 @@ import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
-import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
-import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
@@ -31,19 +29,16 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import okhttp3.WebSocket
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
 class LoginActivity : AppCompatActivity(), View.OnClickListener {
+    lateinit var email: String
+    lateinit var OTP: String
+
     // Context
     lateinit var context: Context
-
-    // Intro
-//    lateinit var ibLogo: TextView
 
     // Email
     lateinit var btnSendEmail: Button
@@ -62,21 +57,26 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var inputOTP6: EditText
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         context = applicationContext
 
+        setBlur()
+
+        init()
+        showInputEmail()
+        setListenerOTP()
+        checkNewLogin()
+    }
+
+    private fun setBlur() {
         val radius: Float = 20f;
 
         val decorView: View = window.decorView
-        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
         val rootView: ViewGroup = decorView.findViewById(android.R.id.content)
 
-        // Optional:
-        // Set drawable to draw in the beginning of each blurred frame.
-        // Can be used in case your layout has a lot of transparent space and your content
-        // gets a too low alpha value after blur is applied.
         val windowBackground: Drawable = decorView.background
 
 
@@ -86,11 +86,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
             .setBlurRadius(radius)
             .setBlurAutoUpdate(true)
 
-
-        init()
-        showInputEmail()
-        setListenerOTP()
-        checkNewLogin()
     }
 
     private fun init() {
@@ -139,20 +134,13 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 } else {
                     tLayoutInputEmail.isErrorEnabled = false
                     btnSendEmail.visibility = View.VISIBLE
-                    MainActivity.Email = string.toString().trim()
+                    email = string.toString().trim()
                 }
             }
         }
     }
 
     private fun showInputEmail() {
-//        findViewById<ImageButton>(R.id.ibIconTalkWave).animate().alpha(0F)
-//            .setDuration(200).startDelay =
-//            2200
-//
-//        findViewById<ImageView>(R.id.ibIconChat).animate()
-//            .alpha(0F)
-//            .setDuration(200).startDelay = 2500
 
         Handler(Looper.getMainLooper()).postDelayed({
             BottomSheetBehavior.from(findViewById(R.id.rlInput)).apply {
@@ -160,15 +148,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 this.isDraggable = false
             }
         }, 3000)
-
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            ibLogo.visibility = View.VISIBLE
-//        }, 3500)
-
         setListenerEmail()
         eTextEmail.isEnabled = true
 
-//        iViewLogo.animate().alpha(1F).setDuration(200).setStartDelay(3000)
     }
 
     private fun setListenerOTP() {
@@ -178,10 +160,10 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         setTextChangeListener(inputOTP4, inputOTP5)
         setTextChangeListener(inputOTP5, inputOTP6)
         setTextChangeListener(inputOTP6, done = {
-            MainActivity.OTP = inputOTP1.text.toString().trim() + inputOTP2.text.toString()
+            OTP = inputOTP1.text.toString().trim() + inputOTP2.text.toString()
                 .trim() + inputOTP3.text.toString().trim() + inputOTP4.text.toString()
                 .trim() + inputOTP5.text.toString().trim() + inputOTP6.text.toString().trim()
-            verifyOTP(MainActivity.OTP)
+            verifyOTP()
         })
 
         setKeyListener(inputOTP2, inputOTP1)
@@ -217,9 +199,9 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         inputOTP1.requestFocus()
     }
 
-    private fun verifyOTP(OTP: String) {
+    private fun verifyOTP() {
         resetOTP()
-        val call = RegisterRepository().verifyOTP(MainActivity.Email, MainActivity.OTP)
+        val call = RegisterRepository().verifyOTP(email, OTP)
         call.enqueue(object : Callback<MyResponse> {
             override fun onFailure(call: Call<MyResponse>, t: Throwable) {
                 Log.d(
@@ -230,16 +212,12 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
             override fun onResponse(call: Call<MyResponse>, response: Response<MyResponse>) {
                 if (response.code() == 200) {
-                    //val user: User = response.body()?.data as User
                     val gson = Gson()
                     val type = object : TypeToken<User>() {}.type
                     val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
                     val appStorage = AppStorage.getInstance(context)
                     appStorage.saveData("User", gson.toJson(response.body()?.data))
-                    connectSocket()
                     Log.e("USERID5",user.userId)
-                    val webSocketListener: WebSocketListener = WebSocketListener()
-                    //webSocketListener.getListGroup(MainActivity.webSocket,user.userId)
                     Log.d(
                         "Success",
                         "thanh cong $user"
@@ -251,7 +229,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
 
             }
         })
-//        setStartHomeActivity()
     }
 
     private fun setTextChangeListener(
@@ -295,7 +272,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(view: View?) {
         when (view?.id) {
             R.id.bSendEmail -> {
-                val call = RegisterRepository().registerByMail(MainActivity.Email)
+                val call = RegisterRepository().registerByMail(email)
 
                 call.enqueue(object : Callback<MyResponse> {
                     override fun onFailure(call: Call<MyResponse>, t: Throwable) {
@@ -310,7 +287,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                         rLayoutWrapInputEmail.visibility = View.GONE
                         rLayoutWrapInputOTP.visibility = View.VISIBLE
                         findViewById<TextView>(R.id.tvEmailInformation).text =
-                            "Mã xác thực đã được gửi đến\n" + MainActivity.Email
+                            "Mã xác thực đã được gửi đến\n" + email
                         resetOTP()
                         setListenerOTP()
 
@@ -323,7 +300,7 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
                 rLayoutWrapInputEmail.visibility = View.GONE
                 rLayoutWrapInputOTP.visibility = View.VISIBLE
                 findViewById<TextView>(R.id.tvEmailInformation).text =
-                    "Mã xác thực đã được gửi đến\n" + MainActivity.Email
+                    "Mã xác thực đã được gửi đến\n" + email
                 resetOTP()
                 setListenerOTP()
 
@@ -351,22 +328,5 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
     private fun setStartHomeActivity() {
         val intent: Intent = Intent(this, HomeActivity::class.java)
         this.startActivity(intent)
-    }
-
-    private fun connectSocket() {
-        val client = OkHttpClient()
-
-        val apiKey = ""
-
-        val chanelId = 1
-
-        val request: Request = Request.Builder().url(SocketConstant.URL).build()
-//        val body:RequestBody=FormBody.Builder().add("groupId", "abc").build()
-//        val request:Request = Request.Builder().url(SocketConstant.URL).method("GET",null).build()
-        val webSocketListener = WebSocketListener()
-        val ws: WebSocket = client.newWebSocket(request, webSocketListener)
-
-        MainActivity.webSocket = ws
-
     }
 }

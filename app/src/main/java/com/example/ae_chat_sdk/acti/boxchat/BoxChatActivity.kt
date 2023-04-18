@@ -2,6 +2,7 @@ package com.example.ae_chat_sdk.acti.boxchat
 
 import android.app.ActionBar.LayoutParams
 import android.content.Context
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -18,6 +19,7 @@ import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
+import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.data.model.User
@@ -28,7 +30,7 @@ import eightbitlab.com.blurview.RenderScriptBlur
 import java.util.*
 
 @Suppress("DEPRECATION")
-class BoxChatActivity: AppCompatActivity() {
+class BoxChatActivity : AppCompatActivity(){
 
     private lateinit var context: Context
 
@@ -38,7 +40,7 @@ class BoxChatActivity: AppCompatActivity() {
     lateinit var btnNotification: ImageButton
     lateinit var btnSendMessage: ImageButton
 
-    lateinit var ivAvatar : CircleImageView
+    lateinit var ivAvatar: CircleImageView
 
     lateinit var tvUsername : TextView
     lateinit var etInputMessage : EditText
@@ -67,13 +69,15 @@ class BoxChatActivity: AppCompatActivity() {
         setAvartar()
 
 
+        val intent: Intent = intent
+        groupId = intent.getStringExtra("GroupId").toString()
 
-        webSocketListener.receiveMessage(MainActivity.webSocket,groupId.toString())
+        webSocketListener.receiveMessage(HomeActivity.webSocket, groupId.toString())
 
 //        val list:ArrayList<String> =ArrayList()
 //        listMessage.add(Message("1", Message.Type.FIRST_MESSAGE,Message.Status.RECEIVED,Message.GroupType.PRIVATE,"fdfsfds", "", Date(2023,4,6),Date(2023,4,6),"TanPhat","fsfsdfad","","",list,list, ""))
 
-        messageAdapter =MessageAdapter( context)
+        messageAdapter = MessageAdapter(context)
         rvMessage.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvMessage.adapter = messageAdapter
@@ -127,7 +131,24 @@ class BoxChatActivity: AppCompatActivity() {
         })
 
         btnSendMessage.setOnClickListener(View.OnClickListener {
-
+        if (etInputMessage.text.trim() != "") {
+//            val message: Message = Message()
+//            message.type = Message.Type.TEXT.ordinal
+//            message.groupType = Message.GroupType.PUBLIC.ordinal
+//            message.message = etInputMessage.text.toString()
+//            message.groupId = groupId
+//            webSocketListener.sendMessage(HomeActivity.webSocket, message)
+            val myUser: User = AppStorage.getInstance(context).getUserLocal()
+            val message : Message = Message()
+            message.type = Message.Type.TEXT.ordinal
+            message.groupType = Message.GroupType.PUBLIC.ordinal
+            message.message = etInputMessage.text.toString()
+            message.groupId = groupId
+            message.senderUin = myUser.userId
+            message.senderAvatar = myUser.avatar.toString()
+            message.senderName = myUser.userName
+            webSocketListener.sendMessage(HomeActivity.webSocket, message)
+        }
         })
     }
 
@@ -139,28 +160,17 @@ class BoxChatActivity: AppCompatActivity() {
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
-        val myUser: User = AppStorage.getInstance(context).getUserLocal()
-        val message : Message = Message()
-        message.type = Message.Type.TEXT.ordinal
-        message.groupType = Message.GroupType.PUBLIC.ordinal
-        message.message = "Hello chien dep trai"
-        message.groupId = groupId
-        message.senderUin = myUser.userId
-        message.senderAvatar = myUser.avatar.toString()
-        message.senderName = myUser.userName
-        webSocketListener.sendMessage(MainActivity.webSocket, message)
+
         Log.e("CHECKK","ooooooooooooo|")
-        btnSendMessage.setOnClickListener(View.OnClickListener {
-            if (etInputMessage.text.trim() != "" && etInputMessage.text.trim() != null){
+//        btnSendMessage.setOnClickListener(View.OnClickListener {
+//            if (etInputMessage.text.trim() != "" && etInputMessage.text.trim() != null) {
 //                val message : Message = Message()
 //                message.type = Message.Type.TEXT.ordinal
 //                message.groupType = Message.GroupType.PUBLIC.ordinal
 //                message.message = etInputMessage.text.toString()
 //                message.groupId = groupId
 //                webSocketListener.sendMessage(MainActivity.webSocket, message)
-            }
-
-
-        })
+//            }
+//        })
     }
 }
