@@ -27,7 +27,6 @@ class WebSocketListener : WebSocketListener() {
         val appStorage = AppStorage.getInstance()
         val userString: String = appStorage.getData("User", "").toString()
         val user = gson.fromJson<User>(userString, type)
-        Log.e("OOOOOY", user.userId)
         val userProfile: MutableMap<String, Any> = HashMap<String, Any>()
         userProfile["userProfile"] = user
         val socketRequest: SocketRequest =
@@ -85,10 +84,8 @@ class WebSocketListener : WebSocketListener() {
                     val mess =
                         messageJsonArray?.map { gson.fromJson(gson.toJson(it), Message::class.java) }
 
-//        mess?.get(0)?.let { Log.d("adfd", it.senderUin) }
                     if (mess != null) {
                         (mess as ArrayList<Message>).forEach { m ->
-                            Log.d("as", m.type.toString())
                             BoxChatActivity.messageAdapter.addItem(m)
                         }
                     }
@@ -185,6 +182,5 @@ class WebSocketListener : WebSocketListener() {
         val request: SocketRequest = SocketRequest("create_message", map)
         val gson = Gson()
         webSocket.send(gson.toJson(request))
-        Log.e("LOGGGG", gson.toJson(request))
     }
 }

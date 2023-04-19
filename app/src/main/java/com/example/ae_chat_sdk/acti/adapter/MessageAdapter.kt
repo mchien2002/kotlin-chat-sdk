@@ -1,12 +1,12 @@
 package com.example.ae_chat_sdk.acti.adapter
 
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity.Companion.messageAdapter
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
@@ -16,7 +16,7 @@ import com.example.ae_chat_sdk.databinding.LayoutFrameMessageSenderFooterBinding
 class MessageAdapter(val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var listMessage:ArrayList<Message> =ArrayList()
+    var listMessage: ArrayList<Message> = ArrayList()
 
     enum class TypeView(val typeView: Int) {
         FIRST_MESSAGE(0),
@@ -91,7 +91,6 @@ class MessageAdapter(val context: Context) :
             (holder as BeginMessageHolder).bind()
         } else if (getItemViewType(position) == TypeView.RECEIVE.typeView) {
             (holder as ReceiveMessageFooterHolder).bind(listMessage[position])
-
         } else {
             (holder as SendMessageFooterHolder).bind(listMessage[position])
         }
@@ -111,8 +110,10 @@ class MessageAdapter(val context: Context) :
         return TypeView.RECEIVE.ordinal
     }
 
-    fun addItem(message: Message){
+    @SuppressLint("NotifyDataSetChanged")
+    fun addItem(message: Message) {
         listMessage.add(message)
         notifyDataSetChanged()
     }
+
 }

@@ -6,7 +6,6 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.DisplayMetrics
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
@@ -16,7 +15,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
 import com.example.ae_chat_sdk.acti.home.HomeActivity
@@ -30,7 +28,7 @@ import eightbitlab.com.blurview.RenderScriptBlur
 import java.util.*
 
 @Suppress("DEPRECATION")
-class BoxChatActivity : AppCompatActivity(){
+class BoxChatActivity : AppCompatActivity() {
 
     private lateinit var context: Context
 
@@ -42,10 +40,10 @@ class BoxChatActivity : AppCompatActivity(){
 
     lateinit var ivAvatar: CircleImageView
 
-    lateinit var tvUsername : TextView
-    lateinit var etInputMessage : EditText
+    lateinit var tvUsername: TextView
+    lateinit var etInputMessage: EditText
 
-    lateinit var groupId : String
+    lateinit var groupId: String
 
     val webSocketListener: WebSocketListener = WebSocketListener()
 
@@ -59,7 +57,6 @@ class BoxChatActivity : AppCompatActivity(){
 
         context = applicationContext
 
-
         val extras = intent.extras
         groupId = extras?.getString("GroupId").toString()
         setBlur()
@@ -67,7 +64,6 @@ class BoxChatActivity : AppCompatActivity(){
         setOnClickListener()
 
         setAvartar()
-
 
         val intent: Intent = intent
         groupId = intent.getStringExtra("GroupId").toString()
@@ -88,7 +84,7 @@ class BoxChatActivity : AppCompatActivity(){
 //        }
     }
 
-    private fun setAvartar(){
+    private fun setAvartar() {
         val extras = intent.extras
         val imageUrl = extras?.getString("avatar")
         Glide.with(context).load(imageUrl).into(ivAvatar)
@@ -101,7 +97,7 @@ class BoxChatActivity : AppCompatActivity(){
         windowManager.defaultDisplay.getMetrics(displayMetrics)
         window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
 
-        val radius: Float = 25f;
+        val radius: Float = 25f
 
         val decorView: View = window.decorView
         // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
@@ -113,7 +109,6 @@ class BoxChatActivity : AppCompatActivity(){
         // gets a too low alpha value after blur is applied.
         val windowBackground: Drawable = decorView.background
 
-
         findViewById<BlurView>(R.id.blurView).setupWith(rootView)
             .setFrameClearDrawable(windowBackground)
             .setBlurAlgorithm(RenderScriptBlur(this))
@@ -122,31 +117,36 @@ class BoxChatActivity : AppCompatActivity(){
     }
 
     private fun setOnClickListener() {
-        btnBack.setOnClickListener(View.OnClickListener {
-            finish()
-        })
+        btnBack.setOnClickListener(
+            View.OnClickListener {
+                finish()
+            }
+        )
 
-        btnNotification.setOnClickListener(View.OnClickListener {
+        btnNotification.setOnClickListener(
+            View.OnClickListener {
+            }
+        )
 
-        })
-
-        btnSendMessage.setOnClickListener(View.OnClickListener {
-        if (etInputMessage.text.trim() != "") {
-            val myUser: User = AppStorage.getInstance(context).getUserLocal()
-            val message : Message = Message()
-            message.type = Message.Type.TEXT.ordinal
-            message.groupType = Message.GroupType.PUBLIC.ordinal
-            message.message = etInputMessage.text.toString()
-            message.groupId = groupId
-            message.senderUin = myUser.userId
-            message.senderAvatar = myUser.avatar.toString()
-            message.senderName = myUser.userName
-            webSocketListener.sendMessage(HomeActivity.webSocket, message)
-            rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
-            etInputMessage.text.clear()
-            messageAdapter.notifyDataSetChanged()
-        }
-        })
+        btnSendMessage.setOnClickListener(
+            View.OnClickListener {
+                if (etInputMessage.text.trim() != "") {
+                    val myUser: User = AppStorage.getInstance(context).getUserLocal()
+                    val message: Message = Message()
+                    message.type = Message.Type.TEXT.ordinal
+                    message.groupType = Message.GroupType.PUBLIC.ordinal
+                    message.message = etInputMessage.text.toString()
+                    message.groupId = groupId
+                    message.senderUin = myUser.userId
+                    message.senderAvatar = myUser.avatar.toString()
+                    message.senderName = myUser.userName
+                    webSocketListener.sendMessage(HomeActivity.webSocket, message)
+                    rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
+                    etInputMessage.text.clear()
+                    messageAdapter.notifyDataSetChanged()
+                }
+            }
+        )
     }
 
     fun init() {
