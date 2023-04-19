@@ -9,6 +9,7 @@ import com.example.ae_chat_sdk.data.model.Group
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.data.model.SocketRequest
 import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.socket.SocketRequestType
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -19,7 +20,6 @@ import okio.ByteString
 
 class WebSocketListener : WebSocketListener() {
 
-
     override fun onOpen(webSocket: WebSocket, response: Response) {
         webSocket.send("Hello")
         val gson = Gson()
@@ -27,7 +27,7 @@ class WebSocketListener : WebSocketListener() {
         val appStorage = AppStorage.getInstance()
         val userString: String = appStorage.getData("User", "").toString()
         val user = gson.fromJson<User>(userString, type)
-        Log.e("OOOOOY",user.userId)
+        Log.e("OOOOOY", user.userId)
         val userProfile: MutableMap<String, Any> = HashMap<String, Any>()
         userProfile["userProfile"] = user
         val socketRequest: SocketRequest =
@@ -51,7 +51,7 @@ class WebSocketListener : WebSocketListener() {
         super.onMessage(webSocket, text)
         val gson = Gson()
         val response = gson.fromJson(text, SocketRequest::class.java)
-        if (response.event == "list_group") {
+        if (response.event == SocketRequestType.SOCKET_REQUEST_LIST_GROUP) {
             android.os.Handler(Looper.getMainLooper()).post {
                 Log.e("EVENTT", response.event.toString())
                 Log.e("CHECK", "CO VAO HAM IF")
@@ -64,38 +64,38 @@ class WebSocketListener : WebSocketListener() {
                     listGroupJsonArray?.map { gson.fromJson(gson.toJson(it), Group::class.java) }
                 Log.e("LISTGROUP", listGroup!!.size.toString())
                 listGroup.forEach { group ->
-                    Log.d("Group", "Group ID: ${group.groupId}, Name: ${group.lastMessage.type.toString()}")
+                    Log.d("Group", "Group ID: ${group.groupId}, Name: ${group.lastMessage.type}")
                 }
                 recentAdapter.clearItems()
-                if (listGroup != null) {
-                    (listGroup as ArrayList<Group>).forEach { gr ->
-                        recentAdapter.addItem(gr)
-                    }
+                (listGroup as ArrayList<Group>).forEach { gr ->
+                    recentAdapter.addItem(gr)
                 }
             }
-        }else if (response.event == "list_message"){
-            Handler(Looper.getMainLooper()).post(Runnable {
-                val gson = Gson()
-                val typeToken = object : TypeToken<Map<String, Any>>() {}.type
-                val jsonObject = gson.fromJson<Map<String, Any>>(text, typeToken)
+        } else if (response.event == SocketRequestType.SOCKET_REQUEST_LIST_MESSAGE) {
+            Handler(Looper.getMainLooper()).post(
+                Runnable {
+                    val gson = Gson()
+                    val typeToken = object : TypeToken<Map<String, Any>>() {}.type
+                    val jsonObject = gson.fromJson<Map<String, Any>>(text, typeToken)
 
-                var lm: ArrayList<Message> = ArrayList()
+                    var lm: ArrayList<Message> = ArrayList()
 
-                val messageJsonArray =
-                    (jsonObject["payload"] as? Map<String, Any>)?.get("listMessage") as? List<Map<String, Any>>
-                val mess =
-                    messageJsonArray?.map { gson.fromJson(gson.toJson(it), Message::class.java) }
+                    val messageJsonArray =
+                        (jsonObject["payload"] as? Map<String, Any>)?.get("listMessage") as? List<Map<String, Any>>
+                    val mess =
+                        messageJsonArray?.map { gson.fromJson(gson.toJson(it), Message::class.java) }
 
 //        mess?.get(0)?.let { Log.d("adfd", it.senderUin) }
-                if (mess != null) {
-                    (mess as ArrayList<Message>).forEach { m ->
-                        Log.d("as", m.type.toString())
-                        BoxChatActivity.messageAdapter.addItem(m)
+                    if (mess != null) {
+                        (mess as ArrayList<Message>).forEach { m ->
+                            Log.d("as", m.type.toString())
+                            BoxChatActivity.messageAdapter.addItem(m)
+                        }
                     }
-                }
 //                BoxChatActivity.messageAdapter.addItem(m as Message)
 //                BoxChatActivity.messageAdapter.addItem(mess!![mess.size-1])
-            })
+                }
+            )
         }
 
 //        when{
@@ -144,15 +144,8 @@ class WebSocketListener : WebSocketListener() {
 //            }
 //        }
 
-
-
-
-
-
-
         outPut("Received: $text")
     }
-
 
     override fun onMessage(webSocket: WebSocket, bytes: ByteString) {
         super.onMessage(webSocket, bytes)
@@ -169,9 +162,7 @@ class WebSocketListener : WebSocketListener() {
         private const val NORMAL_CLOSURE_STATUS = 1000
     }
 
-
-    fun receiveMessage(webSocket: WebSocket,groupId: String) {
-
+    fun receiveMessage(webSocket: WebSocket, groupId: String) {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["groupId"] = groupId
         val request: SocketRequest = SocketRequest("list_message", map)
@@ -188,12 +179,12 @@ class WebSocketListener : WebSocketListener() {
         webSocket.send(gson.toJson(request))
     }
 
-    fun sendMessage(webSocket: WebSocket, message: Message){
+    fun sendMessage(webSocket: WebSocket, message: Message) {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["message"] = message
         val request: SocketRequest = SocketRequest("create_message", map)
         val gson = Gson()
         webSocket.send(gson.toJson(request))
-        Log.e("LOGGGG",gson.toJson(request))
+        Log.e("LOGGGG", gson.toJson(request))
     }
 }
