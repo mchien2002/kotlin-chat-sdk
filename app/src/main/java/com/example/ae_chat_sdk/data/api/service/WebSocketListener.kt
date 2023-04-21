@@ -33,6 +33,7 @@ class WebSocketListener : WebSocketListener() {
             SocketRequest(event = "register_session_user", userProfile)
         val jsonString = gson.toJson(socketRequest)
         webSocket.send(jsonString)
+        getListGroup(webSocket,user.userId)
         Log.e("burak", "connected")
     }
 
@@ -73,6 +74,7 @@ class WebSocketListener : WebSocketListener() {
         } else if (response.event == SocketRequestType.SOCKET_REQUEST_LIST_MESSAGE) {
             Handler(Looper.getMainLooper()).post(
                 Runnable {
+                    Log.e("CHECKPP","00000000000000000")
                     val gson = Gson()
                     val typeToken = object : TypeToken<Map<String, Any>>() {}.type
                     val jsonObject = gson.fromJson<Map<String, Any>>(text, typeToken)
@@ -85,61 +87,18 @@ class WebSocketListener : WebSocketListener() {
                         messageJsonArray?.map { gson.fromJson(gson.toJson(it), Message::class.java) }
 
                     if (mess != null) {
-                        (mess as ArrayList<Message>).forEach { m ->
-                            BoxChatActivity.messageAdapter.addItem(m)
-                        }
+//                        (mess as ArrayList<Message>).forEach { m ->
+//                            BoxChatActivity.messageAdapter.addItem(m)
+//                        }
+                        BoxChatActivity.messageAdapter.getMessages(mess as ArrayList<Message>)
                     }
 //                BoxChatActivity.messageAdapter.addItem(m as Message)
 //                BoxChatActivity.messageAdapter.addItem(mess!![mess.size-1])
                 }
             )
-        }
+        } else if (response.event == SocketRequestType.SOCKET_REQUEST_CREATE_MESSAGE){
 
-//        when{
-//            response.event.equals("list_group",true) -> {
-//                android.os.Handler(Looper.getMainLooper()).post {
-//                    Log.e("EVENTT", response.event.toString())
-//                    Log.e("CHECK", "CO VAO HAM IF")
-//                    val gson = Gson()
-//                    val typeToken = object : TypeToken<Map<String, Any>>() {}.type
-//                    val jsonObject = gson.fromJson(text, typeToken) as Map<String, Any>
-//                    val listGroupJsonArray =
-//                        (jsonObject["payload"] as? Map<String, Any>)?.get("listGroup") as? List<Map<String, Any>>
-//                    val listGroup =
-//                        listGroupJsonArray?.map { gson.fromJson(gson.toJson(it), Group::class.java) }
-//                    Log.e("LISTGROUP", listGroup!!.size.toString())
-//                    listGroup.forEach { group ->
-//                        Log.d("Group", "Group ID: ${group.groupId}, Name: ${group.members}")
-//                    }
-//                    recentAdapter.clearItems()
-//                    if (listGroup != null) {
-//                        (listGroup as ArrayList<Group>).forEach { gr ->
-//                            recentAdapter.addItem(gr)
-//                        }
-//                    }
-//                }
-//            }
-//            response.event.equals("list_message",true) -> {
-//                Handler(Looper.getMainLooper()).post(Runnable {
-//                    val gson = Gson()
-//                    val typeToken = object : TypeToken<Map<String, Any>>() {}.type
-//                    val jsonObject = gson.fromJson<Map<String, Any>>(text, typeToken)
-//
-//                    var lm: ArrayList<Message> = ArrayList()
-//
-//                    val messageJsonArray =
-//                        (jsonObject["payload"] as? Map<String, Any>)?.get("listMessage") as? List<Map<String, Any>>
-//                    val mess =
-//                        messageJsonArray?.map { gson.fromJson(gson.toJson(it), Message::class.java) }
-//                    if (mess != null) {
-//                        (mess as ArrayList<Message>).forEach { m ->
-//                            Log.d("as", m.type.toString())
-//                            BoxChatActivity.messageAdapter.addItem(m)
-//                        }
-//                    }
-//                })
-//            }
-//        }
+        }
 
         outPut("Received: $text")
     }

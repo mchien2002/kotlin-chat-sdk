@@ -58,6 +58,9 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        if (listRecent.isEmpty()) {
+            Log.e("CCCCC", "UUUUUUUUUUUUUUUUU")
+        }
         val itemObject = listRecent[position]
 
         if (itemObject.lastMessage.type == Message.Type.FIRST_MESSAGE.ordinal) {
@@ -122,8 +125,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 intent.putExtra("username", username)
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
-            }
-        )
+            })
     }
 
     @SuppressLint("NotifyDataSetChanged")

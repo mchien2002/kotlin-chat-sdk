@@ -88,7 +88,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
 
-        connectSocket()
+
 
         setBlur()
 
@@ -98,6 +98,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
         context = applicationContext
 
+        connectSocket()
         init()
         setButtonOnClickListener()
         renderDataRecyclerView()
@@ -109,9 +110,8 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 //        val appStorage = AppStorage.getInstance(context)
 //        val userString: String = appStorage.getData("User", "").toString()
 //        val user = gson.fromJson<User>(userString, type)
-        val myUser: User = AppStorage.getInstance(context).getUserLocal()
-        val webSocketListener = WebSocketListener()
-        webSocketListener.getListGroup(webSocket, myUser.userId)
+
+        //val webSocketListener = WebSocketListener()
 
 
         etSearch.addTextChangedListener {
@@ -131,6 +131,9 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         val ws: WebSocket = client.newWebSocket(request, webSocketListener)
 
         webSocket = ws
+
+        val myUser: User = AppStorage.getInstance(context).getUserLocal()
+        webSocketListener.getListGroup(webSocket, myUser.userId)
 
     }
 

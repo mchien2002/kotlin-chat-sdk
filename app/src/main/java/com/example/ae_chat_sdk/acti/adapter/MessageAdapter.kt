@@ -1,6 +1,5 @@
 package com.example.ae_chat_sdk.acti.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
@@ -110,10 +109,15 @@ class MessageAdapter(val context: Context) :
         return TypeView.RECEIVE.ordinal
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    fun addItem(message: Message) {
-        listMessage.add(message)
+    //@SuppressLint("NotifyDataSetChanged")
+    fun getMessages(message: ArrayList<Message>) {
+        //listMessage.add(message)
+        this.listMessage = message
         notifyDataSetChanged()
+    }
+
+    fun addMessage(message: Message){
+        listMessage.add(message)
     }
 
 }

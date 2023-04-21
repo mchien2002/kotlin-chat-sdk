@@ -4,6 +4,7 @@ import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.View
@@ -11,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +27,8 @@ import com.example.ae_chat_sdk.data.storage.AppStorage
 import de.hdodenhof.circleimageview.CircleImageView
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -51,6 +55,7 @@ class BoxChatActivity : AppCompatActivity() {
         lateinit var messageAdapter: MessageAdapter
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_box_chat)
@@ -116,6 +121,7 @@ class BoxChatActivity : AppCompatActivity() {
             .setBlurAutoUpdate(true)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setOnClickListener() {
         btnBack.setOnClickListener(
             View.OnClickListener {
@@ -137,13 +143,17 @@ class BoxChatActivity : AppCompatActivity() {
                     message.groupType = Message.GroupType.PUBLIC.ordinal
                     message.message = etInputMessage.text.toString()
                     message.groupId = groupId
+                    message.status = Message.Status.SENDING.ordinal
                     message.senderUin = myUser.userId
                     message.senderAvatar = myUser.avatar.toString()
                     message.senderName = myUser.userName
                     webSocketListener.sendMessage(HomeActivity.webSocket, message)
-                    rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
-                    etInputMessage.text.clear()
-                    messageAdapter.notifyDataSetChanged()
+                    val currentDate = LocalDate.now()
+                    val dateFormat1 = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                    val formattedDate = currentDate.format(dateFormat1)
+                    //rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
+                    //etInputMessage.text.clear()
+                    //messageAdapter.notifyDataSetChanged()
                 }
             }
         )
@@ -158,8 +168,8 @@ class BoxChatActivity : AppCompatActivity() {
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
     }
-    fun addMessage(message: Message) {
-        messageAdapter.addItem(message)
-        rvMessage.scrollToPosition(messageAdapter.itemCount - 1)
-    }
+//    fun addMessage(message: Message) {
+//        messageAdapter.addItem(message)
+//        rvMessage.scrollToPosition(messageAdapter.itemCount - 1)
+//    }
 }
