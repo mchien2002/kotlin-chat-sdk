@@ -97,7 +97,31 @@ class WebSocketListener : WebSocketListener() {
                 }
             )
         } else if (response.event == SocketRequestType.SOCKET_REQUEST_CREATE_MESSAGE){
+            Handler(Looper.getMainLooper()).post(
+                Runnable {
+                    val gson = Gson()
+                    val typeToken = object : TypeToken<Map<String, Any>>() {}.type
+                    val jsonObject = gson.fromJson(text, typeToken) as Map<String, Any>
+                    val listGroupJsonArray =
+                        (jsonObject["payload"] as? Map<String, Any>)?.get("listGroup") as? List<Map<String, Any>>
+                    val listGroup =
+                        listGroupJsonArray?.map { gson.fromJson(gson.toJson(it), Group::class.java) }
+                    listGroup!!.forEach { group ->
+                        Log.e("Group", "Group ID: ${group.groupId}, Name: ${group.lastMessage.type}")
+                    }
+                    recentAdapter.clearItems()
+                    (listGroup as ArrayList<Group>).forEach { gr ->
+                        recentAdapter.addItem(gr)
+                    }
 
+                    val newMessageJsonObject = (jsonObject["payload"] as? Map<String, Any>)?.get("newMessage") as? Map<String, Any>
+                    val newMessage = gson.fromJson(gson.toJson(newMessageJsonObject), Message::class.java)
+                    Log.e("NEWMESS",newMessage.toString())
+                    if(newMessage != null){
+                        BoxChatActivity.messageAdapter.addMessage(newMessage)
+                    }
+                }
+            )
         }
 
         outPut("Received: $text")

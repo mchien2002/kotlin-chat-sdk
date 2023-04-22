@@ -3,17 +3,20 @@ package com.example.ae_chat_sdk.acti.boxchat
 import android.app.ActionBar.LayoutParams
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.DisplayMetrics
+import android.util.Log
+import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -28,6 +31,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 import eightbitlab.com.blurview.BlurView
 import eightbitlab.com.blurview.RenderScriptBlur
 import java.time.LocalDate
+import java.time.LocalDateTime
+import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
@@ -46,6 +51,8 @@ class BoxChatActivity : AppCompatActivity() {
 
     lateinit var tvUsername: TextView
     lateinit var etInputMessage: EditText
+
+    lateinit var scrollView : ScrollView
 
     lateinit var groupId: String
 
@@ -87,6 +94,25 @@ class BoxChatActivity : AppCompatActivity() {
 //            findViewById<RecyclerView>(R.id.rvMessage).apply{
 //            adapter = MessageAdapter(listMessage, context)
 //        }
+        //adjustScrollView(scrollView, rvMessage)
+    }
+    fun adjustScrollView(scrollview: ScrollView, view: View) {
+        view.viewTreeObserver.addOnGlobalLayoutListener {
+            val r = Rect()
+            view.getWindowVisibleDisplayFrame(r)
+            val screenHeight = view.rootView.height
+            val keypadHeight = screenHeight - r.bottom
+            if (keypadHeight > screenHeight * 0.15) {
+                val bottomMargin = keypadHeight
+                val layoutParams = scrollview.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.bottomMargin = bottomMargin
+                scrollview.layoutParams = layoutParams
+            } else {
+                val layoutParams = scrollview.layoutParams as ViewGroup.MarginLayoutParams
+                layoutParams.bottomMargin = 0
+                scrollview.layoutParams = layoutParams
+            }
+        }
     }
 
     private fun setAvartar() {
@@ -147,13 +173,18 @@ class BoxChatActivity : AppCompatActivity() {
                     message.senderUin = myUser.userId
                     message.senderAvatar = myUser.avatar.toString()
                     message.senderName = myUser.userName
-                    webSocketListener.sendMessage(HomeActivity.webSocket, message)
                     val currentDate = LocalDate.now()
-                    val dateFormat1 = DateTimeFormatter.ofPattern("dd/MM/yyyy")
-                    val formattedDate = currentDate.format(dateFormat1)
+                    val currentTime = LocalTime.now()
+                    val dateTime = LocalDateTime.of(currentDate, currentTime)
+                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+                    val formattedDateTime = dateTime.format(formatter)
+                    Log.e("TIMERRRR",formattedDateTime)
+                    message.createdAt = formattedDateTime
+                    webSocketListener.sendMessage(HomeActivity.webSocket, message)
+
                     //rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
-                    //etInputMessage.text.clear()
-                    //messageAdapter.notifyDataSetChanged()
+                    etInputMessage.text.clear()
+                    messageAdapter.notifyDataSetChanged()
                 }
             }
         )
@@ -167,6 +198,7 @@ class BoxChatActivity : AppCompatActivity() {
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
+        //scrollView = findViewById(R.id.scrollView)
     }
 //    fun addMessage(message: Message) {
 //        messageAdapter.addItem(message)

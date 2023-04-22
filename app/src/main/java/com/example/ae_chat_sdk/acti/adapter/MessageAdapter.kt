@@ -118,6 +118,7 @@ class MessageAdapter(val context: Context) :
 
     fun addMessage(message: Message){
         listMessage.add(message)
+        notifyDataSetChanged()
     }
 
 }
