@@ -3,6 +3,7 @@ package com.example.ae_chat_sdk.acti.adapter
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -75,6 +76,28 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 }
             }
         }
+        var seenUins: ArrayList<String>? = itemObject.lastMessage.seenUins
+        Log.e("SEENNN",seenUins.toString())
+        //val seenUins = itemObject.lastMessage.seenUins
+        if (seenUins!= null){
+            for (item in seenUins)
+            {
+                Log.e("ITEMMM",item)
+                holder.tvMessage.setTypeface(null, Typeface.BOLD)
+                holder.tvUsername.setTypeface(null, Typeface.BOLD)
+                if (item == RestClient().getUserId()){
+                    Log.e("USERIDCL",RestClient().getUserId())
+                    holder.tvMessage.setTypeface(null, Typeface.NORMAL)
+                    holder.tvUsername.setTypeface(null, Typeface.NORMAL)
+                    break
+                }
+            }
+        }
+
+
+//        if (seenUins == RestClient().getUserId() ){
+//
+//        }
 
         val createdAtString = itemObject.lastMessage.createdAt.toString()
         val timeString = DataTimeUtil().getTimeFromDate(createdAtString)
@@ -96,7 +119,6 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                         override fun onFailure(call: Call<MyResponse>, t: Throwable) {
                             Log.e("CCCCC", t.toString())
                         }
-
                         override fun onResponse(
                             call: Call<MyResponse>,
                             response: Response<MyResponse>
@@ -123,6 +145,10 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 intent.putExtra("GroupId", itemObject.groupId)
                 intent.putExtra("avatar", imageUrl)
                 intent.putExtra("username", username)
+                val senderUin = itemObject.lastMessage.senderUin
+                    if (senderUin != RestClient().getUserId()) {
+                        intent.putExtra("lastmessage",itemObject.lastMessage.messageId)
+                    }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
             })
@@ -135,9 +161,8 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun addItem(group: Group) {
-        listRecent.add(group)
-        Log.e("SIZEGRZ", group.members.toString())
+    fun getListgroup(group: ArrayList<Group>) {
+        this.listRecent = group
         notifyDataSetChanged()
     }
 }

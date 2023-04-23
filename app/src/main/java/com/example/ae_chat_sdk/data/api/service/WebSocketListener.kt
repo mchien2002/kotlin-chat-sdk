@@ -3,6 +3,7 @@ package com.example.ae_chat_sdk.data.api.service
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
 import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.acti.home.HomeActivity.Companion.recentAdapter
 import com.example.ae_chat_sdk.data.model.Group
@@ -66,10 +67,12 @@ class WebSocketListener : WebSocketListener() {
                 listGroup.forEach { group ->
                     Log.d("Group", "Group ID: ${group.groupId}, Name: ${group.lastMessage.type}")
                 }
-                recentAdapter.clearItems()
-                (listGroup as ArrayList<Group>).forEach { gr ->
-                    recentAdapter.addItem(gr)
-                }
+//                recentAdapter.clearItems()
+//                (listGroup as ArrayList<Group>).forEach { gr ->
+//                    recentAdapter.addItem(gr)
+//                }
+                recentAdapter.getListgroup(listGroup as ArrayList<Group>)
+
             }
         } else if (response.event == SocketRequestType.SOCKET_REQUEST_LIST_MESSAGE) {
             Handler(Looper.getMainLooper()).post(
@@ -109,10 +112,11 @@ class WebSocketListener : WebSocketListener() {
                     listGroup!!.forEach { group ->
                         Log.e("Group", "Group ID: ${group.groupId}, Name: ${group.lastMessage.type}")
                     }
-                    recentAdapter.clearItems()
-                    (listGroup as ArrayList<Group>).forEach { gr ->
-                        recentAdapter.addItem(gr)
-                    }
+//                    recentAdapter.clearItems()
+//                    (listGroup as ArrayList<Group>).forEach { gr ->
+//                        recentAdapter.addItem(gr)
+//                    }
+                    recentAdapter.getListgroup(listGroup as ArrayList<Group>)
 
                     val newMessageJsonObject = (jsonObject["payload"] as? Map<String, Any>)?.get("newMessage") as? Map<String, Any>
                     val newMessage = gson.fromJson(gson.toJson(newMessageJsonObject), Message::class.java)
@@ -163,6 +167,13 @@ class WebSocketListener : WebSocketListener() {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["message"] = message
         val request: SocketRequest = SocketRequest("create_message", map)
+        val gson = Gson()
+        webSocket.send(gson.toJson(request))
+    }
+    fun seenMessage(webSocket: WebSocket, messageId: String) {
+        val map: MutableMap<String, Any> = HashMap<String, Any>()
+        map["messageId"] = messageId
+        val request: SocketRequest = SocketRequest("seen_message", map)
         val gson = Gson()
         webSocket.send(gson.toJson(request))
     }

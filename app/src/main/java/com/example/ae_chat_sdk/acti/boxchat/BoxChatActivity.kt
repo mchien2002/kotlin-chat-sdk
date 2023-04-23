@@ -54,7 +54,10 @@ class BoxChatActivity : AppCompatActivity() {
 
     lateinit var scrollView : ScrollView
 
+
+
     lateinit var groupId: String
+    lateinit var messageId: String
 
     val webSocketListener: WebSocketListener = WebSocketListener()
 
@@ -79,8 +82,12 @@ class BoxChatActivity : AppCompatActivity() {
 
         val intent: Intent = intent
         groupId = intent.getStringExtra("GroupId").toString()
-
         webSocketListener.receiveMessage(HomeActivity.webSocket, groupId.toString())
+
+        messageId = intent.getStringExtra("lastmessage").toString()
+        if (messageId!=null){
+            webSocketListener.seenMessage(HomeActivity.webSocket,messageId)
+        }
 
 //        val list:ArrayList<String> =ArrayList()
 //        listMessage.add(Message("1", Message.Type.FIRST_MESSAGE,Message.Status.RECEIVED,Message.GroupType.PRIVATE,"fdfsfds", "", Date(2023,4,6),Date(2023,4,6),"TanPhat","fsfsdfad","","",list,list, ""))
@@ -178,7 +185,6 @@ class BoxChatActivity : AppCompatActivity() {
                     val dateTime = LocalDateTime.of(currentDate, currentTime)
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val formattedDateTime = dateTime.format(formatter)
-                    Log.e("TIMERRRR",formattedDateTime)
                     message.createdAt = formattedDateTime
                     webSocketListener.sendMessage(HomeActivity.webSocket, message)
 
@@ -198,6 +204,7 @@ class BoxChatActivity : AppCompatActivity() {
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
+
         //scrollView = findViewById(R.id.scrollView)
     }
 //    fun addMessage(message: Message) {

@@ -4,8 +4,12 @@ import android.content.Context
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
@@ -16,6 +20,8 @@ class MessageAdapter(val context: Context) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var listMessage: ArrayList<Message> = ArrayList()
+    var imageUrl =
+        "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
 
     enum class TypeView(val typeView: Int) {
         FIRST_MESSAGE(0),
@@ -23,12 +29,13 @@ class MessageAdapter(val context: Context) :
         RECEIVE(2)
     }
 
-    inner class SendMessageFooterHolder(private val binding: LayoutFrameMessageSenderFooterBinding) :
+    inner class SendMessageFooterHolder(val binding: LayoutFrameMessageSenderFooterBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Message) {
             Log.d("Check Begin", "Send")
 
             binding.tvSenderFooter.text = data.message
+            binding.ivCheckSeen.setImageDrawable(null)
         }
     }
 
@@ -93,6 +100,35 @@ class MessageAdapter(val context: Context) :
         } else {
             (holder as SendMessageFooterHolder).bind(listMessage[position])
         }
+        Log.e("position",position.toString())
+        Log.e("listMessagesize",listMessage.size.toString())
+
+        val senderUin = listMessage[position].senderUin
+        if (senderUin == RestClient().getUserId()) {
+            if (position == listMessage.size-1 && listMessage[position].status == Message.Status.SEEN.ordinal){
+                Log.e("LASTMS",listMessage[position].message.toString())
+                if(holder is SendMessageFooterHolder){
+                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
+                    //holder.binding.ivCheckSeen.setImageDrawable(null)
+                }
+            } else if (listMessage[position].status == Message.Status.SENT.ordinal) {
+                if (holder is SendMessageFooterHolder) {
+                    holder.binding.ivCheckSeen.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            holder.itemView.context,
+                            R.drawable.ic_check_seen
+                        )
+                    )
+                }
+            }else if (listMessage[position].status == Message.Status.SEEN.ordinal && listMessage[position+1].status != Message.Status.SEEN.ordinal){
+                if(holder is SendMessageFooterHolder){
+                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
+                }
+            }
+        } else {
+        }
+
+
     }
 
     override fun getItemViewType(position: Int): Int {
