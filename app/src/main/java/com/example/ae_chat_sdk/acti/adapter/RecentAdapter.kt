@@ -57,6 +57,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
         return listRecent.size
     }
 
+    @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         if (listRecent.isEmpty()) {
@@ -147,7 +148,9 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 intent.putExtra("username", username)
                 val senderUin = itemObject.lastMessage.senderUin
                     if (senderUin != RestClient().getUserId()) {
-                        intent.putExtra("lastmessage",itemObject.lastMessage.messageId)
+                        if (itemObject.lastMessage.status != Message.Status.SEEN.ordinal){
+                            intent.putExtra("lastmessage",itemObject.lastMessage.messageId)
+                        }
                     }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)

@@ -92,7 +92,7 @@ class BoxChatActivity : AppCompatActivity() {
 //        val list:ArrayList<String> =ArrayList()
 //        listMessage.add(Message("1", Message.Type.FIRST_MESSAGE,Message.Status.RECEIVED,Message.GroupType.PRIVATE,"fdfsfds", "", Date(2023,4,6),Date(2023,4,6),"TanPhat","fsfsdfad","","",list,list, ""))
 
-        messageAdapter = MessageAdapter(context)
+        messageAdapter = MessageAdapter(context,groupId)
         rvMessage.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvMessage.adapter = messageAdapter

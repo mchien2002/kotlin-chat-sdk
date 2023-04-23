@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.data.api.RestClient
+import com.example.ae_chat_sdk.data.model.Group
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageReceiverFooterBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageSenderFooterBinding
 
-class MessageAdapter(val context: Context) :
+class MessageAdapter(val context: Context,val groupId : String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var listMessage: ArrayList<Message> = ArrayList()
@@ -153,8 +154,10 @@ class MessageAdapter(val context: Context) :
     }
 
     fun addMessage(message: Message){
-        listMessage.add(message)
-        notifyDataSetChanged()
+        if(message.groupId == this.groupId){
+            listMessage.add(message)
+            notifyDataSetChanged()
+        }
     }
 
 }
