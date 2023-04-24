@@ -1,21 +1,21 @@
 package com.example.ae_chat_sdk.acti.adapter
 
 import android.content.Context
+import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toDrawable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.data.api.RestClient
-import com.example.ae_chat_sdk.data.model.Group
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageReceiverFooterBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageSenderFooterBinding
+import com.example.ae_chat_sdk.utils.DateTimeUtil
 
 class MessageAdapter(val context: Context,val groupId : String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -112,7 +112,16 @@ class MessageAdapter(val context: Context,val groupId : String) :
                     Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
                     //holder.binding.ivCheckSeen.setImageDrawable(null)
                 }
-            } else if (listMessage[position].status == Message.Status.SENT.ordinal) {
+            }else if (listMessage[position].status == Message.Status.SENDING.ordinal) {
+                if (holder is SendMessageFooterHolder) {
+                    holder.binding.ivCheckSeen.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            holder.itemView.context,
+                            R.drawable.ic_check_sending
+                        )
+                    )
+                }
+            }else if (listMessage[position].status == Message.Status.SENT.ordinal) {
                 if (holder is SendMessageFooterHolder) {
                     holder.binding.ivCheckSeen.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -153,9 +162,20 @@ class MessageAdapter(val context: Context,val groupId : String) :
         notifyDataSetChanged()
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     fun addMessage(message: Message){
         if(message.groupId == this.groupId){
-            listMessage.add(message)
+            if (message.messageId==null){
+                listMessage.add(message)
+            }else {
+                for(i in listMessage.indices.reversed()){
+                    if ( DateTimeUtil().formatDate(listMessage[i].createdAt.toString())  == DateTimeUtil().formatDate(message.createdAt.toString()) && listMessage[i].status== Message.Status.SENDING.ordinal){
+                        listMessage[i] = message
+                        Log.e("LISTMESS",listMessage[i].status.toString())
+                        break
+                    }
+                }
+            }
             notifyDataSetChanged()
         }
     }

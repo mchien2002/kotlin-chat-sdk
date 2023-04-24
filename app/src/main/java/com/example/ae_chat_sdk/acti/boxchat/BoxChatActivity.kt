@@ -186,11 +186,10 @@ class BoxChatActivity : AppCompatActivity() {
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val formattedDateTime = dateTime.format(formatter)
                     message.createdAt = formattedDateTime
+                    messageAdapter.addMessage(message)
                     webSocketListener.sendMessage(HomeActivity.webSocket, message)
-
                     //rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
                     etInputMessage.text.clear()
-                    messageAdapter.notifyDataSetChanged()
                 }
             }
         )

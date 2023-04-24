@@ -1,8 +1,10 @@
 package com.example.ae_chat_sdk.data.api.service
 
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
+import androidx.annotation.RequiresApi
 import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
 import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.acti.home.HomeActivity.Companion.recentAdapter
@@ -48,6 +50,7 @@ class WebSocketListener : WebSocketListener() {
         Log.d("WebSocket", s)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onMessage(webSocket: WebSocket, text: String) {
         super.onMessage(webSocket, text)
         val gson = Gson()

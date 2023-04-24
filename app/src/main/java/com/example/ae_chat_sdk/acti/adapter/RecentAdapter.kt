@@ -22,7 +22,7 @@ import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.model.* // ktlint-disable no-wildcard-imports
 import com.example.ae_chat_sdk.data.storage.AppStorage
-import com.example.ae_chat_sdk.utils.DataTimeUtil
+import com.example.ae_chat_sdk.utils.DateTimeUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -101,7 +101,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
 //        }
 
         val createdAtString = itemObject.lastMessage.createdAt.toString()
-        val timeString = DataTimeUtil().getTimeFromDate(createdAtString)
+        val timeString = DateTimeUtil().getTimeFromDate(createdAtString)
         holder.tvTimeReceive.text = timeString
 
         val gson = Gson()

@@ -1,5 +1,6 @@
 package com.example.ae_chat_sdk.data.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.google.gson.annotations.SerializedName
 import java.util.*
 

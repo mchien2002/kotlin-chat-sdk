@@ -4,10 +4,11 @@ import android.os.Build
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
 import java.time.LocalDate
+import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
 
-class DataTimeUtil {
+class DateTimeUtil {
     @RequiresApi(Build.VERSION_CODES.O)
     fun getTimeFromDate(dateString: String): String {
         // val createdAtString = itemObject.lastMessage.createdAt.toString()
@@ -34,5 +35,14 @@ class DataTimeUtil {
             val newDateString = date.format(newFormatter)
             return newDateString
         }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun formatDate(dateString: String):String{
+        val inputFormat = DateTimeFormatter.ofPattern("MMM dd, yyyy, hh:mm:ss a")
+        val outputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+        val inputDateTime = LocalDateTime.parse("Apr 25, 2023, 12:37:47 AM", inputFormat)
+        val outputDateTime = inputDateTime.format(outputFormat)
+        return outputDateTime
     }
 }
