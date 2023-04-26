@@ -179,5 +179,9 @@ class MessageAdapter(val context: Context,val groupId : String) :
             notifyDataSetChanged()
         }
     }
+    fun checkSeenMessage(message: Message){
+        if (message.senderUin == RestClient().getUserId()){
 
+        }
+    }
 }
