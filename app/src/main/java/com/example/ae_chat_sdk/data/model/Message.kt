@@ -61,7 +61,7 @@ class Message {
     var message: String? = null
 
     @SerializedName("createdAt")
-    var createdAt: String? = null
+    var createdAt: Date? = null
 
     @SerializedName("updateAt")
     var updateAt: String? = null

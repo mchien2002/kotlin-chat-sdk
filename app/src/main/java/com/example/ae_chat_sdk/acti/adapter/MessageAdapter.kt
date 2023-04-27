@@ -61,7 +61,6 @@ class MessageAdapter(val context: Context,val groupId : String) :
     inner class BeginMessageHolder(private val binding: LayoutFrameMessageBeginBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind() {
-            Log.d("Check Begin", "Begin")
             binding.tvMessageBegin.text = "Bạn đã bắt đầu cuộc trò chuyện."
         }
     }
@@ -103,8 +102,6 @@ class MessageAdapter(val context: Context,val groupId : String) :
         } else {
             (holder as SendMessageFooterHolder).bind(listMessage[position])
         }
-        Log.e("position",position.toString())
-        Log.e("listMessagesize",listMessage.size.toString())
 
         val senderUin = listMessage[position].senderUin
         if (senderUin == RestClient().getUserId()) {
@@ -146,11 +143,8 @@ class MessageAdapter(val context: Context,val groupId : String) :
     override fun getItemViewType(position: Int): Int {
         val ms: Message = listMessage[position]
         ms.message?.let { Log.d("message", it) }
-        Log.d("type", ms.type.toString())
         if (ms.message == "" && ms.type?.toFloat()!!.toInt() == Message.Type.FIRST_MESSAGE.type) {
             return TypeView.FIRST_MESSAGE.typeView
-//        if (ms.message == "" && ms.type == Message.Type.FIRST_MESSAGE.ordinal) {
-//            return TypeView.FIRST_MESSAGE.ordinal
         } else if (ms.senderUin == RestClient().getUserId()) {
             return TypeView.SEND.ordinal
         }
@@ -172,31 +166,27 @@ class MessageAdapter(val context: Context,val groupId : String) :
                 webSocketListener.seenMessage(HomeActivity.webSocket, message.messageId!!)
             }else {
                 for(i in listMessage.indices.reversed()){
+
                     if ( listMessage[i].createdAt.toString()  == message.createdAt.toString() && listMessage[i].status== Message.Status.SENDING.ordinal){
                         listMessage[i] = message
-                        Log.e("LISTMESS",listMessage[i].status.toString())
                         break
                     }
                 }
             }
             notifyDataSetChanged()
         }
-        Log.e("TEST123","CO GOi")
 
     }
     fun checkSeenMessage(message : Message){
         for(i in listMessage.indices.reversed()){
             if ( message.messageId == listMessage[i].messageId && message.groupId == this.groupId ){
                 listMessage[i] = message
-                Log.e("LISTMESS2",listMessage[i].status.toString())
                 break
             }
         }
     }
     fun addMessageSeeding(message: Message){
         if(message.messageId == null && message.status == Message.Status.SENDING.ordinal){
-            Log.e("MESSAGE", message.message!!)
-            Log.e("MESSAGE", message.status.toString())
             listMessage.add(message)
             notifyDataSetChanged()
         }

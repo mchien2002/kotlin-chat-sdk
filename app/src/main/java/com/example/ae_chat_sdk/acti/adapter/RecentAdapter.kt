@@ -100,8 +100,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
 //
 //        }
 
-        val createdAtString = itemObject.lastMessage.createdAt.toString()
-        val timeString = DateTimeUtil().getTimeFromDate(createdAtString)
+        val timeString = DateTimeUtil().getTimeFromDate(itemObject.lastMessage.createdAt)
         holder.tvTimeReceive.text = timeString
 
         val gson = Gson()

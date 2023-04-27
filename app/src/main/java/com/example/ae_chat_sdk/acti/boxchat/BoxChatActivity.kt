@@ -168,12 +168,12 @@ class BoxChatActivity : AppCompatActivity() {
                     message.senderUin = myUser.userId
                     message.senderAvatar = myUser.avatar.toString()
                     message.senderName = myUser.userName
-                    val currentDate = LocalDate.now()
-                    val currentTime = LocalTime.now()
-                    val dateTime = LocalDateTime.of(currentDate, currentTime)
-                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-                    val formattedDateTime = dateTime.format(formatter)
-                    message.createdAt = formattedDateTime
+//                    val currentDate = LocalDate.now()
+//                    val currentTime = LocalTime.now()
+//                    val dateTime = LocalDateTime.of(currentDate, currentTime)
+//                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+//                    val formattedDateTime = dateTime.format(formatter)
+                    message.createdAt = Date()
                     messageAdapter!!.addMessageSeeding(message)
                     webSocketListener.sendMessage(HomeActivity.webSocket, message)
                     //rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)

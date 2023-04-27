@@ -15,16 +15,35 @@ import com.example.ae_chat_sdk.data.model.SocketRequest
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.socket.SocketRequestType
 import com.example.ae_chat_sdk.data.storage.AppStorage
-import com.google.gson.Gson
+import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import java.lang.reflect.Type
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 class WebSocketListener : WebSocketListener() {
 
-
+    val gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
+        .registerTypeAdapter(Date::class.java, object : JsonDeserializer<Date> {
+            override fun deserialize(
+                json: JsonElement?,
+                typeOfT: Type?,
+                context: JsonDeserializationContext?
+            ): Date? {
+                json?.asString?.let { dateString ->
+                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                    return dateFormat.parse(dateString)
+                }
+                return null
+            }
+        })
+        .create()
     override fun onOpen(webSocket: WebSocket, response: Response) {
         webSocket.send("Hello")
         val gson = Gson()
@@ -55,11 +74,10 @@ class WebSocketListener : WebSocketListener() {
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onMessage(webSocket: WebSocket, text: String) {
         super.onMessage(webSocket, text)
-        val gson = Gson()
+
         val response = gson.fromJson(text, SocketRequest::class.java)
         if (response.event == SocketRequestType.SOCKET_REQUEST_LIST_GROUP) {
             android.os.Handler(Looper.getMainLooper()).post {
-                val gson = Gson()
                 val typeToken = object : TypeToken<Map<String, Any>>() {}.type
                 val jsonObject = gson.fromJson(text, typeToken) as Map<String, Any>
                 val listGroupJsonArray =
@@ -72,7 +90,6 @@ class WebSocketListener : WebSocketListener() {
         } else if (response.event == SocketRequestType.SOCKET_REQUEST_LIST_MESSAGE) {
             Handler(Looper.getMainLooper()).post(
                 Runnable {
-                    val gson = Gson()
                     val typeToken = object : TypeToken<Map<String, Any>>() {}.type
                     val jsonObject = gson.fromJson<Map<String, Any>>(text, typeToken)
                     val messageJsonArray =
@@ -88,7 +105,6 @@ class WebSocketListener : WebSocketListener() {
         } else if (response.event == SocketRequestType.SOCKET_REQUEST_CREATE_MESSAGE){
             Handler(Looper.getMainLooper()).post(
                 Runnable {
-                    val gson = Gson()
                     val typeToken = object : TypeToken<Map<String, Any>>() {}.type
                     val jsonObject = gson.fromJson(text, typeToken) as Map<String, Any>
                     val listGroupJsonArray =
@@ -107,7 +123,6 @@ class WebSocketListener : WebSocketListener() {
         } else if (response.event == SocketRequestType.SOCKET_REQUEST_SEEN_LASTEST_MESSAGE){
             Handler(Looper.getMainLooper()).post(
                 Runnable {
-                    val gson = Gson()
                     val typeToken = object : TypeToken<Map<String, Any>>() {}.type
                     val jsonObject = gson.fromJson(text, typeToken) as Map<String, Any>
                     val listGroupJsonArray =
@@ -115,13 +130,6 @@ class WebSocketListener : WebSocketListener() {
                     val listGroup =
                         listGroupJsonArray?.map { gson.fromJson(gson.toJson(it), Group::class.java) }
                     recentAdapter.getListgroup(listGroup as ArrayList<Group>)
-
-//                    val seenMessageJsonObject = (jsonObject["payload"] as? Map<String, Any>)?.get("seenMessage") as? Map<String, Any>
-//                    val seenMessage = gson.fromJson(gson.toJson(seenMessageJsonObject), Message::class.java)
-//                    Log.e("seenMessage",seenMessage.toString())
-//                    if(seenMessage != null){
-//                        BoxChatActivity.messageAdapter.checkSeenMessage(seenMessage)
-//                    }
 
                     val seenMessagesJsonArray =
                         (jsonObject["payload"] as? Map<String, Any>)?.get("seenMessages") as? List<Map<String, Any>>
@@ -159,8 +167,6 @@ class WebSocketListener : WebSocketListener() {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["groupId"] = groupId
         val request: SocketRequest = SocketRequest("list_message", map)
-
-        val gson = Gson()
         webSocket.send(gson.toJson(request))
     }
 
@@ -168,7 +174,6 @@ class WebSocketListener : WebSocketListener() {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["userId"] = userId.toString()
         val request: SocketRequest = SocketRequest("list_group", map)
-        val gson = Gson()
         webSocket.send(gson.toJson(request))
     }
 
@@ -176,14 +181,12 @@ class WebSocketListener : WebSocketListener() {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["message"] = message
         val request: SocketRequest = SocketRequest("create_message", map)
-        val gson = Gson()
         webSocket.send(gson.toJson(request))
     }
     fun seenMessage(webSocket: WebSocket, messageId: String) {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["messageId"] = messageId
         val request: SocketRequest = SocketRequest("seen_message", map)
-        val gson = Gson()
         webSocket.send(gson.toJson(request))
     }
 }
