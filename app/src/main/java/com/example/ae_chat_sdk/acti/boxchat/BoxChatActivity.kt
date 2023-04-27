@@ -89,37 +89,22 @@ class BoxChatActivity : AppCompatActivity() {
             webSocketListener.seenMessage(HomeActivity.webSocket,messageId)
         }
 
-//        val list:ArrayList<String> =ArrayList()
-//        listMessage.add(Message("1", Message.Type.FIRST_MESSAGE,Message.Status.RECEIVED,Message.GroupType.PRIVATE,"fdfsfds", "", Date(2023,4,6),Date(2023,4,6),"TanPhat","fsfsdfad","","",list,list, ""))
-
         messageAdapter = MessageAdapter(context,groupId)
         rvMessage.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvMessage.adapter = messageAdapter
 
         messageAdapter!!.notifyDataSetChanged()
-//            findViewById<RecyclerView>(R.id.rvMessage).apply{
-//            adapter = MessageAdapter(listMessage, context)
+
+//        rvMessage.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+//        rvMessage.adapter = messageAdapter
+//        rvMessage.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
+//            if (bottom < oldBottom) {
+//                rvMessage.postDelayed({
+//                    rvMessage.smoothScrollToPosition(messageAdapter!!.itemCount - 1)
+//                }, 100)
+//            }
 //        }
-        //adjustScrollView(scrollView, rvMessage)
-    }
-    fun adjustScrollView(scrollview: ScrollView, view: View) {
-        view.viewTreeObserver.addOnGlobalLayoutListener {
-            val r = Rect()
-            view.getWindowVisibleDisplayFrame(r)
-            val screenHeight = view.rootView.height
-            val keypadHeight = screenHeight - r.bottom
-            if (keypadHeight > screenHeight * 0.15) {
-                val bottomMargin = keypadHeight
-                val layoutParams = scrollview.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParams.bottomMargin = bottomMargin
-                scrollview.layoutParams = layoutParams
-            } else {
-                val layoutParams = scrollview.layoutParams as ViewGroup.MarginLayoutParams
-                layoutParams.bottomMargin = 0
-                scrollview.layoutParams = layoutParams
-            }
-        }
     }
 
     private fun setAvartar() {
@@ -206,11 +191,6 @@ class BoxChatActivity : AppCompatActivity() {
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
-
-        //scrollView = findViewById(R.id.scrollView)
     }
-//    fun addMessage(message: Message) {
-//        messageAdapter.addItem(message)
-//        rvMessage.scrollToPosition(messageAdapter.itemCount - 1)
-//    }
+
 }

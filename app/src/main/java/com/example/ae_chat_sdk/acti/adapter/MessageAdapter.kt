@@ -172,7 +172,7 @@ class MessageAdapter(val context: Context,val groupId : String) :
                 webSocketListener.seenMessage(HomeActivity.webSocket, message.messageId!!)
             }else {
                 for(i in listMessage.indices.reversed()){
-                    if ( DateTimeUtil().formatDate(listMessage[i].createdAt.toString())  == DateTimeUtil().formatDate(message.createdAt.toString()) && listMessage[i].status== Message.Status.SENDING.ordinal){
+                    if ( listMessage[i].createdAt.toString()  == message.createdAt.toString() && listMessage[i].status== Message.Status.SENDING.ordinal){
                         listMessage[i] = message
                         Log.e("LISTMESS",listMessage[i].status.toString())
                         break
