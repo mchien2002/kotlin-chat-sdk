@@ -10,7 +10,9 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.RestClient
+import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageReceiverFooterBinding
@@ -19,7 +21,7 @@ import com.example.ae_chat_sdk.utils.DateTimeUtil
 
 class MessageAdapter(val context: Context,val groupId : String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
+    val webSocketListener: WebSocketListener = WebSocketListener()
     var listMessage: ArrayList<Message> = ArrayList()
     var imageUrl =
         "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
@@ -165,8 +167,9 @@ class MessageAdapter(val context: Context,val groupId : String) :
     @RequiresApi(Build.VERSION_CODES.O)
     fun addMessage(message: Message){
         if(message.groupId == this.groupId){
-            if (message.messageId==null){
+            if (message.messageId != null && message.senderUin != RestClient().getUserId()){
                 listMessage.add(message)
+                webSocketListener.seenMessage(HomeActivity.webSocket, message.messageId!!)
             }else {
                 for(i in listMessage.indices.reversed()){
                     if ( DateTimeUtil().formatDate(listMessage[i].createdAt.toString())  == DateTimeUtil().formatDate(message.createdAt.toString()) && listMessage[i].status== Message.Status.SENDING.ordinal){
@@ -178,10 +181,24 @@ class MessageAdapter(val context: Context,val groupId : String) :
             }
             notifyDataSetChanged()
         }
-    }
-    fun checkSeenMessage(message: Message){
-        if (message.senderUin == RestClient().getUserId()){
+        Log.e("TEST123","CO GOi")
 
+    }
+    fun checkSeenMessage(message : Message){
+        for(i in listMessage.indices.reversed()){
+            if ( message.messageId == listMessage[i].messageId && message.groupId == this.groupId ){
+                listMessage[i] = message
+                Log.e("LISTMESS2",listMessage[i].status.toString())
+                break
+            }
+        }
+    }
+    fun addMessageSeeding(message: Message){
+        if(message.messageId == null && message.status == Message.Status.SENDING.ordinal){
+            Log.e("MESSAGE", message.message!!)
+            Log.e("MESSAGE", message.status.toString())
+            listMessage.add(message)
+            notifyDataSetChanged()
         }
     }
 }

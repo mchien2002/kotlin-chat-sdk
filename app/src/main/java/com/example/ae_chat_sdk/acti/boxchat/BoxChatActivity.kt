@@ -62,7 +62,7 @@ class BoxChatActivity : AppCompatActivity() {
     val webSocketListener: WebSocketListener = WebSocketListener()
 
     companion object {
-        lateinit var messageAdapter: MessageAdapter
+        var messageAdapter: MessageAdapter? = null
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -97,7 +97,7 @@ class BoxChatActivity : AppCompatActivity() {
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvMessage.adapter = messageAdapter
 
-        messageAdapter.notifyDataSetChanged()
+        messageAdapter!!.notifyDataSetChanged()
 //            findViewById<RecyclerView>(R.id.rvMessage).apply{
 //            adapter = MessageAdapter(listMessage, context)
 //        }
@@ -158,7 +158,10 @@ class BoxChatActivity : AppCompatActivity() {
     private fun setOnClickListener() {
         btnBack.setOnClickListener(
             View.OnClickListener {
+                //super.onDestroy()
+                messageAdapter = null
                 finish()
+
             }
         )
 
@@ -186,7 +189,7 @@ class BoxChatActivity : AppCompatActivity() {
                     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
                     val formattedDateTime = dateTime.format(formatter)
                     message.createdAt = formattedDateTime
-                    messageAdapter.addMessage(message)
+                    messageAdapter!!.addMessageSeeding(message)
                     webSocketListener.sendMessage(HomeActivity.webSocket, message)
                     //rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
                     etInputMessage.text.clear()

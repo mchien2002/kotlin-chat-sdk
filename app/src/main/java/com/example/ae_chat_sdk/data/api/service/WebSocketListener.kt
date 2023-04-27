@@ -80,8 +80,8 @@ class WebSocketListener : WebSocketListener() {
                     val mess =
                         messageJsonArray?.map { gson.fromJson(gson.toJson(it), Message::class.java) }
 
-                    if (mess != null) {
-                        BoxChatActivity.messageAdapter.getMessages(mess as ArrayList<Message>)
+                    if (mess != null && BoxChatActivity.messageAdapter != null) {
+                        BoxChatActivity.messageAdapter!!.getMessages(mess as ArrayList<Message>)
                     }
                 }
             )
@@ -99,8 +99,8 @@ class WebSocketListener : WebSocketListener() {
 
                     val newMessageJsonObject = (jsonObject["payload"] as? Map<String, Any>)?.get("newMessage") as? Map<String, Any>
                     val newMessage = gson.fromJson(gson.toJson(newMessageJsonObject), Message::class.java)
-                    if(newMessage != null){
-                        BoxChatActivity.messageAdapter.addMessage(newMessage)
+                    if(newMessage != null && BoxChatActivity.messageAdapter != null){
+                        BoxChatActivity.messageAdapter!!.addMessage(newMessage)
                     }
                 }
             )
@@ -116,11 +116,22 @@ class WebSocketListener : WebSocketListener() {
                         listGroupJsonArray?.map { gson.fromJson(gson.toJson(it), Group::class.java) }
                     recentAdapter.getListgroup(listGroup as ArrayList<Group>)
 
-                    val seenMessageJsonObject = (jsonObject["payload"] as? Map<String, Any>)?.get("seenMessage") as? Map<String, Any>
-                    val seenMessage = gson.fromJson(gson.toJson(seenMessageJsonObject), Message::class.java)
-                    Log.e("seenMessage",seenMessage.toString())
-                    if(seenMessage != null){
-                        BoxChatActivity.messageAdapter.checkSeenMessage(seenMessage)
+//                    val seenMessageJsonObject = (jsonObject["payload"] as? Map<String, Any>)?.get("seenMessage") as? Map<String, Any>
+//                    val seenMessage = gson.fromJson(gson.toJson(seenMessageJsonObject), Message::class.java)
+//                    Log.e("seenMessage",seenMessage.toString())
+//                    if(seenMessage != null){
+//                        BoxChatActivity.messageAdapter.checkSeenMessage(seenMessage)
+//                    }
+
+                    val seenMessagesJsonArray =
+                        (jsonObject["payload"] as? Map<String, Any>)?.get("seenMessages") as? List<Map<String, Any>>
+                    val seenMessages =
+                        seenMessagesJsonArray?.map { gson.fromJson(gson.toJson(it), Message::class.java) }
+                    if(seenMessages != null && BoxChatActivity.messageAdapter != null){
+                        for(i in seenMessages){
+                            BoxChatActivity.messageAdapter!!.checkSeenMessage(i)
+                        }
+                        BoxChatActivity.messageAdapter!!.notifyDataSetChanged()
                     }
                 }
             )
