@@ -109,7 +109,7 @@
             android:id="@+id/ibChangeAvatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginRight="20dp"
             android:background="@drawable/bg_circle_button"
             android:contentDescription="@string/change_avatar"
             android:elevation="5dp"
@@ -134,8 +134,8 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />
 
-        <TextView
-            android:id="@+id/tvInputEmail"
+        <EditText
+            android:id="@+id/etInputEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
@@ -145,6 +145,7 @@
             android:text="@string/emailAddr"
             android:textColor="@color/Secondary10"
             android:textSize="14sp"
+            android:background="@color/transparent"
             app:layout_constraintTop_toBottomOf="@id/tvAccount"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
@@ -160,12 +161,12 @@
             android:text="Ấn để thay đổi Email"
             android:textColor="@color/Primary40"
             android:textSize="8sp"
-            app:layout_constraintTop_toBottomOf="@id/tvInputEmail"
+            app:layout_constraintTop_toBottomOf="@id/etInputEmail"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 
-        <TextView
-            android:id="@+id/tvInputUsername"
+        <EditText
+            android:id="@+id/etInputUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/roboto"
@@ -175,6 +176,7 @@
             android:text="Không có"
             android:textColor="@color/Secondary10"
             android:textSize="14sp"
+            android:background="@color/transparent"
             app:layout_constraintTop_toBottomOf="@id/tvDescEmail"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
@@ -190,7 +192,7 @@
             android:text="Chưa đặt tên"
             android:textColor="@color/Primary40"
             android:textSize="8sp"
-            app:layout_constraintTop_toBottomOf="@id/tvInputUsername"
+            app:layout_constraintTop_toBottomOf="@id/etInputUsername"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"/>
 

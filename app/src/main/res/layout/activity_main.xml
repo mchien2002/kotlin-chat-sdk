@@ -11,6 +11,6 @@
     >
 
 <!--    <include layout="@layout/content_main" />-->
-    <include layout="@layout/activity_login"/>
+<!--    <include layout="@layout/activity_login"/>-->
 
 </androidx.constraintlayout.widget.ConstraintLayout>

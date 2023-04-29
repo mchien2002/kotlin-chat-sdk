@@ -6,12 +6,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
@@ -24,9 +24,6 @@ import com.example.ae_chat_sdk.data.model.RealPathUtil
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -43,7 +40,8 @@ class ProfileActivity : AppCompatActivity() {
 
     lateinit var tvUserName: TextView
     lateinit var tvEmail: TextView
-    lateinit var tvInputEmail: TextView
+    lateinit var etInputEmail: EditText
+    lateinit var etInputUsername: EditText
 
     lateinit var iViewAvatarUser: ImageView
 
@@ -66,7 +64,8 @@ class ProfileActivity : AppCompatActivity() {
         val myUser: User = AppStorage.getInstance(context).getUserLocal()
         tvUserName.text = myUser.userName.toString()
         tvEmail.text = myUser.email.toString()
-        tvInputEmail.text = myUser.email.toString()
+        etInputEmail.setText(myUser.email.toString())
+        etInputUsername.setText((myUser.userName.toString()))
 
         val imgLocal = appStorage?.getData("avatar", "").toString()
         if (imgLocal.length > 1) {
@@ -87,7 +86,8 @@ class ProfileActivity : AppCompatActivity() {
         // avatarUser = findViewById(R.id.ivAvatar)
         tvUserName = findViewById(R.id.tvUsername)
         tvEmail = findViewById(R.id.tvEmail)
-        tvInputEmail = findViewById(R.id.tvInputEmail)
+        etInputEmail = findViewById(R.id.etInputEmail)
+        etInputUsername = findViewById(R.id.etInputUsername)
         setButtonOnClickListener()
     }
 
