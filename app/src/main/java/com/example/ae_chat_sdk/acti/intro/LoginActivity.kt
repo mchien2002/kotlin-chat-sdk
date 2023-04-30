@@ -3,7 +3,6 @@ package com.example.ae_chat_sdk.acti.intro
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,28 +11,26 @@ import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
-import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.reponsitory.RegisterRepository
 import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
+import com.example.ae_chat_sdk.utils.BlurUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.textfield.TextInputLayout
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import eightbitlab.com.blurview.BlurView
-import eightbitlab.com.blurview.RenderScriptBlur
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class LoginActivity : AppCompatActivity(), View.OnClickListener {
+class LoginActivity : AppCompatActivity() {
     lateinit var email: String
     lateinit var OTP: String
 
@@ -62,36 +59,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
         context = applicationContext
+        checkLogged()
 
-        setBlur()
+        BlurUtils.setBlur(this.window, listOf(findViewById<BlurView>(R.id.blurView)), context)
 
         init()
-        showInputEmail()
+        showBottomSheet()
         setListenerOTP()
-        checkNewLogin()
-    }
-
-    private fun setBlur() {
-        val radius: Float = 20f;
-
-        val decorView: View = window.decorView
-        val rootView: ViewGroup = decorView.findViewById(android.R.id.content)
-
-        val windowBackground: Drawable = decorView.background
-
-
-        findViewById<BlurView>(R.id.blurView).setupWith(rootView)
-            .setFrameClearDrawable(windowBackground)
-            .setBlurAlgorithm(RenderScriptBlur(this))
-            .setBlurRadius(radius)
-            .setBlurAutoUpdate(true)
-
     }
 
     private fun init() {
-        // Intro
-//        ibLogo = findViewById(R.id.ibIconLogoIntroAfter)
-
         // Email
         btnSendEmail = findViewById(R.id.bSendEmail)
         eTextEmail = findViewById(R.id.etEmail)
@@ -107,17 +84,87 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         inputOTP5 = findViewById(R.id.etInputOTP5)
         inputOTP6 = findViewById(R.id.etInputOTP6)
 
-
         setButtonOnClickListener()
+    }
 
+    private fun checkLogged() {
+        val appStorage = context.let { AppStorage.getInstance(it) }
+        val userString = appStorage.getData("User", "").toString()
+        if (userString.length > 10) {
+            setStartHomeActivity()
+        }
+
+    }
+
+    private fun setStartHomeActivity() {
+        val intent = Intent(this, HomeActivity::class.java)
+        this.startActivity(intent)
+        finish()
+    }
+
+    private fun initFocusOTP() {
+        inputOTP1.isEnabled = true
+        inputOTP1.requestFocus()
+    }
+
+    private fun setKeyListener(fromEditText: EditText, backToEditText: EditText) {
+        fromEditText.setOnKeyListener { _, _, event ->
+            if (event!!.action == KeyEvent.ACTION_DOWN
+                && event.keyCode == KeyEvent.KEYCODE_DEL
+                && fromEditText.id != R.id.etInputOTP1
+                && fromEditText.text.isEmpty()
+            ) {
+                backToEditText.isEnabled = true
+                backToEditText.requestFocus()
+                backToEditText.setText("")
+
+                fromEditText.clearFocus()
+                fromEditText.isEnabled = false
+            }
+            false
+        }
+    }
+
+    // true -> show form input email
+    // false -> show form input otp
+    private fun showInput(state: Boolean) {
+        if (state) {
+            rLayoutWrapInputEmail.visibility = View.VISIBLE
+            rLayoutWrapInputOTP.visibility = View.GONE
+            return
+        }
+        rLayoutWrapInputEmail.visibility = View.GONE
+        rLayoutWrapInputOTP.visibility = View.VISIBLE
     }
 
     private fun setButtonOnClickListener() {
         // Email
-        btnSendEmail.setOnClickListener(this)
+        btnSendEmail.setOnClickListener(View.OnClickListener {
+            val call = RegisterRepository().registerByMail(email)
+
+            call.enqueue(object : Callback<MyResponse> {
+                override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                    Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onResponse(
+                    call: Call<MyResponse>,
+                    response: Response<MyResponse>
+                ) {
+                    findViewById<TextView>(R.id.tvEmailInformation).text =
+                        "Mã xác thực đã được gửi đến\n" + email
+                    resetOTP()
+                    setListenerOTP()
+                    showInput(false)
+                }
+            })
+        })
 
         // OTP
-        findViewById<Button>(R.id.bInputEmailAgain).setOnClickListener(this)
+        findViewById<Button>(R.id.bInputEmailAgain).setOnClickListener(View.OnClickListener {
+            showInput(true)
+        })
     }
 
     private fun setListenerEmail() {
@@ -140,17 +187,16 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun showInputEmail() {
-
+    private fun showBottomSheet() {
         Handler(Looper.getMainLooper()).postDelayed({
-            BottomSheetBehavior.from(findViewById(R.id.rlInput)).apply {
+            BottomSheetBehavior.from(findViewById(R.id.clInput)).apply {
                 this.state = BottomSheetBehavior.STATE_EXPANDED
                 this.isDraggable = false
             }
-        }, 3000)
+        }, 1000)
         setListenerEmail()
         eTextEmail.isEnabled = true
-
+        eTextEmail.requestFocus()
     }
 
     private fun setListenerOTP() {
@@ -171,7 +217,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         setKeyListener(inputOTP4, inputOTP3)
         setKeyListener(inputOTP5, inputOTP4)
         setKeyListener(inputOTP6, inputOTP5)
-
     }
 
     private fun resetOTP() {
@@ -192,11 +237,6 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         inputOTP6.setText("")
 
         initFocusOTP()
-    }
-
-    private fun initFocusOTP() {
-        inputOTP1.isEnabled = true
-        inputOTP1.requestFocus()
     }
 
     private fun verifyOTP() {
@@ -254,79 +294,4 @@ class LoginActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    private fun setKeyListener(fromEditText: EditText, backToEditText: EditText) {
-        fromEditText.setOnKeyListener { _, _, event ->
-            if (event!!.action == KeyEvent.ACTION_DOWN && event.keyCode == KeyEvent.KEYCODE_DEL && fromEditText.id != R.id.etInputOTP1 && fromEditText.text.isEmpty()) {
-                backToEditText.isEnabled = true
-                backToEditText.requestFocus()
-                backToEditText.setText("")
-
-                fromEditText.clearFocus()
-                fromEditText.isEnabled = false
-
-            }
-            false
-        }
-    }
-
-    override fun onClick(view: View?) {
-        when (view?.id) {
-            R.id.bSendEmail -> {
-                val call = RegisterRepository().registerByMail(email)
-
-                call.enqueue(object : Callback<MyResponse> {
-                    override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                        Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                    override fun onResponse(
-                        call: Call<MyResponse>,
-                        response: Response<MyResponse>
-                    ) {
-                        rLayoutWrapInputEmail.visibility = View.GONE
-                        rLayoutWrapInputOTP.visibility = View.VISIBLE
-                        findViewById<TextView>(R.id.tvEmailInformation).text =
-                            "Mã xác thực đã được gửi đến\n" + email
-                        resetOTP()
-                        setListenerOTP()
-
-                        rLayoutWrapInputEmail.visibility = View.GONE
-                        rLayoutWrapInputOTP.visibility = View.VISIBLE
-//                        setStartHomeActivity()
-
-                    }
-                })
-                rLayoutWrapInputEmail.visibility = View.GONE
-                rLayoutWrapInputOTP.visibility = View.VISIBLE
-                findViewById<TextView>(R.id.tvEmailInformation).text =
-                    "Mã xác thực đã được gửi đến\n" + email
-                resetOTP()
-                setListenerOTP()
-
-                rLayoutWrapInputEmail.visibility = View.GONE
-                rLayoutWrapInputOTP.visibility = View.VISIBLE
-
-            }
-            R.id.bInputEmailAgain -> {
-                rLayoutWrapInputEmail.visibility = View.VISIBLE
-                rLayoutWrapInputOTP.visibility = View.GONE
-            }
-        }
-    }
-
-
-    private fun checkNewLogin() {
-        val appStorage = context.let { AppStorage.getInstance(it) }
-        val userString = appStorage.getData("User", "").toString()
-        if (userString.length > 10) {
-            setStartHomeActivity()
-        }
-
-    }
-
-    private fun setStartHomeActivity() {
-        val intent: Intent = Intent(this, HomeActivity::class.java)
-        this.startActivity(intent)
-    }
 }

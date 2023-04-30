@@ -1,22 +1,22 @@
 package com.example.ae_chat_sdk.acti.home
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
-import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import android.widget.CompoundButton.OnCheckedChangeListener
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.example.ae_chat_sdk.MainActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
@@ -27,17 +27,16 @@ import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.ApiResponse
-import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.data.storage.AppStorage
+import com.example.ae_chat_sdk.utils.BlurUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.hdodenhof.circleimageview.CircleImageView
 import eightbitlab.com.blurview.BlurView
-import eightbitlab.com.blurview.RenderScriptBlur
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.WebSocket
@@ -46,7 +45,7 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Suppress("DEPRECATION")
-class HomeActivity : AppCompatActivity(), View.OnClickListener {
+class HomeActivity : AppCompatActivity() {
 
     // Context
     lateinit var context: Context
@@ -57,11 +56,12 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     lateinit var rvListContact: RecyclerView
 
     lateinit var btnLogOut: Button
-
+    lateinit var swState: SwitchCompat
 
     lateinit var ctLayoutBottomSheetHome: ConstraintLayout
-
     lateinit var rLayoutMessageHome: RelativeLayout
+    lateinit var rLayoutOption: RelativeLayout
+    lateinit var rLayoutOnStream: RelativeLayout
 
     // BottomSheet
     lateinit var bottomSheetHomeBehavior: BottomSheetBehavior<View>
@@ -75,8 +75,8 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     lateinit var avatarUser: CircleImageView
 
-
     var listContact: Boolean = false
+    var draggingUp: Boolean = false
 
     companion object {
         lateinit var recentAdapter: RecentAdapter
@@ -87,41 +87,23 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-
-
-
-        setBlur()
-
-        // set data for list on Stream
-        searchUser("")
-
-
         context = applicationContext
+
+        BlurUtils.setBlur(
+            this.window, listOf(
+                findViewById<BlurView>(R.id.blurView),
+                findViewById<BlurView>(R.id.blurViewBottomSheet)
+            ), context
+        )
 
         connectSocket()
         init()
         setButtonOnClickListener()
+        searchUser("")
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
-        onStart()
-
-//        val gson = Gson()
-//        val type = object : TypeToken<User>() {}.type
-//        val appStorage = AppStorage.getInstance(context)
-//        val userString: String = appStorage.getData("User", "").toString()
-//        val user = gson.fromJson<User>(userString, type)
-
-        //val webSocketListener = WebSocketListener()
-
-
-        etSearch.addTextChangedListener {
-            it?.let { string ->
-                searchUser(etSearch.text.toString())
-            }
-        }
-        setData()
+        setUserData()
     }
-
 
     private fun connectSocket() {
         val client = OkHttpClient()
@@ -137,43 +119,14 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
 
     }
 
-    private fun setBlur() {
-        val radius: Float = 20f;
-
-        val decorView: View = window.decorView
-        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
-        val rootView: ViewGroup = decorView.findViewById(android.R.id.content)
-
-        // Optional:
-        // Set drawable to draw in the beginning of each blurred frame.
-        // Can be used in case your layout has a lot of transparent space and your content
-        // gets a too low alpha value after blur is applied.
-        val windowBackground: Drawable = decorView.background
-
-
-        findViewById<BlurView>(R.id.blurView).setupWith(rootView)
-            .setFrameClearDrawable(windowBackground).setBlurAlgorithm(RenderScriptBlur(this))
-            .setBlurRadius(radius).setBlurAutoUpdate(true)
-        findViewById<BlurView>(R.id.blurViewBottomSheet).setupWith(rootView)
-            .setFrameClearDrawable(windowBackground).setBlurAlgorithm(RenderScriptBlur(this))
-            .setBlurRadius(radius).setBlurAutoUpdate(true)
-    }
-
-    override fun onStart() {
-        super.onStart()
-        setData()
-    }
-
     private fun searchUser(searchText: String) {
         val token = RestClient().getToken()
         val call = UserRepository().searchUser(token, searchText)
-        var userList: List<User>
         call.enqueue(object : Callback<ApiResponse> {
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
                 Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT).show()
 
             }
-
             override fun onResponse(
                 call: Call<ApiResponse>, response: Response<ApiResponse>
             ) {
@@ -199,40 +152,63 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setButtonOnClickListener() {
+        // Open list Contact
         findViewById<MaterialButton>(R.id.mbListContact).setOnClickListener(View.OnClickListener {
             listContact = true
             bottomSheetHomeBehavior.state = BottomSheetBehavior.STATE_EXPANDED
         })
 
-        findViewById<CircleImageView>(R.id.ivAvatar).setOnClickListener(View.OnClickListener {
-            val intent: Intent = Intent(context, ProfileActivity::class.java)
+        // Open Profile
+        avatarUser.setOnClickListener(View.OnClickListener {
+            val intent = Intent(context, ProfileActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
+        })
+
+        // Log out
+        btnLogOut.setOnClickListener(View.OnClickListener {
+            setStartLoginActivity()
+            val appStorage = context?.let { AppStorage.getInstance(it) }
+            appStorage?.clearData()
+            finish()
+        })
+
+        // Update state
+        swState.setOnCheckedChangeListener(OnCheckedChangeListener { compoundButton, b ->
+            if (swState.isChecked) {
+                rLayoutOnStream.visibility = View.VISIBLE
+            } else {
+                rLayoutOnStream.visibility = View.GONE
+            }
         })
     }
 
     private fun init() {
         ctLayoutBottomSheetHome = findViewById(R.id.ctBottomSheetHome)
-        // rLayoutBottomSheetChangeAvatar = findViewById(R.id.rlBottomSheetChangeAvatar)
         rLayoutMessageHome = findViewById(R.id.rlMessageHome)
-
+        rLayoutOption = findViewById(R.id.rlMenuOption)
+        rLayoutOnStream = findViewById(R.id.rlOnstream)
         rvOnstream = findViewById(R.id.rvHorizonalOnstream)
         rvRecent = findViewById(R.id.rvVerticalRecent)
         rvListContact = findViewById(R.id.rvHorizonalContact)
 
         bottomSheetHomeBehavior = BottomSheetBehavior.from(ctLayoutBottomSheetHome)
 
-        tvPagename = findViewById(R.id.tvPageName)
-
         etSearch = findViewById(R.id.etInputSearch)
+        etSearch.addTextChangedListener {
+            it?.let { string ->
+                searchUser(etSearch.text.toString())
+            }
+        }
 
         avatarUser = findViewById(R.id.ivAvatar)
 
         tvUserName = findViewById(R.id.tvUsername)
         tvEmail = findViewById(R.id.tvEmail)
+        tvPagename = findViewById(R.id.tvPageName)
 
         btnLogOut = findViewById(R.id.mbLogOut)
-        btnLogOut.setOnClickListener(this)
+        swState = findViewById(R.id.switchStatus)
     }
 
     private fun setBottomSheetBehaviorHome() {
@@ -244,47 +220,64 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
             override fun onStateChanged(bottomSheet: View, newState: Int) {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
-
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(0F)
-                            .setDuration(500).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(1F)
-                            .setDuration(100).startDelay = 0
-
-                        if (!listContact) {
-                            tvPagename.setTextColor(Color.parseColor("#FFB0294B"))
-                            tvPagename.text = "Username"
-                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
-                            findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
-                        } else {
+                        draggingUp = false
+                        if (listContact) {
+                            listContact = false
                             tvPagename.setTextColor(Color.parseColor("#FF400012"))
                             tvPagename.text = "Danh sách liên hệ"
                             findViewById<RelativeLayout>(R.id.rlHome).visibility = View.GONE
                             findViewById<RelativeLayout>(R.id.rlListContact).visibility =
                                 View.VISIBLE
                         }
+
+                        rLayoutOption.visibility = View.GONE
+                        rLayoutMessageHome.visibility = View.VISIBLE
                         tvPagename.visibility = View.VISIBLE
-                        listContact = false
                     }
-                    else -> {
-                        tvPagename.visibility = View.INVISIBLE
-                        findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
-                        findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
-                        findViewById<RelativeLayout>(R.id.rlMenuOption).animate().alpha(1F)
-                            .setDuration(500).startDelay = 0
-                        findViewById<RelativeLayout>(R.id.rlMessageHome).animate().alpha(0F)
-                            .setDuration(100).startDelay = 0
+                    BottomSheetBehavior.STATE_COLLAPSED -> {
+                        draggingUp = true
+                        rLayoutMessageHome.visibility = View.GONE
+
+                        if (!listContact) {
+                            tvPagename.setTextColor(Color.parseColor("#FFB0294B"))
+                            tvPagename.text = "Username"
+                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+                            findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
+                        }
+                    }
+                    BottomSheetBehavior.STATE_DRAGGING -> {
+                        tvPagename.visibility = View.GONE
+
+                        if (draggingUp) {
+                            draggingUp = false
+                            rLayoutMessageHome.visibility = View.VISIBLE
+
+                        } else {
+                            draggingUp = true
+                            rLayoutOption.visibility = View.VISIBLE
+
+                            // Auto hide keyboard
+                            if (currentFocus != null) {
+                                val inputMethodManager =
+                                    getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+                                inputMethodManager.hideSoftInputFromWindow(
+                                    currentFocus!!.windowToken,
+                                    0
+                                )
+                            }
+                        }
+
+
                     }
                 }
             }
-
             override fun onSlide(bottomSheet: View, slideOffset: Float) {
             }
         })
     }
 
-    private fun setData() {
+    private fun setUserData() {
         val appStorage = AppStorage.getInstance(context)
-
         val myUser: User = AppStorage.getInstance(context).getUserLocal()
         tvUserName.text = myUser.userName.toString()
         tvEmail.text = myUser.email.toString()
@@ -302,20 +295,6 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    override fun onClick(view: View) {
-        when (view?.id) {
-            R.id.mbLogOut -> {
-                setStartLoginActivity()
-                val appStorage = context?.let { AppStorage.getInstance(it) }
-                val userString = appStorage?.clearData()
-            }
-            R.id.ivAvatar -> {
-                Toast.makeText(applicationContext, "this is toast message 1", Toast.LENGTH_SHORT)
-                    .show()
-            }
-        }
-    }
-
     private fun renderDataRecyclerView() {
         recentAdapter = RecentAdapter(context)
         rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
@@ -324,7 +303,7 @@ class HomeActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun setStartLoginActivity() {
-        val intent: Intent = Intent(this, LoginActivity::class.java)
+        val intent = Intent(this, LoginActivity::class.java)
         this.startActivity(intent);
     }
 }

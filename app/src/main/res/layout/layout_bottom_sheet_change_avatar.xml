@@ -1,27 +1,63 @@
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rlBottomSheetChangeAvatar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:background="@color/transparent"
+    android:paddingTop="10dp"
+    android:paddingBottom="10dp">
+
 
     <Button
         android:id="@+id/btnChupAnh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chụp Ảnh"/>
+        android:layout_centerHorizontal="true"
+        android:background="@color/transparent"
+        android:drawableLeft="@drawable/ic_camera"
+        android:drawableTint="@color/Primary40"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Chụp ảnh"
+        android:textAllCaps="false"
+        android:textColor="@color/Primary10"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/btnChonAnh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chọn ảnh từ thư viện"/>
+        android:layout_below="@id/btnChupAnh"
+        android:layout_centerHorizontal="true"
+        android:background="@color/transparent"
+        android:drawableLeft="@drawable/ic_gallery"
+        android:drawableTint="@color/Primary40"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Chọn ảnh từ thư viện"
+        android:textAllCaps="false"
+        android:textColor="@color/Primary10"
+        android:textSize="14sp" />
 
     <Button
         android:id="@+id/btnXoaAnh"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Xóa ảnh đại diện"/>
-
-</LinearLayout>
+        android:layout_below="@id/btnChonAnh"
+        android:layout_centerHorizontal="true"
+        android:background="@color/transparent"
+        android:drawableLeft="@drawable/ic_delete"
+        android:drawableTint="@color/Primary40"
+        android:fontFamily="@font/roboto_medium"
+        android:gravity="left|center_vertical"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:text="Xóa ảnh đại diện"
+        android:textAllCaps="false"
+        android:textColor="@color/Primary10"
+        android:textSize="14sp" />
+</RelativeLayout>

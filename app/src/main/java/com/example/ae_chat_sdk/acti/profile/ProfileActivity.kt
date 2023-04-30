@@ -11,9 +11,11 @@ import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.widget.addTextChangedListener
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.data.api.ApiConstant
@@ -46,6 +48,9 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var iViewAvatarUser: ImageView
 
     lateinit var context: Context
+    lateinit var appStorage: AppStorage
+    lateinit var myUser: User
+    var changed: Boolean = false
 
     companion object {
         const val MY_IMAGES = "imgFile"
@@ -55,13 +60,14 @@ class ProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile)
         context = applicationContext
+        appStorage = AppStorage.getInstance(context)
+        myUser = AppStorage.getInstance(context).getUserLocal()
+
         init()
-        setAvatar()
+        setUserData()
     }
 
-    private fun setAvatar() {
-        val appStorage = AppStorage.getInstance(context)
-        val myUser: User = AppStorage.getInstance(context).getUserLocal()
+    private fun setUserData() {
         tvUserName.text = myUser.userName.toString()
         tvEmail.text = myUser.email.toString()
         etInputEmail.setText(myUser.email.toString())
@@ -83,7 +89,6 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun init() {
         iViewAvatarUser = findViewById(R.id.ivAvatar)
-        // avatarUser = findViewById(R.id.ivAvatar)
         tvUserName = findViewById(R.id.tvUsername)
         tvEmail = findViewById(R.id.tvEmail)
         etInputEmail = findViewById(R.id.etInputEmail)
@@ -93,7 +98,22 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setButtonOnClickListener() {
         findViewById<ImageButton>(R.id.ibBack).setOnClickListener(View.OnClickListener {
-            finish()
+            if (etInputEmail.text.toString().trim() != myUser.email.toString().trim() || etInputUsername.text.toString().trim() != myUser.userName.toString().trim()) {
+                changed=false
+                val alertDialogBuilder = AlertDialog.Builder(this)
+                alertDialogBuilder.setTitle("Bạn có muốn lưu thay đổi không?")
+                alertDialogBuilder.setMessage("Vui lòng kiểm tra lại thông tin trước khi lưu!")
+                alertDialogBuilder.setPositiveButton("Lưu") { _, _ ->
+                    // Save
+                    finish()
+                }
+                alertDialogBuilder.setNegativeButton("Thoát") { _, _ ->
+                    finish()
+                }
+                alertDialogBuilder.show()
+            } else {
+                finish()
+            }
         })
         findViewById<ImageButton>(R.id.ibChangeAvatar).setOnClickListener(View.OnClickListener {
             showBottomSheetChangeAvatar()

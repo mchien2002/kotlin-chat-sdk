@@ -28,8 +28,7 @@
         tools:ignore="VisualLintOverlap" />
 
     <include
-        layout="@layout/layout_menu_option"
-        android:visibility="visible" />
+        layout="@layout/layout_menu_option"/>
 
 
     <include layout="@layout/layout_bottom_sheet_home" />

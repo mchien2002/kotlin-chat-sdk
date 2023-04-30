@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
-    android:alpha="0">
+    android:visibility="gone">
 
     <RelativeLayout
         android:id="@+id/rlAvatar"
@@ -104,8 +104,8 @@
                 android:text="@string/status"
                 android:textColor="@color/Primary10"
                 android:textSize="12sp"
-                app:thumbTint="@color/Primary10"
-                app:trackTint="@color/Outline"
+                app:thumbTint="@drawable/switch_thumb"
+                app:trackTint="@drawable/switch_track"
                 android:elevation="2dp"/>
 
             <com.google.android.material.button.MaterialButton
@@ -125,25 +125,6 @@
                 app:iconGravity="end"
                 app:iconTint="@color/Primary10"
                 app:rippleColor="#332F2E41" />
-
-            <!--            <com.google.android.material.button.MaterialButton-->
-            <!--                android:id="@+id/mbChangeEmail"-->
-            <!--                android:layout_width="match_parent"-->
-            <!--                android:layout_height="wrap_content"-->
-            <!--                android:layout_below="@id/mbNotificationAndSound"-->
-            <!--                android:background="@drawable/bg_option_transparent"-->
-            <!--                android:fontFamily="@font/roboto_medium"-->
-            <!--                android:gravity="left|center"-->
-            <!--                android:letterSpacing="0.03"-->
-            <!--                android:text="@string/email2"-->
-            <!--                android:textAllCaps="false"-->
-            <!--                android:textColor="@color/Primary10"-->
-            <!--                android:textSize="12sp"-->
-            <!--                app:icon="@drawable/ic_right"-->
-            <!--                app:iconGravity="end"-->
-            <!--                app:iconTint="@color/Primary10"-->
-            <!--                app:rippleColor="#332F2E41" />-->
-
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/mbChangeLanguage"
                 android:layout_width="match_parent"
