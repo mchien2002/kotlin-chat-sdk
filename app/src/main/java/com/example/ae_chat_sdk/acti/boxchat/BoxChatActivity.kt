@@ -1,22 +1,11 @@
 package com.example.ae_chat_sdk.acti.boxchat
 
-import android.app.ActionBar.LayoutParams
 import android.content.Context
-import android.content.Intent
-import android.graphics.Rect
-import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
-import android.util.DisplayMetrics
-import android.util.Log
-import android.util.TypedValue
-import android.view.KeyEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.*
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,13 +16,8 @@ import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
+import com.example.ae_chat_sdk.utils.BlurUtils
 import de.hdodenhof.circleimageview.CircleImageView
-import eightbitlab.com.blurview.BlurView
-import eightbitlab.com.blurview.RenderScriptBlur
-import java.time.LocalDate
-import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -46,151 +30,132 @@ class BoxChatActivity : AppCompatActivity() {
     lateinit var btnBack: ImageButton
     lateinit var btnNotification: ImageButton
     lateinit var btnSendMessage: ImageButton
-
+    lateinit var ibImage: ImageButton
+    lateinit var ibMic: ImageButton
+    lateinit var ibExpand: ImageButton
     lateinit var ivAvatar: CircleImageView
-
     lateinit var tvUsername: TextView
     lateinit var etInputMessage: EditText
-
-    lateinit var scrollView : ScrollView
-
-
 
     lateinit var groupId: String
     lateinit var messageId: String
 
-    val webSocketListener: WebSocketListener = WebSocketListener()
+    private val webSocketListener: WebSocketListener = WebSocketListener()
 
     companion object {
         var messageAdapter: MessageAdapter? = null
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_box_chat)
-
         context = applicationContext
 
-        val extras = intent.extras
-        groupId = extras?.getString("GroupId").toString()
-        setBlur()
+        BlurUtils.setBlur(window, listOf(findViewById(R.id.blurView)), context)
+
         init()
-        setOnClickListener()
+        setProfileReceiver()
 
-        setAvartar()
-
-        val intent: Intent = intent
         groupId = intent.getStringExtra("GroupId").toString()
-        webSocketListener.receiveMessage(HomeActivity.webSocket, groupId.toString())
-
+        webSocketListener.receiveMessage(HomeActivity.webSocket, groupId)
         messageId = intent.getStringExtra("lastmessage").toString()
-        if (messageId!=null){
-            webSocketListener.seenMessage(HomeActivity.webSocket,messageId)
+        if (messageId != null) {
+            webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
         }
-
-        messageAdapter = MessageAdapter(context,groupId)
+        messageAdapter = MessageAdapter(context, groupId)
         rvMessage.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvMessage.adapter = messageAdapter
-
         messageAdapter!!.notifyDataSetChanged()
-
-//        rvMessage.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-//        rvMessage.adapter = messageAdapter
-//        rvMessage.addOnLayoutChangeListener { _, _, _, _, bottom, _, _, _, oldBottom ->
-//            if (bottom < oldBottom) {
-//                rvMessage.postDelayed({
-//                    rvMessage.smoothScrollToPosition(messageAdapter!!.itemCount - 1)
-//                }, 100)
-//            }
-//        }
     }
 
-    private fun setAvartar() {
-        val extras = intent.extras
-        val imageUrl = extras?.getString("avatar")
-        Glide.with(context).load(imageUrl).into(ivAvatar)
-        val username = extras?.getString("username")
-        tvUsername.text = username
-    }
-
-    private fun setBlur() {
-        val displayMetrics = DisplayMetrics()
-        windowManager.defaultDisplay.getMetrics(displayMetrics)
-        window.setLayout(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT)
-
-        val radius: Float = 25f
-
-        val decorView: View = window.decorView
-        // ViewGroup you want to start blur from. Choose root as close to BlurView in hierarchy as possible.
-        val rootView: ViewGroup = decorView.findViewById(android.R.id.content)
-
-        // Optional:
-        // Set drawable to draw in the beginning of each blurred frame.
-        // Can be used in case your layout has a lot of transparent space and your content
-        // gets a too low alpha value after blur is applied.
-        val windowBackground: Drawable = decorView.background
-
-        findViewById<BlurView>(R.id.blurView).setupWith(rootView)
-            .setFrameClearDrawable(windowBackground)
-            .setBlurAlgorithm(RenderScriptBlur(this))
-            .setBlurRadius(radius)
-            .setBlurAutoUpdate(true)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.O)
-    private fun setOnClickListener() {
-        btnBack.setOnClickListener(
-            View.OnClickListener {
-                //super.onDestroy()
-                messageAdapter = null
-                finish()
-
-            }
-        )
-
-        btnNotification.setOnClickListener(
-            View.OnClickListener {
-            }
-        )
-
-        btnSendMessage.setOnClickListener(
-            View.OnClickListener {
-                if (etInputMessage.text.trim() != "") {
-                    val myUser: User = AppStorage.getInstance(context).getUserLocal()
-                    val message: Message = Message()
-                    message.type = Message.Type.TEXT.ordinal
-                    message.groupType = Message.GroupType.PUBLIC.ordinal
-                    message.message = etInputMessage.text.toString()
-                    message.groupId = groupId
-                    message.status = Message.Status.SENDING.ordinal
-                    message.senderUin = myUser.userId
-                    message.senderAvatar = myUser.avatar.toString()
-                    message.senderName = myUser.userName
-//                    val currentDate = LocalDate.now()
-//                    val currentTime = LocalTime.now()
-//                    val dateTime = LocalDateTime.of(currentDate, currentTime)
-//                    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
-//                    val formattedDateTime = dateTime.format(formatter)
-                    message.createdAt = Date()
-                    messageAdapter!!.addMessageSeeding(message)
-                    webSocketListener.sendMessage(HomeActivity.webSocket, message)
-                    //rvMessage.smoothScrollToPosition(messageAdapter.itemCount - 1)
-                    etInputMessage.text.clear()
-                }
-            }
-        )
-    }
-
-    fun init() {
+    private fun init() {
         btnBack = findViewById(R.id.ibBack)
         btnNotification = findViewById(R.id.ibNotification)
         btnSendMessage = findViewById(R.id.ibSendMessage)
         rvMessage = findViewById(R.id.rvMessage)
+        ibImage = findViewById(R.id.ibImage)
+        ibMic = findViewById(R.id.ibMic)
+        ibExpand = findViewById(R.id.ibExpand)
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
+        setOnClickListener()
+        setOnFocusChangeListener()
+        addTextChangedListener()
     }
+
+    private fun addTextChangedListener() {
+        etInputMessage.addTextChangedListener {
+            it?.let { string->
+                if(string.toString().trim()!=""){
+                    showOptions(false)
+                }
+            }
+        }
+    }
+
+    private fun setOnFocusChangeListener() {
+        etInputMessage.setOnFocusChangeListener { _, hasFocus ->
+            showOptions(!hasFocus)
+        }
+    }
+
+    private fun showOptions(state: Boolean) {
+        if (state) {
+            ibExpand.visibility = View.GONE
+            ibMic.visibility = View.VISIBLE
+            ibImage.visibility = View.VISIBLE
+        } else {
+            ibExpand.visibility = View.VISIBLE
+            ibMic.visibility = View.GONE
+            ibImage.visibility = View.GONE
+        }
+    }
+
+    private fun setProfileReceiver() {
+        val imageUrl = intent.getStringExtra("avatar")
+        Glide.with(context).load(imageUrl).into(ivAvatar)
+        val username = intent.getStringExtra("username")
+        tvUsername.text = username
+    }
+
+
+    private fun setOnClickListener() {
+        btnBack.setOnClickListener {
+            messageAdapter = null
+            finish()
+        }
+
+        btnNotification.setOnClickListener {
+        }
+
+        btnSendMessage.setOnClickListener {
+            if (etInputMessage.text.trim() != "") {
+                val myUser: User = AppStorage.getInstance(context).getUserLocal()
+                val message = Message()
+                message.type = Message.Type.TEXT.ordinal
+                message.groupType = Message.GroupType.PUBLIC.ordinal
+                message.message = etInputMessage.text.toString()
+                message.groupId = groupId
+                message.status = Message.Status.SENDING.ordinal
+                message.senderUin = myUser.userId
+                message.senderAvatar = myUser.avatar.toString()
+                message.senderName = myUser.userName
+                message.createdAt = Date()
+                messageAdapter!!.addMessageSeeding(message)
+                webSocketListener.sendMessage(HomeActivity.webSocket, message)
+                etInputMessage.text.clear()
+            }
+        }
+
+        ibExpand.setOnClickListener {
+            showOptions(true)
+        }
+    }
+
+
+
 
 }

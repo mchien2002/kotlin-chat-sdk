@@ -96,9 +96,6 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
         }
 
 
-//        if (seenUins == RestClient().getUserId() ){
-//
-//        }
 
         val timeString = DateTimeUtil().getTimeFromDate(itemObject.lastMessage.createdAt)
         holder.tvTimeReceive.text = timeString
@@ -125,7 +122,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                         ) {
                             val userTemp =
                                 gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                            // Log.e("CCCCC", userTemp.fullName)
+//                             Log.e("CCCCC", userTemp.tp)
                             holder.tvUsername.text = userTemp.fullName
                             username = userTemp.userName
                             if (userTemp.avatar != null) {

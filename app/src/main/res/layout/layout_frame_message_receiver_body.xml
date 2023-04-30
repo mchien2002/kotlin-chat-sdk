@@ -6,19 +6,23 @@
     android:layout_marginRight="20dp"
     android:background="@color/transparent">
 
+
     <TextView
         android:id="@+id/tvReceiverBody"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="45dp"
         android:layout_marginTop="2dp"
         android:background="@drawable/bg_message_receive_body"
         android:fontFamily="@font/roboto_medium"
         android:padding="10dp"
         android:text="@string/content_message"
+        android:textAlignment="center"
         android:textColor="@color/Tertiary40"
         android:textSize="12sp"
+
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

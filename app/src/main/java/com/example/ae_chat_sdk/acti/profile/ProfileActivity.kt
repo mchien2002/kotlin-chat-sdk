@@ -49,7 +49,6 @@ class ProfileActivity : AppCompatActivity() {
     lateinit var context: Context
     lateinit var appStorage: AppStorage
     lateinit var myUser: User
-    var changed: Boolean = false
 
     companion object {
         const val MY_IMAGES = "imgFile"
@@ -98,7 +97,6 @@ class ProfileActivity : AppCompatActivity() {
     private fun setButtonOnClickListener() {
         findViewById<ImageButton>(R.id.ibBack).setOnClickListener(View.OnClickListener {
             if (etInputEmail.text.toString().trim() != myUser.email.toString().trim() || etInputUsername.text.toString().trim() != myUser.userName.toString().trim()) {
-                changed=false
                 val alertDialogBuilder = AlertDialog.Builder(this)
                 alertDialogBuilder.setTitle("Bạn có muốn lưu thay đổi không?")
                 alertDialogBuilder.setMessage("Vui lòng kiểm tra lại thông tin trước khi lưu!")
