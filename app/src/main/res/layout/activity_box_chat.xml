@@ -17,7 +17,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="ContentDescription" />
 
     <eightbitlab.com.blurview.BlurView
         android:id="@+id/blurView"
@@ -28,7 +29,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <FrameLayout
         android:id="@+id/flTop"
@@ -125,13 +125,13 @@
 
             <ImageButton
                 android:id="@+id/ibImage"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginStart="5dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
+                android:contentDescription="@string/choose_image"
                 android:elevation="5dp"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_image"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -140,27 +140,29 @@
 
             <ImageButton
                 android:id="@+id/ibExpand"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:elevation="5dp"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_expand"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
 
             <ImageButton
                 android:id="@+id/ibMic"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
+                android:contentDescription="@string/record"
                 android:elevation="5dp"
-                android:padding="5dp"
+                android:padding="10dp"
                 android:scaleType="fitCenter"
                 android:src="@drawable/ic_mic"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -178,10 +180,9 @@
                 android:id="@+id/etInputMessage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="55dp"
                 android:background="@drawable/bg_frame_input"
                 android:fontFamily="@font/roboto_medium"
-                android:hint="@string/type_message_here"
+                android:hint="@string/hint_input_message_here"
                 android:imeOptions="actionSend"
                 android:importantForAutofill="no"
                 android:inputType="text"
@@ -192,11 +193,13 @@
                 android:textColor="@color/Black"
                 android:textColorHint="@color/Outline"
                 android:textSize="14sp"
+                android:layout_marginEnd="55dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toLeftOf="@id/ibSendMessage"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
 
             <ImageButton
                 android:id="@+id/ibSendMessage"

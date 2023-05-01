@@ -56,7 +56,8 @@
             android:contentDescription="@string/description_button_down"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ImageContrastCheck,RedundantDescriptionCheck" />
 
         <RelativeLayout
             android:id="@+id/rlMessageHome"
@@ -66,7 +67,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent">
+            app:layout_constraintRight_toRightOf="parent"
+            tools:ignore="VisualLintBounds">
 
             <RelativeLayout
                 android:id="@+id/rlSearch"
@@ -91,7 +93,8 @@
                     android:textColor="@color/Black"
                     android:textColorHint="@color/Outline"
                     android:textSize="14sp"
-                    tools:ignore="TouchTargetSizeCheck" />
+                    tools:ignore="RtlSymmetry,TouchTargetSizeCheck,VisualLintTextFieldSize"
+                    android:autofillHints="username" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -111,8 +114,9 @@
                         android:id="@+id/ivOnstream"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:background="@drawable/label_onstream" />
+                        android:layout_marginStart="15dp"
+                        android:background="@drawable/label_onstream"
+                        tools:ignore="ContentDescription" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
@@ -139,8 +143,9 @@
                         android:id="@+id/ivRecent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="15dp"
-                        android:background="@drawable/label_recent" />
+                        android:layout_marginStart="15dp"
+                        android:background="@drawable/label_recent"
+                        tools:ignore="ContentDescription" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"

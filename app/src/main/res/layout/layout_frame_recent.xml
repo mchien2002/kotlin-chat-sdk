@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/flRecent"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -18,21 +19,22 @@
             android:src="@drawable/avt_1"
             android:elevation="5dp"
             android:paddingTop="10dp"
-            android:paddingBottom="10dp"/>
+            android:paddingBottom="10dp"
+            tools:ignore="RtlHardcoded" />
 
         <ImageView
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:src="@drawable/ic_online"
             android:layout_marginTop="45dp"
-            android:layout_marginLeft="45dp"
+            android:layout_marginStart="45dp"
             android:elevation="10dp"/>
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/ivAvatarRecent">
+            android:layout_toEndOf="@id/ivAvatarRecent">
 
             <TextView
                 android:id="@+id/tvUsername"
@@ -63,10 +65,10 @@
             android:text="@string/time_receive"
             android:textColor="@color/Primary40"
             android:textSize="10sp"
-            android:layout_alignParentRight="true"
-            android:paddingRight="30dp"
+            android:layout_alignParentEnd="true"
+            android:paddingEnd="30dp"
             android:paddingTop="10dp"
-            />
+            tools:ignore="RtlSymmetry,SmallSp" />
     </RelativeLayout>
 
 </FrameLayout>

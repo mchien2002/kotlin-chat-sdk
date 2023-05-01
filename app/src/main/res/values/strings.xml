@@ -2,49 +2,61 @@
     <string name="app_name">Talkwave</string>
 
 
-    <!-- TODO: Remove or change this placeholder text -->
-
-    <string name="signIn">Đăng nhập</string>
-
-    <string name="email">Email*</string>
-    <string name="inputEmail">Nhập email của bạn!</string>
-    <string name="timedown">00:30</string>
-    <string name="OTP_Info">Chưa gửi mã xác thực?</string>
-    <string name="OTP_Request">Gửi lại</string>
-    <string name="OTP_Request2">Nhập lại email</string>
-    <string name="UserEmail">email.\nco</string>
-    <string name="Search">Tìm kiếm</string>
-
+    <!--    String button    -->
+    <string name="notification">Thông báo</string>
+    <string name="notification_sound">Thông báo &amp; âm thanh</string>
+    <string name="back">Trở về</string>
+    <string name="choose_image">Chọn ảnh từ thư viện</string>
+    <string name="record">Ghi âm</string>
+    <string name="change_avatar">Đổi avatar</string>
+    <string name="photo">Chụp ảnh</string>
     <string name="description_button_down">Button drop down</string>
+    <string name="sign_in">Đăng nhập</string>
+    <string name="list_contact">Danh sách liên hệ</string>
+    <string name="status">Trạng thái hoạt động</string>
+    <string name="language">Ngôn ngữ</string>
+    <string name="support">Trợ giúp &amp; hỗ trợ</string>
+    <string name="log_out">Đăng xuất</string>
+    <string name="send_message">Gửi</string>
+    <string name="delete_avatar">Xóa ảnh đại diện</string>
 
+
+    <!--    Text View-->
     <string name="username">username</string>
+    <string name="email_address">username@gmail.com</string>
+    <string name="account">Tài khoản</string>
+    <string name="note_edit_email">Ấn để thay đổi Email</string>
+    <string name="note_edit_username">Ấn để thay đổi tên</string>
+    <string name="notify_sended_email">OTP send to \n email</string>
+    <string name="count_down">00:30</string>
+    <string name="otp_not_send">Chưa gửi mã xác thực?</string>
+    <string name="send_otp_again">Gửi lại</string>
+    <string name="input_email_again">Nhập lại email</string>
+    <string name="begin_message">Bạn đã bắt đầu cuộc trò chuyện.</string>
     <string name="content_message">content message</string>
     <string name="time_receive">1 phút</string>
-    <string name="list_contact">Danh sách liên hệ</string>
+
+
+    <!--    Edit Text-->
+    <string name="Search">Tìm kiếm</string>
+
+
+    <!--    Hint Edit Text-->
+    <string name="hint_email">Email*</string>
+    <string name="hint_input_message_here">Nhập tin nhắn ...</string>
+
+
+    <!--    Placeholder Edit Text-->
+    <string name="placeholder_email">Nhập email của bạn!</string>
+
+
     <string name="spam">Tin nhắn chờ</string>
     <string name="add_contact">Thêm liên lạc</string>
     <string name="setting">Cài đặt</string>
-    <string name="log_out">Đăng xuất</string>
-    <string name="support">Trợ giúp &amp; hỗ trợ</string>
-    <string name="emailAddr">username@gmail.com</string>
 
-    <string name="status">Trạng thái hoạt động</string>
-    <string name="notification_sound">Thông báo &amp; âm thanh</string>
-    <string name="email2">Email</string>
-    <string name="language">Ngôn ngữ</string>
+    <string name="email">Email</string>
     <string name="report">Báo cáo sự cố</string>
     <string name="help">Trợ giúp</string>
     <string name="delete_account">Xóa tài khoản</string>
-    <string name="change_avatar">Đổi avatar</string>
 
-    <string name="type_message_here">Nhập tin nhắn ...</string>
-    <string name="notification">Thông báo</string>
-    <string name="back">Trở về</string>
-    <string name="send_message">Gửi</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="menu">menu</string>
-    <string name="logo">Logo</string>
-    <string name="input_email_again">Nhập lại email</string>
 </resources>

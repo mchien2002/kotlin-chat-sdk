@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <RelativeLayout
         android:id="@+id/rlAvatar"
@@ -51,7 +51,7 @@
             android:fontFamily="@font/roboto_bold"
             android:letterSpacing="0.05"
             android:maxLines="1"
-            android:text="@string/emailAddr"
+            android:text="@string/email_address"
             android:textAlignment="center"
             android:textColor="#4D400012"
             android:textSize="12sp" />
@@ -88,7 +88,7 @@
                 app:icon="@drawable/ic_right"
                 app:iconGravity="end"
                 app:iconTint="@color/Primary10"
-                app:rippleColor="@color/Primary90" />
+                app:rippleColor="@color/Primary90"/>
 
             <androidx.appcompat.widget.SwitchCompat
                 android:id="@+id/switchStatus"
@@ -178,7 +178,7 @@
                 app:icon="@drawable/ic_log_out"
                 app:iconGravity="start"
                 app:iconTint="@color/Primary40"
-                app:rippleColor="#332F2E41" />
+                app:rippleColor="#332F2E41"/>
         </LinearLayout>
     </RelativeLayout>
 

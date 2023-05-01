@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/flContact"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
+        android:layout_height="match_parent"
+        tools:ignore="UselessParent">
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/ivAvatar"
                 android:layout_width="70dp"
@@ -17,23 +16,24 @@
                 android:elevation="5dp"
                 android:paddingTop="10dp"
                 android:paddingBottom="10dp"
-                android:src="@drawable/avt_1" />
-
+                android:src="@drawable/avt_1"
+                tools:ignore="RtlHardcoded" />
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/ic_online"
                 android:layout_marginTop="45dp"
-                android:layout_marginLeft="45dp"
-                android:elevation="10dp"/>
+                android:layout_marginStart="45dp"
+                android:elevation="10dp"
+                tools:ignore="ContentDescription" />
 
         <TextView
             android:id="@+id/tvUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_toRightOf="@id/ivAvatar"
-            android:layout_marginRight="50dp"
+            android:layout_toEndOf="@id/ivAvatar"
+            android:layout_marginEnd="50dp"
             android:ellipsize="end"
             android:fontFamily="@font/roboto_bold"
             android:letterSpacing="0.02"

@@ -1,4 +1,5 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rlBottomSheetChangeAvatar"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -6,8 +7,6 @@
     android:background="@color/transparent"
     android:paddingTop="10dp"
     android:paddingBottom="10dp">
-
-
     <Button
         android:id="@+id/btnChupAnh"
         android:layout_width="match_parent"
@@ -20,10 +19,12 @@
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="Chụp ảnh"
+        android:text="@string/photo"
         android:textAllCaps="false"
         android:textColor="@color/Primary10"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:ignore="RtlHardcoded,VisualLintButtonSize"
+        tools:targetApi="m" />
 
     <Button
         android:id="@+id/btnChonAnh"
@@ -38,10 +39,12 @@
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="Chọn ảnh từ thư viện"
+        android:text="@string/choose_image"
         android:textAllCaps="false"
         android:textColor="@color/Primary10"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:ignore="RtlHardcoded,VisualLintButtonSize"
+        tools:targetApi="m" />
 
     <Button
         android:id="@+id/btnXoaAnh"
@@ -56,8 +59,10 @@
         android:gravity="left|center_vertical"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:text="Xóa ảnh đại diện"
+        android:text="@string/delete_avatar"
         android:textAllCaps="false"
         android:textColor="@color/Primary10"
-        android:textSize="14sp" />
+        android:textSize="14sp"
+        tools:ignore="RtlHardcoded,VisualLintButtonSize"
+        tools:targetApi="m" />
 </RelativeLayout>

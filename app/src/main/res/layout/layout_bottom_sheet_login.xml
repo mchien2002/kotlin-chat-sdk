@@ -24,15 +24,14 @@
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="800dp"
             android:foreground="?android:attr/selectableItemBackground"
             app:cardBackgroundColor="@color/transparent"
             app:cardCornerRadius="35dp"
             app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent">
 
             <eightbitlab.com.blurview.BlurView
                 android:id="@+id/blurView"
@@ -45,7 +44,6 @@
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
 
                 <LinearLayout
                     android:id="@+id/llWrapInputEmail"
@@ -64,7 +62,7 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="0.7"
                         android:background="@color/transparent"
-                        android:hint="@string/email"
+                        android:hint="@string/hint_email"
                         app:boxCornerRadiusBottomEnd="10dp"
                         app:boxCornerRadiusBottomStart="10dp"
                         app:boxCornerRadiusTopEnd="10dp"
@@ -74,7 +72,7 @@
                         app:boxStrokeWidthFocused="2dp"
                         app:errorEnabled="false"
                         app:hintTextColor="@color/Primary40"
-                        app:placeholderText="@string/inputEmail"
+                        app:placeholderText="@string/placeholder_email"
                         app:placeholderTextColor="@color/Primary10">
 
                         <EditText
@@ -85,7 +83,7 @@
                             android:inputType="textEmailAddress"
                             android:textColor="@color/Black"
                             android:textSize="14sp"
-                            tools:ignore="LabelFor" />
+                            tools:ignore="LabelFor,TextContrastCheck,VisualLintTextFieldSize,SpeakableTextPresentCheck" />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <Button
@@ -95,13 +93,13 @@
                         android:layout_gravity="center_vertical"
                         android:layout_margin="10dp"
                         android:backgroundTint="@color/Primary40"
-                        android:contentDescription="@string/signIn"
+                        android:contentDescription="@string/sign_in"
                         android:fontFamily="@font/roboto"
                         android:paddingLeft="10dp"
                         android:paddingTop="10dp"
                         android:paddingRight="10dp"
                         android:paddingBottom="10dp"
-                        android:text="@string/signIn"
+                        android:text="@string/sign_in"
                         android:textAllCaps="false"
                         android:textColor="@color/White"
                         android:textSize="12sp"
@@ -130,7 +128,7 @@
                             android:layout_height="wrap_content"
                             android:fontFamily="@font/roboto_italic"
                             android:gravity="center"
-                            android:text="@string/UserEmail"
+                            android:text="@string/notify_sended_email"
                             android:textColor="@color/Primary10"
                             android:textSize="14sp" />
 
@@ -166,7 +164,8 @@
                                     android:maxLength="1"
                                     android:padding="0dp"
                                     android:textColor="@color/Primary10"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    tools:ignore="LabelFor" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -193,7 +192,8 @@
                                     android:maxLength="1"
                                     android:padding="0dp"
                                     android:textColor="@color/Primary10"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    tools:ignore="LabelFor" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -220,7 +220,8 @@
                                     android:maxLength="1"
                                     android:padding="0dp"
                                     android:textColor="@color/Primary10"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    tools:ignore="LabelFor" />
                             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -248,7 +249,8 @@
                                     android:maxLength="1"
                                     android:padding="0dp"
                                     android:textColor="@color/Primary10"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    tools:ignore="LabelFor" />
                             </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -276,7 +278,8 @@
                                     android:maxLength="1"
                                     android:padding="0dp"
                                     android:textColor="@color/Primary10"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    tools:ignore="LabelFor" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                             <com.google.android.material.textfield.TextInputLayout
@@ -303,7 +306,8 @@
                                     android:maxLength="1"
                                     android:padding="0dp"
                                     android:textColor="@color/Primary10"
-                                    android:textSize="14sp" />
+                                    android:textSize="14sp"
+                                    tools:ignore="LabelFor" />
                             </com.google.android.material.textfield.TextInputLayout>
 
                         </LinearLayout>
@@ -316,7 +320,7 @@
                             android:layout_centerHorizontal="true"
                             android:layout_marginTop="10dp"
                             android:fontFamily="@font/roboto_bold"
-                            android:text="@string/timedown"
+                            android:text="@string/count_down"
                             android:textColor="@color/Outline"
                             android:textSize="14sp" />
 
@@ -332,7 +336,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/roboto_medium"
-                                android:text="@string/OTP_Info"
+                                android:text="@string/otp_not_send"
                                 android:textColor="@color/Primary10"
                                 android:textSize="12sp"
                                 tools:ignore="TextContrastCheck" />
@@ -345,7 +349,7 @@
                                 android:clickable="true"
                                 android:focusable="true"
                                 android:fontFamily="@font/roboto_medium"
-                                android:text="@string/OTP_Request"
+                                android:text="@string/send_otp_again"
                                 android:textColor="@color/Secondary80"
                                 android:textSize="12sp"
                                 tools:ignore="TextContrastCheck" />

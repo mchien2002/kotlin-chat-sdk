@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
         android:layout_marginTop="2dp"
-        android:background="@drawable/bg_message_receive_footer"
+        android:background="@drawable/bg_message_receive_one_top"
         android:fontFamily="@font/roboto_medium"
         android:padding="10dp"
         android:text="@string/content_message"
