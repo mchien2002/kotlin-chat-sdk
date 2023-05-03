@@ -2,7 +2,9 @@ package com.example.ae_chat_sdk.acti.boxchat
 
 import android.content.Context
 import android.os.Bundle
+import android.view.MotionEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -26,6 +28,8 @@ class BoxChatActivity : AppCompatActivity() {
     private lateinit var context: Context
 
     lateinit var rvMessage: RecyclerView
+
+    var isBottom : Boolean = false
 
     lateinit var btnBack: ImageButton
     lateinit var btnNotification: ImageButton
@@ -67,7 +71,18 @@ class BoxChatActivity : AppCompatActivity() {
         rvMessage.layoutManager =
             LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvMessage.adapter = messageAdapter
-        messageAdapter!!.notifyDataSetChanged()
+        messageAdapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                if (!isBottom){
+                    rvMessage.scrollToPosition(messageAdapter!!.itemCount - 1)
+                    isBottom = true
+                }
+            }
+        })
+        etInputMessage.requestFocus()
+        // Hiện bàn phím mềm nhưng éo được
+//        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+//        imm.showSoftInput(etInputMessage, InputMethodManager.SHOW_IMPLICIT)
     }
 
     private fun init() {
@@ -147,6 +162,7 @@ class BoxChatActivity : AppCompatActivity() {
                 messageAdapter!!.addMessageSeeding(message)
                 webSocketListener.sendMessage(HomeActivity.webSocket, message)
                 etInputMessage.text.clear()
+                rvMessage.scrollToPosition(messageAdapter!!.itemCount - 1)
             }
         }
 
@@ -154,8 +170,4 @@ class BoxChatActivity : AppCompatActivity() {
             showOptions(true)
         }
     }
-
-
-
-
 }

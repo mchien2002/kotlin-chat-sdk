@@ -15,8 +15,8 @@ import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
-import com.example.ae_chat_sdk.databinding.LayoutFrameMessageReceiverFooterBinding
-import com.example.ae_chat_sdk.databinding.LayoutFrameMessageSenderFooterBinding
+import com.example.ae_chat_sdk.databinding.LayoutFrameMessageReceiverBinding
+import com.example.ae_chat_sdk.databinding.LayoutFrameMessageSenderBinding
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 
 class MessageAdapter(val context: Context,val groupId : String) :
@@ -32,17 +32,16 @@ class MessageAdapter(val context: Context,val groupId : String) :
         RECEIVE(2)
     }
 
-    inner class SendMessageFooterHolder(val binding: LayoutFrameMessageSenderFooterBinding) :
+    inner class SendMessageFooterHolder(val binding: LayoutFrameMessageSenderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Message) {
             Log.d("Check Begin", "Send")
-
             binding.tvSenderFooter.text = data.message
             binding.ivCheckSeen.setImageDrawable(null)
         }
     }
 
-    inner class ReceiveMessageFooterHolder(private val binding: LayoutFrameMessageReceiverFooterBinding) :
+    inner class ReceiveMessageFooterHolder(val binding: LayoutFrameMessageReceiverBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Message) {
             Log.d("Check Begin", "Receive")
@@ -73,15 +72,16 @@ class MessageAdapter(val context: Context,val groupId : String) :
                 false
             )
             BeginMessageHolder(view)
+
         } else if (viewType == TypeView.RECEIVE.ordinal) {
-            val view = LayoutFrameMessageReceiverFooterBinding.inflate(
+            val view = LayoutFrameMessageReceiverBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
             ReceiveMessageFooterHolder(view)
         } else {
-            val view = LayoutFrameMessageSenderFooterBinding.inflate(
+            val view = LayoutFrameMessageSenderBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
@@ -136,7 +136,87 @@ class MessageAdapter(val context: Context,val groupId : String) :
             }
         } else {
         }
-
+        if (senderUin == RestClient().getUserId()){
+            if (position< listMessage.size - 1 && position > 0){
+                if (listMessage[position-1].senderUin == senderUin && listMessage[position+1].senderUin == senderUin){
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_two)
+                    }
+                } else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin == senderUin){
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_bottom)
+                    }
+                }else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin != senderUin){
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
+                    }
+                }else{
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_top)
+                    }
+                }
+            }else if(position == listMessage.size - 1){
+                if(listMessage[position-1].senderUin != senderUin){
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
+                    }
+                }else{
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_top)
+                    }
+                }
+            }else if(position == 0){
+                if(listMessage[position+1].senderUin == senderUin){
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_bottom)
+                    }
+                }else {
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
+                    }
+                }
+            }
+        }else {
+            if (position< listMessage.size - 1 && position > 0){
+                if (listMessage[position-1].senderUin == senderUin && listMessage[position+1].senderUin == senderUin){
+                    if (holder is ReceiveMessageFooterHolder) {
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_two)
+                    }
+                } else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin == senderUin){
+                    if (holder is ReceiveMessageFooterHolder) {
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_bottom)
+                    }
+                }else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin != senderUin){
+                    if (holder is ReceiveMessageFooterHolder) {
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_reciver_four)
+                    }
+                }else{
+                    if (holder is ReceiveMessageFooterHolder) {
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_top)
+                    }
+                }
+            }else if(position == listMessage.size - 1){
+                if(listMessage[position-1].senderUin != senderUin){
+                    if (holder is ReceiveMessageFooterHolder) {
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_reciver_four)
+                    }
+                }else{
+                    if (holder is ReceiveMessageFooterHolder) {
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_top)
+                    }
+                }
+            }else if(position == 0){
+                if(listMessage[position+1].senderUin == senderUin){
+                    if (holder is ReceiveMessageFooterHolder) {
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_bottom)
+                    }
+                }else {
+                    if (holder is ReceiveMessageFooterHolder) {
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_reciver_four)
+                    }
+                }
+            }
+        }
 
     }
 

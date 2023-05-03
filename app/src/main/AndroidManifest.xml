@@ -24,14 +24,14 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Aechatsdk"
         android:usesCleartextTraffic="true"
-        android:windowSoftInputMode="adjustResize"
         tools:targetApi="31">
         <activity
             android:name=".acti.profile.ProfileActivity"
             android:exported="false" />
         <activity
             android:name=".acti.boxchat.BoxChatActivity"
-            android:exported="false" />
+            android:windowSoftInputMode="adjustPan"
+        android:exported="false" />
         <activity
             android:name=".acti.intro.LoginActivity"
             android:exported="false" />

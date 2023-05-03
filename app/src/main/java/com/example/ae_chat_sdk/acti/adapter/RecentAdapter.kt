@@ -60,6 +60,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+
         if (listRecent.isEmpty()) {
             Log.e("CCCCC", "UUUUUUUUUUUUUUUUU")
         }
