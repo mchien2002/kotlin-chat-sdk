@@ -17,7 +17,6 @@ import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageReceiverBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageSenderBinding
-import com.example.ae_chat_sdk.utils.DateTimeUtil
 
 class MessageAdapter(val context: Context,val groupId : String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -188,7 +187,7 @@ class MessageAdapter(val context: Context,val groupId : String) :
                     }
                 }else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin != senderUin){
                     if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_reciver_four)
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
                     }
                 }else{
                     if (holder is ReceiveMessageFooterHolder) {
@@ -198,7 +197,7 @@ class MessageAdapter(val context: Context,val groupId : String) :
             }else if(position == listMessage.size - 1){
                 if(listMessage[position-1].senderUin != senderUin){
                     if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_reciver_four)
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
                     }
                 }else{
                     if (holder is ReceiveMessageFooterHolder) {
@@ -212,7 +211,7 @@ class MessageAdapter(val context: Context,val groupId : String) :
                     }
                 }else {
                     if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_reciver_four)
+                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
                     }
                 }
             }

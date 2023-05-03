@@ -2,9 +2,7 @@ package com.example.ae_chat_sdk.acti.boxchat
 
 import android.content.Context
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
-import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -32,7 +30,7 @@ class BoxChatActivity : AppCompatActivity() {
     var isBottom : Boolean = false
 
     lateinit var btnBack: ImageButton
-    lateinit var btnNotification: ImageButton
+//    lateinit var btnNotification: ImageButton
     lateinit var btnSendMessage: ImageButton
     lateinit var ibImage: ImageButton
     lateinit var ibMic: ImageButton
@@ -68,12 +66,12 @@ class BoxChatActivity : AppCompatActivity() {
             webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
         }
         messageAdapter = MessageAdapter(context, groupId)
-        rvMessage.layoutManager =
-            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvMessage.adapter = messageAdapter
+        val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvMessage.layoutManager =linearLayoutManager
+            rvMessage.adapter = messageAdapter
         messageAdapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
             override fun onChanged() {
-                if (!isBottom){
+                if (!isBottom) {
                     rvMessage.scrollToPosition(messageAdapter!!.itemCount - 1)
                     isBottom = true
                 }
@@ -87,7 +85,7 @@ class BoxChatActivity : AppCompatActivity() {
 
     private fun init() {
         btnBack = findViewById(R.id.ibBack)
-        btnNotification = findViewById(R.id.ibNotification)
+//        btnNotification = findViewById(R.id.ibNotification)
         btnSendMessage = findViewById(R.id.ibSendMessage)
         rvMessage = findViewById(R.id.rvMessage)
         ibImage = findViewById(R.id.ibImage)
@@ -143,8 +141,8 @@ class BoxChatActivity : AppCompatActivity() {
             finish()
         }
 
-        btnNotification.setOnClickListener {
-        }
+//        btnNotification.setOnClickListener {
+//        }
 
         btnSendMessage.setOnClickListener {
             if (etInputMessage.text.trim() != "") {

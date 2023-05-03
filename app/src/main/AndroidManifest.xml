@@ -30,7 +30,6 @@
             android:exported="false" />
         <activity
             android:name=".acti.boxchat.BoxChatActivity"
-            android:windowSoftInputMode="adjustPan"
         android:exported="false" />
         <activity
             android:name=".acti.intro.LoginActivity"

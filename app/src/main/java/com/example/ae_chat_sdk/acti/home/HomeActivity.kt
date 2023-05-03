@@ -229,14 +229,24 @@ class HomeActivity : AppCompatActivity() {
                             findViewById<RelativeLayout>(R.id.rlListContact).visibility =
                                 View.VISIBLE
                         }
+                        if(tvPagename.alpha==0F){
+                            tvPagename.animate().alpha(1F).setDuration(500).setListener(null)
+                        }
 
                         rLayoutOption.visibility = View.GONE
                         rLayoutMessageHome.visibility = View.VISIBLE
-                        tvPagename.visibility = View.VISIBLE
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         draggingUp = true
                         rLayoutMessageHome.visibility = View.GONE
+//                        Handler(Looper.getMainLooper()).postDelayed({
+//                            tvPagename.visibility = View.GONE
+//
+//                        }, 100)
+                        if(tvPagename.alpha==1F){
+                            tvPagename.animate().alpha(0F).setDuration(500).setListener(null)
+                        }
+
 
                         if (!listContact) {
                             tvPagename.setTextColor(Color.parseColor("#FFB0294B"))
@@ -246,15 +256,18 @@ class HomeActivity : AppCompatActivity() {
                         }
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {
-                        tvPagename.visibility = View.GONE
+                        tvPagename.visibility = View.VISIBLE
 
                         if (draggingUp) {
                             draggingUp = false
                             rLayoutMessageHome.visibility = View.VISIBLE
+                            tvPagename.animate().alpha(1F).setDuration(500).setListener(null)
 
                         } else {
                             draggingUp = true
                             rLayoutOption.visibility = View.VISIBLE
+                            tvPagename.animate().alpha(0F).setDuration(500).setListener(null)
+
 
                             // Auto hide keyboard
                             if (currentFocus != null) {
