@@ -26,4 +26,8 @@ class UserRepository constructor(){
     public fun getUserOnlineStatus(token: String,userId: String):Call<MyResponse>{
         return userService.getUserOnlineStatus(token, userId)
     }
+
+    public fun groupProfileByMember(token: String,listUserId : List<String>):Call<MyResponse> {
+        return userService.groupProfileByMember(token, listUserId)
+    }
 }

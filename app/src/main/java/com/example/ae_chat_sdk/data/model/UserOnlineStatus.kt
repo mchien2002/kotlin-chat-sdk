@@ -5,8 +5,8 @@ import java.util.*
 
 class UserOnlineStatus{
     enum class UserStatus(val status : Int){
-        ONLINE(0),
-        OFFLINE(1)
+        OFFLINE(0),
+        ONLINE(1)
     }
 
     @SerializedName("userId")

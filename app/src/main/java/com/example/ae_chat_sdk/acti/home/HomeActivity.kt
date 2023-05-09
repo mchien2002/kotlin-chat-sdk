@@ -168,8 +168,16 @@ class HomeActivity : AppCompatActivity() {
         // Log out
         btnLogOut.setOnClickListener(View.OnClickListener {
             setStartLoginActivity()
+            val client = OkHttpClient()
+
+            val request: Request = Request.Builder().url(SocketConstant.URL).build()
             val appStorage = context?.let { AppStorage.getInstance(it) }
             appStorage?.clearData()
+            val webSocketListener = WebSocketListener()
+            val ws: WebSocket = client.newWebSocket(request, webSocketListener)
+
+            webSocket = ws
+            webSocketListener.exitSocket(webSocket)
             finish()
         })
 

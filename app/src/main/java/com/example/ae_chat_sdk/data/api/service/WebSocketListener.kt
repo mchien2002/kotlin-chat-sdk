@@ -189,4 +189,9 @@ class WebSocketListener : WebSocketListener() {
         val request: SocketRequest = SocketRequest("seen_message", map)
         webSocket.send(gson.toJson(request))
     }
+
+    fun exitSocket(webSocket: WebSocket){
+        webSocket.close(1000, null)
+        Log.e("CLOSE","9999999999999")
+    }
 }

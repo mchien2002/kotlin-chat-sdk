@@ -28,4 +28,8 @@ public class UserService constructor() : UserController {
     override fun getUserOnlineStatus(token: String, userId: String): Call<MyResponse> {
         return userService.getUserOnlineStatus(token, userId)
     }
+
+    override fun groupProfileByMember(token: String, listUserId: List<String>):Call<MyResponse> {
+        return userService.groupProfileByMember(token,listUserId)
+    }
 }
