@@ -35,8 +35,13 @@ class DateTimeUtil {
     }
 
     fun getElapsedTimeInWords(date: Date): String {
-        val date2 = "Mon May 09 10:30:00 GMT+07:00 2023"
+        val date2 = "Mon May 09 11:09:00 GMT+07:00 2023"
+        val date9 = "Mon May 09 10:39:00 GMT+07:00 2023"
         val date3 = "Mon May 09 07:30:00 GMT+07:00 2023"
+        val date4 = "Tue May 08 07:30:00 GMT+07:00 2023"
+        val date5 = "Tue May 01 07:30:00 GMT+07:00 2023"
+        val date6 = "Tue Jan 01 07:30:00 GMT+07:00 2023"
+        val date7 = "Tue Jan 01 07:30:00 GMT+07:00 2021"
 
         val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
         val datex = dateFormat.parse(date2)
@@ -45,9 +50,6 @@ class DateTimeUtil {
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
         val currentDate = calendar.time
         val elapsedMillis = currentDate.time - datex.time
-
-        val today = Calendar.getInstance()
-        Log.e("TIMETO",today.toString())
 
         Log.e("TIMENOW",currentDate.toString())
         Log.e("TIMEONE1",datex.toString())
@@ -60,6 +62,7 @@ class DateTimeUtil {
         val elapsedYears = elapsedMonths / 12
 
         return when {
+            elapsedSeconds < 60 -> "$elapsedSeconds giây trước"
             elapsedMinutes < 60 -> "$elapsedMinutes phút trước"
             elapsedHours < 24 -> "$elapsedHours giờ trước"
             elapsedDays < 30 -> "$elapsedDays ngày trước"
