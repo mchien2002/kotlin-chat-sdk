@@ -29,6 +29,7 @@
             android:src="@drawable/ic_online"
             android:layout_marginTop="45dp"
             android:layout_marginStart="45dp"
+            android:visibility="gone"
             android:elevation="10dp"/>
 
         <RelativeLayout
