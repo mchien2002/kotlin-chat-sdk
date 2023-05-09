@@ -30,7 +30,7 @@
             android:exported="false" />
         <activity
             android:name=".acti.boxchat.BoxChatActivity"
-        android:exported="false" />
+            android:exported="false" />
         <activity
             android:name=".acti.intro.LoginActivity"
             android:exported="false" />

@@ -22,7 +22,7 @@
 
 
     <!--    Text View-->
-    <string name="username">username</string>
+    <string name="username">--</string>
     <string name="email_address">username@gmail.com</string>
     <string name="account">Tài khoản</string>
     <string name="note_edit_email">Ấn để thay đổi Email</string>
@@ -58,5 +58,6 @@
     <string name="report">Báo cáo sự cố</string>
     <string name="help">Trợ giúp</string>
     <string name="delete_account">Xóa tài khoản</string>
+    <string name="timeMessage">--:--</string>
 
 </resources>
