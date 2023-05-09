@@ -10,5 +10,6 @@ class ApiConstant {
         const val UPLOAD_USER_AVATAR = "upload-user-avatar"
         const val SEARCH_USER = "search-user"
         const val USER_PROFILE = "user-profile"
+        const val USER_ONLINE_STATUS = "user-online-status"
     }
 }

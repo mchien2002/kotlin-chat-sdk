@@ -2,6 +2,7 @@ package com.example.ae_chat_sdk.acti.boxchat
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -15,8 +16,10 @@ import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.model.UserOnlineStatus
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
+import com.example.ae_chat_sdk.utils.DateTimeUtil
 import de.hdodenhof.circleimageview.CircleImageView
 import java.util.*
 
@@ -38,6 +41,9 @@ class BoxChatActivity : AppCompatActivity() {
     lateinit var ivAvatar: CircleImageView
     lateinit var tvUsername: TextView
     lateinit var etInputMessage: EditText
+
+    lateinit var tvActiveStatus : TextView
+    lateinit var ivOnline:ImageView
 
     lateinit var groupId: String
     lateinit var messageId: String
@@ -91,9 +97,11 @@ class BoxChatActivity : AppCompatActivity() {
         ibImage = findViewById(R.id.ibImage)
         ibMic = findViewById(R.id.ibMic)
         ibExpand = findViewById(R.id.ibExpand)
+        tvActiveStatus = findViewById(R.id.tvActiveStatus)
         ivAvatar = findViewById(R.id.ivAvatar)
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
+        ivOnline = findViewById(R.id.ivOnline)
         setOnClickListener()
         setOnFocusChangeListener()
         addTextChangedListener()
@@ -131,7 +139,23 @@ class BoxChatActivity : AppCompatActivity() {
         val imageUrl = intent.getStringExtra("avatar")
         Glide.with(context).load(imageUrl).into(ivAvatar)
         val username = intent.getStringExtra("username")
+        val status = intent.getIntExtra("status",2)
+        val lastTimeOnline = intent.getLongExtra("lastTimeOnline",0)
         tvUsername.text = username
+        val dateValue = Date(lastTimeOnline)
+        Log.e("TIMEON",dateValue.toString())
+        if(status == 2){
+            Toast.makeText(context, "Mất kết nối!", Toast.LENGTH_SHORT).show()
+        }else {
+            if(status == UserOnlineStatus.UserStatus.ONLINE.ordinal){
+                tvActiveStatus.text = "Đang hoạt động"
+                ivOnline.visibility = View.VISIBLE
+            }else{
+                tvActiveStatus.text = DateTimeUtil().getElapsedTimeInWords(dateValue)
+                ivOnline.visibility = View.GONE
+            }
+        }
+
     }
 
 

@@ -17,4 +17,7 @@ interface UserController {
 
     @GET(ApiConstant.USER_PROFILE)
     fun getUserProfile(@Header("token") token:String, @Query("id") id:String) : Call<MyResponse>
+
+    @GET(ApiConstant.USER_ONLINE_STATUS)
+    fun getUserOnlineStatus(@Header("token") token: String,@Query("userId") userId: String) : Call<MyResponse>
 }

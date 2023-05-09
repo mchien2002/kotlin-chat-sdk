@@ -24,4 +24,8 @@ public class UserService constructor() : UserController {
     override fun getUserProfile(token: String, id: String): Call<MyResponse> {
         return userService.getUserProfile(token, id)
     }
+
+    override fun getUserOnlineStatus(token: String, userId: String): Call<MyResponse> {
+        return userService.getUserOnlineStatus(token, userId)
+    }
 }

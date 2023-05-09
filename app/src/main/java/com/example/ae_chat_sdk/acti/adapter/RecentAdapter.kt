@@ -45,6 +45,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
         val tvTimeReceive: TextView = itemView.findViewById(R.id.tvTimeReceive)
         val flRecent: FrameLayout = itemView.findViewById(R.id.flRecent)
         val ivAvatarRecent: ImageView = itemView.findViewById(R.id.ivAvatarRecent)
+        val ivOnline : ImageView = itemView.findViewById(R.id.ivOnline)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -79,24 +80,21 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
             }
         }
         var seenUins: ArrayList<String>? = itemObject.lastMessage.seenUins
-        Log.e("SEENNN",seenUins.toString())
+        Log.e("SEENNN", seenUins.toString())
         //val seenUins = itemObject.lastMessage.seenUins
-        if (seenUins!= null){
-            for (item in seenUins)
-            {
-                Log.e("ITEMMM",item)
+        if (seenUins != null) {
+            for (item in seenUins) {
+                Log.e("ITEMMM", item)
                 holder.tvMessage.setTypeface(null, Typeface.BOLD)
                 holder.tvUsername.setTypeface(null, Typeface.BOLD)
-                if (item == RestClient().getUserId()){
-                    Log.e("USERIDCL",RestClient().getUserId())
+                if (item == RestClient().getUserId()) {
+                    Log.e("USERIDCL", RestClient().getUserId())
                     holder.tvMessage.setTypeface(null, Typeface.NORMAL)
                     holder.tvUsername.setTypeface(null, Typeface.NORMAL)
                     break
                 }
             }
         }
-
-
 
         val timeString = DateTimeUtil().getTimeFromDate(itemObject.lastMessage.createdAt)
         holder.tvTimeReceive.text = timeString
@@ -105,6 +103,9 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
         val type = object : TypeToken<User>() {}.type
         val myUser: User = AppStorage.getInstance(context).getUserLocal()
         var username = ""
+        var status: Int? = null
+        var statusValue = 2
+        var lastTimeOnline: Date? = null
         var imageUrl =
             "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
         if (itemObject.groupType == TypeView.PUBLIC.typeView) {
@@ -117,13 +118,12 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                         override fun onFailure(call: Call<MyResponse>, t: Throwable) {
                             Log.e("CCCCC", t.toString())
                         }
+
                         override fun onResponse(
-                            call: Call<MyResponse>,
-                            response: Response<MyResponse>
+                            call: Call<MyResponse>, response: Response<MyResponse>
                         ) {
                             val userTemp =
                                 gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-//                             Log.e("CCCCC", userTemp.tp)
                             holder.tvUsername.text = userTemp.fullName
                             username = userTemp.userName
                             if (userTemp.avatar != null) {
@@ -135,23 +135,52 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                     break
                 }
             }
+            for (item in itemObject.members) {
+                if (item == myUser.userId) {
+                    continue
+                } else {
+                    val call = UserRepository().getUserOnlineStatus(RestClient().getToken(), item)
+                    call.enqueue(object : Callback<MyResponse> {
+                        override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                            Log.e("CCCCC", t.toString())
+                        }
+                        override fun onResponse(
+                            call: Call<MyResponse>, response: Response<MyResponse>
+                        ) {
+                            val typeOnline = object : TypeToken<UserOnlineStatus>() {}.type
+                            val userTemp =
+                                gson.fromJson<UserOnlineStatus>(gson.toJson(response.body()?.data), typeOnline)
+                            status = userTemp.status
+                            lastTimeOnline = userTemp.lastTimeOnline
+                            if (userTemp.status == UserOnlineStatus.UserStatus.ONLINE.ordinal){
+                                holder.ivOnline.visibility = View.VISIBLE
+                            }else{
+                                holder.ivOnline.visibility = View.GONE
+                            }
+                        }
+                    })
+                    break
+                }
+            }
         }
         // holder.tvUsername.text = itemObject.groupId
-        holder.flRecent.setOnClickListener(
-            View.OnClickListener {
-                val intent: Intent = Intent(context, BoxChatActivity::class.java)
-                intent.putExtra("GroupId", itemObject.groupId)
-                intent.putExtra("avatar", imageUrl)
-                intent.putExtra("username", username)
-                val senderUin = itemObject.lastMessage.senderUin
-                    if (senderUin != RestClient().getUserId()) {
-                        if (itemObject.lastMessage.status != Message.Status.SEEN.ordinal){
-                            intent.putExtra("lastmessage",itemObject.lastMessage.messageId)
-                        }
-                    }
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(intent)
-            })
+        holder.flRecent.setOnClickListener(View.OnClickListener {
+            val intent: Intent = Intent(context, BoxChatActivity::class.java)
+            intent.putExtra("GroupId", itemObject.groupId)
+            intent.putExtra("avatar", imageUrl)
+            intent.putExtra("username", username)
+            intent.putExtra("status",status)
+            val longDate = lastTimeOnline?.time
+            intent.putExtra("lastTimeOnline", longDate)
+            val senderUin = itemObject.lastMessage.senderUin
+            if (senderUin != RestClient().getUserId()) {
+                if (itemObject.lastMessage.status != Message.Status.SEEN.ordinal) {
+                    intent.putExtra("lastmessage", itemObject.lastMessage.messageId)
+                }
+            }
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        })
     }
 
     @SuppressLint("NotifyDataSetChanged")
