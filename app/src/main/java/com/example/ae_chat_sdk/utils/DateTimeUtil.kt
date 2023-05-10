@@ -58,7 +58,7 @@ class DateTimeUtil {
         val elapsedYears = elapsedMonths / 12
 
         return when {
-            elapsedSeconds < 60 -> "Hoạt động $elapsedSeconds giây trước"
+            elapsedSeconds < 60 -> "Vừa mới hoạt động"
             elapsedMinutes < 60 -> "Hoạt động $elapsedMinutes phút trước"
             elapsedHours < 24 -> "Hoạt động $elapsedHours giờ trước"
             elapsedDays < 30 -> "Hoạt động $elapsedDays ngày trước"

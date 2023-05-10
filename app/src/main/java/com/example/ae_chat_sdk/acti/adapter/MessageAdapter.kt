@@ -9,16 +9,23 @@ import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.acti.home.HomeActivity
+import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
+import com.example.ae_chat_sdk.data.model.Image
 import com.example.ae_chat_sdk.data.model.Message
+import com.example.ae_chat_sdk.databinding.LayoutFrameImageReceiverBinding
+import com.example.ae_chat_sdk.databinding.LayoutFrameImageSenderBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageBeginBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageReceiverBinding
 import com.example.ae_chat_sdk.databinding.LayoutFrameMessageSenderBinding
+import com.google.gson.Gson
 
-class MessageAdapter(val context: Context,val groupId : String) :
+class MessageAdapter(val context: Context, val groupId: String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val webSocketListener: WebSocketListener = WebSocketListener()
     var listMessage: ArrayList<Message> = ArrayList()
@@ -27,8 +34,10 @@ class MessageAdapter(val context: Context,val groupId : String) :
 
     enum class TypeView(val typeView: Int) {
         FIRST_MESSAGE(0),
-        SEND(1),
-        RECEIVE(2)
+        TEXT_SEND(1),
+        TEXT_RECEIVE(2),
+        IMG_SEND(3),
+        IMG_RECEVIE(4)
     }
 
     inner class SendMessageFooterHolder(val binding: LayoutFrameMessageSenderBinding) :
@@ -63,6 +72,42 @@ class MessageAdapter(val context: Context,val groupId : String) :
         }
     }
 
+    inner class ImageSenderHolder(private val binding: LayoutFrameImageSenderBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: Message) {
+            if (data.attachment == null) {
+                binding.ivImageMessageSender.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.image_default
+                    )
+                );
+            } else {
+                val gson = Gson()
+                val img = gson.fromJson(gson.toJson(data.attachment),Image :: class.java)
+                Glide.with(context).load(ApiConstant.URL_IMAGE + img.url).apply( RequestOptions().override(600, 800)).into(binding.ivImageMessageSender)
+            }
+        }
+    }
+
+    inner class ImageReceiverHolder(private val binding: LayoutFrameImageReceiverBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+        fun bind(data: Message) {
+            if (data.attachment == null) {
+                binding.ivImageMessageReceiver.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.image_default
+                    )
+                );
+            } else {
+                val gson = Gson()
+                val img = gson.fromJson(gson.toJson(data.attachment),Image :: class.java)
+                Glide.with(context).load(ApiConstant.URL_IMAGE + img.url).apply( RequestOptions().override(600, 800)).into(binding.ivImageMessageReceiver)
+            }
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return if (viewType == TypeView.FIRST_MESSAGE.ordinal) {
             val view = LayoutFrameMessageBeginBinding.inflate(
@@ -72,13 +117,27 @@ class MessageAdapter(val context: Context,val groupId : String) :
             )
             BeginMessageHolder(view)
 
-        } else if (viewType == TypeView.RECEIVE.ordinal) {
+        } else (if (viewType == TypeView.TEXT_RECEIVE.ordinal) {
             val view = LayoutFrameMessageReceiverBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             )
             ReceiveMessageFooterHolder(view)
+        } else if (viewType == TypeView.IMG_SEND.ordinal) {
+            val view = LayoutFrameImageSenderBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+            ImageSenderHolder(view)
+        } else if (viewType == TypeView.IMG_RECEVIE.ordinal) {
+            val view = LayoutFrameImageReceiverBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+            ImageReceiverHolder(view)
         } else {
             val view = LayoutFrameMessageSenderBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -86,7 +145,7 @@ class MessageAdapter(val context: Context,val groupId : String) :
                 false
             )
             SendMessageFooterHolder(view)
-        }
+        })
     }
 
     override fun getItemCount(): Int {
@@ -96,17 +155,22 @@ class MessageAdapter(val context: Context,val groupId : String) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (getItemViewType(position) == TypeView.FIRST_MESSAGE.ordinal) {
             (holder as BeginMessageHolder).bind()
-        } else if (getItemViewType(position) == TypeView.RECEIVE.typeView) {
+        } else if (getItemViewType(position) == TypeView.TEXT_RECEIVE.typeView) {
             (holder as ReceiveMessageFooterHolder).bind(listMessage[position])
-        } else {
+        }else if(getItemViewType(position) == TypeView.IMG_SEND.typeView){
+            (holder as ImageSenderHolder).bind(listMessage[position])
+        } else if (getItemViewType(position) == TypeView.IMG_RECEVIE.typeView){
+            (holder as ImageReceiverHolder).bind(listMessage[position])
+        }
+        else {
             (holder as SendMessageFooterHolder).bind(listMessage[position])
         }
 
         val senderUin = listMessage[position].senderUin
         if (senderUin == RestClient().getUserId()) {
-            if (position == listMessage.size-1 && listMessage[position].status == Message.Status.SEEN.ordinal){
-                Log.e("LASTMS",listMessage[position].message.toString())
-                if(holder is SendMessageFooterHolder){
+            if (position == listMessage.size - 1 && listMessage[position].status == Message.Status.SEEN.ordinal) {
+                Log.e("LASTMS", listMessage[position].message.toString())
+                if (holder is SendMessageFooterHolder) {
 //                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
                     //holder.binding.ivCheckSeen.setImageDrawable(null)
                     holder.binding.ivCheckSeen.setImageDrawable(
@@ -116,7 +180,7 @@ class MessageAdapter(val context: Context,val groupId : String) :
                         )
                     )
                 }
-            }else if (listMessage[position].status == Message.Status.SENDING.ordinal) {
+            } else if (listMessage[position].status == Message.Status.SENDING.ordinal) {
                 if (holder is SendMessageFooterHolder) {
                     holder.binding.ivCheckSeen.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -125,7 +189,7 @@ class MessageAdapter(val context: Context,val groupId : String) :
                         )
                     )
                 }
-            }else if (listMessage[position].status == Message.Status.SENT.ordinal) {
+            } else if (listMessage[position].status == Message.Status.SENT.ordinal) {
                 if (holder is SendMessageFooterHolder) {
                     holder.binding.ivCheckSeen.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -134,8 +198,8 @@ class MessageAdapter(val context: Context,val groupId : String) :
                         )
                     )
                 }
-            }else if (listMessage[position].status == Message.Status.SEEN.ordinal && listMessage[position+1].status != Message.Status.SEEN.ordinal){
-                if(holder is SendMessageFooterHolder) {
+            } else if (listMessage[position].status == Message.Status.SEEN.ordinal && listMessage[position + 1].status != Message.Status.SEEN.ordinal) {
+                if (holder is SendMessageFooterHolder) {
 //                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
                     holder.binding.ivCheckSeen.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -147,81 +211,81 @@ class MessageAdapter(val context: Context,val groupId : String) :
             }
         } else {
         }
-        if (senderUin == RestClient().getUserId()){
-            if (position< listMessage.size - 1 && position > 0){
-                if (listMessage[position-1].senderUin == senderUin && listMessage[position+1].senderUin == senderUin){
+        if (senderUin == RestClient().getUserId()) {
+            if (position < listMessage.size - 1 && position > 0) {
+                if (listMessage[position - 1].senderUin == senderUin && listMessage[position + 1].senderUin == senderUin) {
                     if (holder is SendMessageFooterHolder) {
                         holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_two)
                     }
-                } else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin == senderUin){
+                } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin == senderUin) {
                     if (holder is SendMessageFooterHolder) {
                         holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_bottom)
                     }
-                }else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin != senderUin){
+                } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin != senderUin) {
                     if (holder is SendMessageFooterHolder) {
                         holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
                     }
-                }else{
+                } else {
                     if (holder is SendMessageFooterHolder) {
                         holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_top)
                     }
                 }
-            }else if(position == listMessage.size - 1){
-                if(listMessage[position-1].senderUin != senderUin){
+            } else if (position == listMessage.size - 1) {
+                if (listMessage[position - 1].senderUin != senderUin) {
                     if (holder is SendMessageFooterHolder) {
                         holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
                     }
-                }else{
+                } else {
                     if (holder is SendMessageFooterHolder) {
                         holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_top)
                     }
                 }
-            }else if(position == 0){
-                if(listMessage[position+1].senderUin == senderUin){
+            } else if (position == 0) {
+                if (listMessage[position + 1].senderUin == senderUin) {
                     if (holder is SendMessageFooterHolder) {
                         holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_bottom)
                     }
-                }else {
+                } else {
                     if (holder is SendMessageFooterHolder) {
                         holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
                     }
                 }
             }
-        }else {
-            if (position< listMessage.size - 1 && position > 0){
-                if (listMessage[position-1].senderUin == senderUin && listMessage[position+1].senderUin == senderUin){
+        } else {
+            if (position < listMessage.size - 1 && position > 0) {
+                if (listMessage[position - 1].senderUin == senderUin && listMessage[position + 1].senderUin == senderUin) {
                     if (holder is ReceiveMessageFooterHolder) {
                         holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_two)
                     }
-                } else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin == senderUin){
+                } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin == senderUin) {
                     if (holder is ReceiveMessageFooterHolder) {
                         holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_bottom)
                     }
-                }else if(listMessage[position-1].senderUin != senderUin && listMessage[position+1].senderUin != senderUin){
+                } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin != senderUin) {
                     if (holder is ReceiveMessageFooterHolder) {
                         holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
                     }
-                }else{
+                } else {
                     if (holder is ReceiveMessageFooterHolder) {
                         holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_top)
                     }
                 }
-            }else if(position == listMessage.size - 1){
-                if(listMessage[position-1].senderUin != senderUin){
+            } else if (position == listMessage.size - 1) {
+                if (listMessage[position - 1].senderUin != senderUin) {
                     if (holder is ReceiveMessageFooterHolder) {
                         holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
                     }
-                }else{
+                } else {
                     if (holder is ReceiveMessageFooterHolder) {
                         holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_top)
                     }
                 }
-            }else if(position == 0){
-                if(listMessage[position+1].senderUin == senderUin){
+            } else if (position == 0) {
+                if (listMessage[position + 1].senderUin == senderUin) {
                     if (holder is ReceiveMessageFooterHolder) {
                         holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_bottom)
                     }
-                }else {
+                } else {
                     if (holder is ReceiveMessageFooterHolder) {
                         holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
                     }
@@ -236,10 +300,23 @@ class MessageAdapter(val context: Context,val groupId : String) :
         ms.message?.let { Log.d("message", it) }
         if (ms.message == "" && ms.type?.toFloat()!!.toInt() == Message.Type.FIRST_MESSAGE.type) {
             return TypeView.FIRST_MESSAGE.typeView
-        } else if (ms.senderUin == RestClient().getUserId()) {
-            return TypeView.SEND.ordinal
         }
-        return TypeView.RECEIVE.ordinal
+        else if (ms.senderUin == RestClient().getUserId()){
+            if (ms.type?.toFloat()!!.toInt() == Message.Type.TEXT.ordinal){
+                return TypeView.TEXT_SEND.ordinal
+            } else if(ms.type?.toFloat()!!
+                    .toInt() == Message.Type.IMAGE.type){
+                return TypeView.IMG_SEND.ordinal
+            }
+        }else{
+            if (ms.type?.toFloat()!!.toInt() == Message.Type.TEXT.ordinal){
+                return TypeView.TEXT_RECEIVE.ordinal
+            } else if(ms.type?.toFloat()!!
+                    .toInt() == Message.Type.IMAGE.type){
+                return TypeView.IMG_RECEVIE.ordinal
+            }
+        }
+        return 0
     }
 
     //@SuppressLint("NotifyDataSetChanged")
@@ -250,15 +327,18 @@ class MessageAdapter(val context: Context,val groupId : String) :
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    fun addMessage(message: Message){
-        if(message.groupId == this.groupId){
-            if (message.messageId != null && message.senderUin != RestClient().getUserId()){
+    fun addMessage(message: Message) {
+        if (message.groupId == this.groupId) {
+            if (message.messageId != null && message.senderUin != RestClient().getUserId()) {
                 listMessage.add(message)
                 webSocketListener.seenMessage(HomeActivity.webSocket, message.messageId!!)
-            }else {
-                for(i in listMessage.indices.reversed()){
+            }else if (message.type == Message.Type.IMAGE.ordinal) {
+                listMessage.add(message)
+            }
+            else {
+                for (i in listMessage.indices.reversed()) {
 
-                    if ( listMessage[i].createdAt.toString()  == message.createdAt.toString() && listMessage[i].status== Message.Status.SENDING.ordinal){
+                    if (listMessage[i].createdAt.toString() == message.createdAt.toString() && listMessage[i].status == Message.Status.SENDING.ordinal) {
                         listMessage[i] = message
                         break
                     }
@@ -268,16 +348,18 @@ class MessageAdapter(val context: Context,val groupId : String) :
         }
 
     }
-    fun checkSeenMessage(message : Message){
-        for(i in listMessage.indices.reversed()){
-            if ( message.messageId == listMessage[i].messageId && message.groupId == this.groupId ){
+
+    fun checkSeenMessage(message: Message) {
+        for (i in listMessage.indices.reversed()) {
+            if (message.messageId == listMessage[i].messageId && message.groupId == this.groupId) {
                 listMessage[i] = message
                 break
             }
         }
     }
-    fun addMessageSeeding(message: Message){
-        if(message.messageId == null && message.status == Message.Status.SENDING.ordinal){
+
+    fun addMessageSeeding(message: Message) {
+        if (message.messageId == null && message.status == Message.Status.SENDING.ordinal) {
             listMessage.add(message)
             notifyDataSetChanged()
         }

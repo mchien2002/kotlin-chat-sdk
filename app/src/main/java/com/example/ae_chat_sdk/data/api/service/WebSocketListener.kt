@@ -184,6 +184,7 @@ class WebSocketListener : WebSocketListener() {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["groupId"] = groupId
         val request: SocketRequest = SocketRequest("list_message", map)
+        Log.e("LISTMESS",gson.toJson(request))
         webSocket.send(gson.toJson(request))
     }
 

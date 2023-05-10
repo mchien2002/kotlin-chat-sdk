@@ -84,8 +84,8 @@ class Message {
     @SerializedName("deleteUins")
     var deletedUins: ArrayList<String>? = null
 
-    @SerializedName("attachments")
-    var attachments: Any? = null
+    @SerializedName("attachment")
+    var attachment: Any? = null
 
 
 }

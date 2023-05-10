@@ -75,7 +75,7 @@ class ProfileActivity : AppCompatActivity() {
         if (imgLocal.length > 1) {
             Glide.with(this).load(imgLocal).into(iViewAvatarUser)
         } else if (myUser.avatar != null) {
-            val imageUrl = ApiConstant.URL_AVATAR + myUser.avatar
+            val imageUrl = ApiConstant.URL_IMAGE + myUser.avatar
             Log.d("link", imageUrl.toString())
             Glide.with(this).load(imageUrl).into(iViewAvatarUser)
         }

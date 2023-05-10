@@ -126,7 +126,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                             holder.tvUsername.text = userTemp.fullName
                             username = userTemp.userName
                             if (userTemp.avatar != null) {
-                                imageUrl = ApiConstant.URL_AVATAR + userTemp.avatar
+                                imageUrl = ApiConstant.URL_IMAGE + userTemp.avatar
                                 Glide.with(context).load(imageUrl).into(holder.ivAvatarRecent)
                             }
                         }

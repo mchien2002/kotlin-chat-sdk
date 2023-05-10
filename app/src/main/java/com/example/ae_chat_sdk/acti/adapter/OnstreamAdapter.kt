@@ -63,7 +63,7 @@ class OnstreamAdapter(val listOnStream: List<User>, val context: Context) :
 //        }
         var imageUrl = ""
         if(itemObject.avatar!=null){
-            imageUrl = ApiConstant.URL_AVATAR + itemObject.avatar
+            imageUrl = ApiConstant.URL_IMAGE + itemObject.avatar
             Glide.with(context)
                 .load(imageUrl)
                 .into(holder.ivAvatar)
