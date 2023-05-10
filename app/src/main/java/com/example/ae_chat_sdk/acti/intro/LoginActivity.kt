@@ -288,8 +288,8 @@ class LoginActivity : AppCompatActivity() {
                     )
                     Handler(Looper.getMainLooper()).postDelayed({
                         setStartHomeActivity()
-                        progressBar.visibility = View.GONE
                     }, 1000)
+                    progressBar.visibility = View.GONE
                 }
 
             }

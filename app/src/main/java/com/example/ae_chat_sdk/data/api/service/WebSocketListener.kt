@@ -169,7 +169,7 @@ class WebSocketListener : WebSocketListener() {
             myWebSocket.close(1000, null)
             Log.e("CLOSE","9999999999999")
         }
-        internal fun sendMediaMessage(message: Message, byteString: ByteString ) {
+        internal fun sendMediaMessage(message: Message, byteString: String ) {
             val map: MutableMap<String, Any> = HashMap<String, Any>()
             map["message"] = message
             map["attachment"] = byteString
@@ -198,6 +198,7 @@ class WebSocketListener : WebSocketListener() {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["message"] = message
         val request: SocketRequest = SocketRequest("create_message", map)
+        val abc =gson.toJson(request)
         webSocket.send(gson.toJson(request))
     }
 

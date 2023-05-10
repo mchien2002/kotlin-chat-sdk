@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -314,12 +316,15 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun renderDataRecyclerView() {
-//        progressBar.visibility = View.VISIBLE
+        progressBar.visibility = View.VISIBLE
         recentAdapter = RecentAdapter(context)
         rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvRecent.adapter = recentAdapter
         recentAdapter.notifyDataSetChanged()
 //        progressBar.visibility = View.GONE
+        Handler(Looper.getMainLooper()).postDelayed({
+            progressBar.visibility = View.GONE
+        }, 3000)
     }
 
     private fun setStartLoginActivity() {

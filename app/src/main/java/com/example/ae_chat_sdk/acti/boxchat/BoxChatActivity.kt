@@ -4,10 +4,12 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -212,6 +214,7 @@ class BoxChatActivity : AppCompatActivity() {
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_IMAGE_PICK)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -236,9 +239,9 @@ class BoxChatActivity : AppCompatActivity() {
                     val file = File(path)
                     val inputStream = FileInputStream(file)
                     val fileSize = file.length().toInt()
-                    val buffer = ByteArray(fileSize)
-                    inputStream.read(buffer)
-                    val byteString = ByteString.of(*buffer)
+                    val byteArray = ByteArray(fileSize)
+                    inputStream.read(byteArray)
+                    val base64String = Base64.getEncoder().encodeToString(byteArray)
                     val myUser: User = AppStorage.getInstance(context).getUserLocal()
                     val message = Message()
                     message.type = Message.Type.IMAGE.ordinal
@@ -251,7 +254,7 @@ class BoxChatActivity : AppCompatActivity() {
                     message.senderName = myUser.userName
                     message.createdAt = Date()
                     // Send media message
-                    WebSocketListener.sendMediaMessage(Message(), byteString)
+                    WebSocketListener.sendMediaMessage(message, base64String)
                     inputStream.close()
                 }
             }
