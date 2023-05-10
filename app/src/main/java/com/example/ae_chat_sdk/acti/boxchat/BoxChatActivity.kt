@@ -1,11 +1,19 @@
 package com.example.ae_chat_sdk.acti.boxchat
 
+import android.Manifest
 import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -13,14 +21,19 @@ import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
 import com.example.ae_chat_sdk.acti.home.HomeActivity
+import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
-import com.example.ae_chat_sdk.data.model.Message
-import com.example.ae_chat_sdk.data.model.User
-import com.example.ae_chat_sdk.data.model.UserOnlineStatus
+import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 import de.hdodenhof.circleimageview.CircleImageView
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -47,6 +60,10 @@ class BoxChatActivity : AppCompatActivity() {
 
     lateinit var groupId: String
     lateinit var messageId: String
+    private val REQUEST_IMAGE_CAPTURE = 1
+    private val REQUEST_IMAGE_PICK = 2
+    private var IMAGE_PATH = ""
+
 
     private val webSocketListener: WebSocketListener = WebSocketListener()
 
@@ -190,6 +207,54 @@ class BoxChatActivity : AppCompatActivity() {
 
         ibExpand.setOnClickListener {
             showOptions(true)
+        }
+
+        ibImage.setOnClickListener{
+            openGallery()
+        }
+    }
+    fun openGallery() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        startActivityForResult(intent, REQUEST_IMAGE_PICK)
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (resultCode == RESULT_OK) {
+            when (requestCode) {
+                REQUEST_IMAGE_CAPTURE -> {
+                    val imageBitmap = data?.extras?.get("data") as Bitmap
+                    // Convert imageBitmap to byte array
+                    val stream = ByteArrayOutputStream()
+                    imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream)
+                    val imageData = stream.toByteArray()
+                    // Get width and height of the image
+                    val width = imageBitmap.width
+                    val height = imageBitmap.height
+                    // Send media message
+                    //WebSocketListener.sendMediaMessage(Message(), imageData, width, height)
+                }
+                REQUEST_IMAGE_PICK -> {
+                    val uri: Uri? = data?.data
+                    val path = uri?.let { RealPathUtil.getRealPath(this, it) }
+                    // Read data of the image
+                    val file = File(path)
+                    val length = file.length().toInt()
+                    val bytes = ByteArray(length)
+                    val input = FileInputStream(file)
+                    input.read(bytes, 0, length)
+                    input.close()
+                    // Decode byte array to Bitmap to get the width and height
+                    val options = BitmapFactory.Options()
+                    options.inJustDecodeBounds = true
+                    BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
+                    val width = options.outWidth
+                    val height = options.outHeight
+                    // Send media message
+                    WebSocketListener.sendMediaMessage(Message(), input)
+                }
+            }
         }
     }
 }

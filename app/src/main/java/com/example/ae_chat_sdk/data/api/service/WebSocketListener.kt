@@ -5,8 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import androidx.annotation.RequiresApi
-import com.example.ae_chat_sdk.MainActivity
-import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
 import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.acti.home.HomeActivity.Companion.recentAdapter
 import com.example.ae_chat_sdk.data.model.Group
@@ -17,10 +15,12 @@ import com.example.ae_chat_sdk.data.socket.SocketRequestType
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
+import okhttp3.MultipartBody
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
+import java.io.FileInputStream
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
@@ -29,23 +29,9 @@ import kotlin.collections.HashMap
 
 class WebSocketListener : WebSocketListener() {
 
-    val gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
-        .registerTypeAdapter(Date::class.java, object : JsonDeserializer<Date> {
-            override fun deserialize(
-                json: JsonElement?,
-                typeOfT: Type?,
-                context: JsonDeserializationContext?
-            ): Date? {
-                json?.asString?.let { dateString ->
-                    val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
-                    return dateFormat.parse(dateString)
-                }
-                return null
-            }
-        })
-        .create()
+
     override fun onOpen(webSocket: WebSocket, response: Response) {
-        webSocket.send("Hello")
+        myWebSocket = webSocket
         val gson = Gson()
         val type = object : TypeToken<User>() {}.type
         val appStorage = AppStorage.getInstance()
@@ -161,6 +147,39 @@ class WebSocketListener : WebSocketListener() {
 
     companion object {
         private const val NORMAL_CLOSURE_STATUS = 1000
+        lateinit var myWebSocket: WebSocket
+
+        val gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss")
+            .registerTypeAdapter(Date::class.java, object : JsonDeserializer<Date> {
+                override fun deserialize(
+                    json: JsonElement?,
+                    typeOfT: Type?,
+                    context: JsonDeserializationContext?
+                ): Date? {
+                    json?.asString?.let { dateString ->
+                        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault())
+                        return dateFormat.parse(dateString)
+                    }
+                    return null
+                }
+            })
+            .create()
+
+        fun exitSocket(){
+            myWebSocket.close(1000, null)
+            Log.e("CLOSE","9999999999999")
+        }
+        internal fun sendMediaMessage(message: Message, inputStream: FileInputStream) {
+            val map: MutableMap<String, Any> = HashMap<String, Any>()
+            map["message"] = message
+//            map["dataByte"] = imageData
+//            map["heightImg"] = height
+//            map["widthImg"] = width
+            map["attachment"] = inputStream
+            val request: SocketRequest = SocketRequest("create_message", map)
+            Log.e("TOJSON",gson.toJson(request))
+            //myWebSocket.send(gson.toJson(request))
+        }
     }
 
     fun receiveMessage(webSocket: WebSocket, groupId: String) {
@@ -183,6 +202,8 @@ class WebSocketListener : WebSocketListener() {
         val request: SocketRequest = SocketRequest("create_message", map)
         webSocket.send(gson.toJson(request))
     }
+
+
     fun seenMessage(webSocket: WebSocket, messageId: String) {
         val map: MutableMap<String, Any> = HashMap<String, Any>()
         map["messageId"] = messageId
@@ -190,8 +211,5 @@ class WebSocketListener : WebSocketListener() {
         webSocket.send(gson.toJson(request))
     }
 
-    fun exitSocket(webSocket: WebSocket){
-        webSocket.close(1000, null)
-        Log.e("CLOSE","9999999999999")
-    }
+
 }
