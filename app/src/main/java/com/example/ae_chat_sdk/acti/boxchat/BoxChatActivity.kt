@@ -31,6 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okio.ByteString
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -240,19 +241,25 @@ class BoxChatActivity : AppCompatActivity() {
                     val path = uri?.let { RealPathUtil.getRealPath(this, it) }
                     // Read data of the image
                     val file = File(path)
-                    val length = file.length().toInt()
-                    val bytes = ByteArray(length)
-                    val input = FileInputStream(file)
-                    input.read(bytes, 0, length)
-                    input.close()
-                    // Decode byte array to Bitmap to get the width and height
-                    val options = BitmapFactory.Options()
-                    options.inJustDecodeBounds = true
-                    BitmapFactory.decodeByteArray(bytes, 0, bytes.size, options)
-                    val width = options.outWidth
-                    val height = options.outHeight
+                    val inputStream = FileInputStream(file)
+                    val fileSize = file.length().toInt()
+                    val buffer = ByteArray(fileSize)
+                    inputStream.read(buffer)
+                    val byteString = ByteString.of(*buffer)
+                    val myUser: User = AppStorage.getInstance(context).getUserLocal()
+                    val message = Message()
+                    message.type = Message.Type.IMAGE.ordinal
+                    message.groupType = Message.GroupType.PUBLIC.ordinal
+                    message.message = etInputMessage.text.toString()
+                    message.groupId = groupId
+                    message.status = Message.Status.SENDING.ordinal
+                    message.senderUin = myUser.userId
+                    message.senderAvatar = myUser.avatar.toString()
+                    message.senderName = myUser.userName
+                    message.createdAt = Date()
                     // Send media message
-                    WebSocketListener.sendMediaMessage(Message(), input)
+                    WebSocketListener.sendMediaMessage(Message(), byteString)
+                    inputStream.close()
                 }
             }
         }
