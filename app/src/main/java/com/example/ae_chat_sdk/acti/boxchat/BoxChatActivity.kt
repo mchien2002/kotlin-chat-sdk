@@ -94,7 +94,7 @@ class BoxChatActivity : AppCompatActivity() {
                 }
             }
         })
-        etInputMessage.requestFocus()
+//        etInputMessage.requestFocus()
         // Hiện bàn phím mềm nhưng éo được
 //        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 //        imm.showSoftInput(etInputMessage, InputMethodManager.SHOW_IMPLICIT)

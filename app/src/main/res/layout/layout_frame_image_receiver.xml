@@ -6,7 +6,7 @@
     xmlns:card_view="http://schemas.android.com/tools"
     xmlns:tools="http://schemas.android.com/tools"
     android:background="@color/transparent"
-    android:paddingEnd="50dp">
+    android:paddingEnd="200dp">
 
     <TextView
         android:id="@+id/timeMessage"
