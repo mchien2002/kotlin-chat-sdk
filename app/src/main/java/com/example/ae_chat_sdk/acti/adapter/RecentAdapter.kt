@@ -106,8 +106,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
         var status: Int? = null
         var statusValue = 2
         var lastTimeOnline: Date? = null
-        var imageUrl =
-            "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
+        var imageUrl = ""
         if (itemObject.groupType == TypeView.PUBLIC.typeView) {
             for (item in itemObject.members) {
                 if (item == myUser.userId) {
@@ -128,8 +127,8 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                             username = userTemp.userName
                             if (userTemp.avatar != null) {
                                 imageUrl = ApiConstant.URL_AVATAR + userTemp.avatar
+                                Glide.with(context).load(imageUrl).into(holder.ivAvatarRecent)
                             }
-                            Glide.with(context).load(imageUrl).into(holder.ivAvatarRecent)
                         }
                     })
                     break

@@ -74,11 +74,7 @@ class ProfileActivity : AppCompatActivity() {
         val imgLocal = appStorage?.getData("avatar", "").toString()
         if (imgLocal.length > 1) {
             Glide.with(this).load(imgLocal).into(iViewAvatarUser)
-        } else if (myUser.avatar == null) {
-            val imageUrl =
-                "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
-            Glide.with(this).load(imageUrl).into(iViewAvatarUser)
-        } else {
+        } else if (myUser.avatar != null) {
             val imageUrl = ApiConstant.URL_AVATAR + myUser.avatar
             Log.d("link", imageUrl.toString())
             Glide.with(this).load(imageUrl).into(iViewAvatarUser)

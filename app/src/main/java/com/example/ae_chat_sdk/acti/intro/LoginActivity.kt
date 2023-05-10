@@ -1,6 +1,7 @@
 package com.example.ae_chat_sdk.acti.intro
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.util.Log
 import android.util.Patterns
 import android.view.KeyEvent
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
@@ -53,6 +55,7 @@ class LoginActivity : AppCompatActivity() {
     lateinit var inputOTP5: EditText
     lateinit var inputOTP6: EditText
 
+    lateinit var progressBar: ProgressBar
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -83,6 +86,8 @@ class LoginActivity : AppCompatActivity() {
         inputOTP4 = findViewById(R.id.etInputOTP4)
         inputOTP5 = findViewById(R.id.etInputOTP5)
         inputOTP6 = findViewById(R.id.etInputOTP6)
+
+        progressBar = findViewById(R.id.progressBar)
 
         setButtonOnClickListener()
     }
@@ -137,9 +142,25 @@ class LoginActivity : AppCompatActivity() {
         rLayoutWrapInputOTP.visibility = View.VISIBLE
     }
 
+    private fun hideKeyboard() {
+        // Auto hide keyboard
+        if (currentFocus != null) {
+            val inputMethodManager =
+                getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            inputMethodManager.hideSoftInputFromWindow(
+                currentFocus!!.windowToken,
+                0
+            )
+        }
+    }
+
     private fun setButtonOnClickListener() {
         // Email
         btnSendEmail.setOnClickListener(View.OnClickListener {
+
+            hideKeyboard()
+
+            progressBar.visibility = View.VISIBLE
             val call = RegisterRepository().registerByMail(email)
 
             call.enqueue(object : Callback<MyResponse> {
@@ -157,6 +178,7 @@ class LoginActivity : AppCompatActivity() {
                     resetOTP()
                     setListenerOTP()
                     showInput(false)
+                    progressBar.visibility = View.GONE
                 }
             })
         })
@@ -240,6 +262,8 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun verifyOTP() {
+        hideKeyboard()
+        progressBar.visibility = View.VISIBLE
         resetOTP()
         val call = RegisterRepository().verifyOTP(email, OTP)
         call.enqueue(object : Callback<MyResponse> {
@@ -264,6 +288,7 @@ class LoginActivity : AppCompatActivity() {
                     )
                     Handler(Looper.getMainLooper()).postDelayed({
                         setStartHomeActivity()
+                        progressBar.visibility = View.GONE
                     }, 1000)
                 }
 

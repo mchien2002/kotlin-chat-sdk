@@ -49,13 +49,20 @@ class OnstreamAdapter(val listOnStream: List<User>, val context: Context) :
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val itemObject = listOnStream[position]
         holder.tvUsername.text = itemObject.userName
-        var imageUrl =
-            "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
-        if (itemObject.avatar == null) {
-            Glide.with(context)
-                .load(imageUrl)
-                .into(holder.ivAvatar)
-        } else {
+//        var imageUrl =
+//            "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
+//        if (itemObject.avatar == null) {
+//            Glide.with(context)
+//                .load(imageUrl)
+//                .into(holder.ivAvatar)
+//        } else {
+//            imageUrl = ApiConstant.URL_AVATAR + itemObject.avatar
+//            Glide.with(context)
+//                .load(imageUrl)
+//                .into(holder.ivAvatar)
+//        }
+        var imageUrl = ""
+        if(itemObject.avatar!=null){
             imageUrl = ApiConstant.URL_AVATAR + itemObject.avatar
             Glide.with(context)
                 .load(imageUrl)

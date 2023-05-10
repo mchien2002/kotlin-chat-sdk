@@ -1,19 +1,14 @@
 package com.example.ae_chat_sdk.acti.boxchat
 
-import android.Manifest
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,16 +16,12 @@ import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
 import com.example.ae_chat_sdk.acti.home.HomeActivity
-import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 import de.hdodenhof.circleimageview.CircleImageView
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
-import okhttp3.MultipartBody
-import okhttp3.RequestBody
 import okio.ByteString
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -155,17 +146,19 @@ class BoxChatActivity : AppCompatActivity() {
 
     private fun setProfileReceiver() {
         val imageUrl = intent.getStringExtra("avatar")
-        Glide.with(context).load(imageUrl).into(ivAvatar)
+        if (imageUrl != "") {
+            Glide.with(context).load(imageUrl).into(ivAvatar)
+        }
         val username = intent.getStringExtra("username")
-        val status = intent.getIntExtra("status",2)
-        val lastTimeOnline = intent.getLongExtra("lastTimeOnline",0)
+        val status = intent.getIntExtra("status", 2)
+        val lastTimeOnline = intent.getLongExtra("lastTimeOnline", 0)
         tvUsername.text = username
         val dateValue = Date(lastTimeOnline)
-        Log.e("TIMEON",dateValue.toString())
-        if(status == 2){
+        Log.e("TIMEON", dateValue.toString())
+        if (status == 2) {
             Toast.makeText(context, "Mất kết nối!", Toast.LENGTH_SHORT).show()
-        }else {
-            if(status == UserOnlineStatus.UserStatus.ONLINE.ordinal){
+        } else {
+            if (status == UserOnlineStatus.UserStatus.ONLINE.ordinal) {
                 tvActiveStatus.text = "Đang hoạt động"
                 ivOnline.visibility = View.VISIBLE
             }else{

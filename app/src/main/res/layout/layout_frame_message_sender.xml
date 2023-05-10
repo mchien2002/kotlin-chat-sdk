@@ -32,7 +32,7 @@
 
         <TextView
             android:id="@+id/tvSenderFooter"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/bg_message_send_one_top"
@@ -43,7 +43,8 @@
             android:text="@string/content_message"
             android:textAlignment="textStart"
             android:textColor="@color/White"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            android:layout_marginRight="2dp"/>
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivCheckSeen"

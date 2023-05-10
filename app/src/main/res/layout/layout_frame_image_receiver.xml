@@ -3,7 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:card_view="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/transparent"
+    android:paddingEnd="50dp">
 
     <TextView
         android:id="@+id/timeMessage"
@@ -37,21 +40,21 @@
             android:src="@color/Secondary10" />
 
         <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:maxHeight="300dp"
             app:cardCornerRadius="15dp"
             android:layout_marginStart="10dp"
-            android:layout_marginTop="2dp">
+            android:layout_marginTop="2dp"
+            card_view:cardElevation="0dp">
 
             <ImageView
                 android:id="@+id/ivImageMessage"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxHeight="300dp"
+                android:layout_weight="1"
                 android:scaleType="centerCrop"
                 android:adjustViewBounds="true"
-                android:src="@drawable/avt_1"/>
+                android:src="@drawable/image_default" />
         </androidx.cardview.widget.CardView>
     </LinearLayout>
 

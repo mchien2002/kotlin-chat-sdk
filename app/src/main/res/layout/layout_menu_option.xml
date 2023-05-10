@@ -22,7 +22,7 @@
             android:layout_height="80dp"
             android:layout_centerHorizontal="true"
             android:layout_gravity="start"
-            android:src="@drawable/avt_1" />
+            android:src="@drawable/avatardefault" />
 
         <TextView
             android:id="@+id/tvUsername"

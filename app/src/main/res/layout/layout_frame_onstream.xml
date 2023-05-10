@@ -10,7 +10,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="5dp"
-        android:background="@drawable/avt_1"
         android:elevation="1dp"
         app:cardCornerRadius="15dp">
         <ImageView
@@ -18,7 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="60dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/avt_1" />
+            android:src="@drawable/avatardefault" />
     </androidx.cardview.widget.CardView>
 
     <ImageView

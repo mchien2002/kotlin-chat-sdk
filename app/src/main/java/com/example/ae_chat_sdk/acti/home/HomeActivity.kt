@@ -75,6 +75,8 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var avatarUser: CircleImageView
 
+    lateinit var progressBar: ProgressBar
+
     var listContact: Boolean = false
     var draggingUp: Boolean = false
 
@@ -199,6 +201,7 @@ class HomeActivity : AppCompatActivity() {
         bottomSheetHomeBehavior = BottomSheetBehavior.from(ctLayoutBottomSheetHome)
 
         etSearch = findViewById(R.id.etInputSearch)
+
         etSearch.addTextChangedListener {
             it?.let { string ->
                 searchUser(etSearch.text.toString())
@@ -213,6 +216,8 @@ class HomeActivity : AppCompatActivity() {
 
         btnLogOut = findViewById(R.id.mbLogOut)
         swState = findViewById(R.id.switchStatus)
+
+        progressBar = findViewById(R.id.progressBar)
     }
 
     private fun setBottomSheetBehaviorHome() {
@@ -302,21 +307,19 @@ class HomeActivity : AppCompatActivity() {
         val imgLocal = appStorage?.getData("avatar", "").toString()
         if (imgLocal.length > 1) {
             Glide.with(this).load(imgLocal).into(avatarUser)
-        } else if (myUser.avatar == null) {
-            val imageUrl =
-                "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
-            Glide.with(this).load(imageUrl).into(avatarUser)
-        } else {
+        } else if (myUser.avatar != null) {
             val imageUrl = ApiConstant.URL_AVATAR + myUser.avatar
             Glide.with(this).load(imageUrl).into(avatarUser)
         }
     }
 
     private fun renderDataRecyclerView() {
+//        progressBar.visibility = View.VISIBLE
         recentAdapter = RecentAdapter(context)
         rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvRecent.adapter = recentAdapter
         recentAdapter.notifyDataSetChanged()
+//        progressBar.visibility = View.GONE
     }
 
     private fun setStartLoginActivity() {

@@ -22,8 +22,8 @@ class MessageAdapter(val context: Context,val groupId : String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val webSocketListener: WebSocketListener = WebSocketListener()
     var listMessage: ArrayList<Message> = ArrayList()
-    var imageUrl =
-        "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
+//    var imageUrl =
+//        "https://3.bp.blogspot.com/-SMNLs_5XfVo/VHvNUx8dWZI/AAAAAAAAQnY/NWdkO4JPE_M/s1600/Avatar-Facebook-an-danh-trang-4.jpg"
 
     enum class TypeView(val typeView: Int) {
         FIRST_MESSAGE(0),
@@ -107,8 +107,14 @@ class MessageAdapter(val context: Context,val groupId : String) :
             if (position == listMessage.size-1 && listMessage[position].status == Message.Status.SEEN.ordinal){
                 Log.e("LASTMS",listMessage[position].message.toString())
                 if(holder is SendMessageFooterHolder){
-                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
+//                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
                     //holder.binding.ivCheckSeen.setImageDrawable(null)
+                    holder.binding.ivCheckSeen.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.avatardefault
+                        )
+                    )
                 }
             }else if (listMessage[position].status == Message.Status.SENDING.ordinal) {
                 if (holder is SendMessageFooterHolder) {
@@ -129,8 +135,14 @@ class MessageAdapter(val context: Context,val groupId : String) :
                     )
                 }
             }else if (listMessage[position].status == Message.Status.SEEN.ordinal && listMessage[position+1].status != Message.Status.SEEN.ordinal){
-                if(holder is SendMessageFooterHolder){
-                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
+                if(holder is SendMessageFooterHolder) {
+//                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
+                    holder.binding.ivCheckSeen.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            context,
+                            R.drawable.avatardefault
+                        )
+                    )
                 }
             }
         } else {
