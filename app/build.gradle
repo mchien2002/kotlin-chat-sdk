@@ -67,6 +67,5 @@ dependencies {
     implementation 'com.eightbitlab:blurview:1.6.3'
     implementation 'com.eightbitlab:supportrenderscriptblur:1.0.2'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
-    implementation 'javax.media:jai-core:1.1.3'
-
+    
 }
