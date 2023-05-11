@@ -24,6 +24,7 @@ import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 import de.hdodenhof.circleimageview.CircleImageView
+import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -246,25 +247,33 @@ class BoxChatActivity : AppCompatActivity() {
                     val path = uri?.let { RealPathUtil.getRealPath(this, it) }
                     // Read data of the image
                     val file = File(path)
-                    val inputStream = FileInputStream(file)
-                    val fileSize = file.length().toInt()
-                    val byteArray = ByteArray(fileSize)
-                    inputStream.read(byteArray)
-                    val base64String = Base64.getEncoder().encodeToString(byteArray)
-                    val myUser: User = AppStorage.getInstance(context).getUserLocal()
-                    val message = Message()
-                    message.type = Message.Type.IMAGE.ordinal
-                    message.groupType = Message.GroupType.PUBLIC.ordinal
-                    message.message = etInputMessage.text.toString()
-                    message.groupId = groupId
-                    message.status = Message.Status.SENDING.ordinal
-                    message.senderUin = myUser.userId
-                    message.senderAvatar = myUser.avatar.toString()
-                    message.senderName = myUser.userName
-                    message.createdAt = Date()
-                    // Send media message
-                    WebSocketListener.sendMediaMessage(message, base64String)
-                    inputStream.close()
+                    val newPath = "${file.parent}/${file.nameWithoutExtension}.jpg"
+                    val newFile = File(newPath)
+
+                    if (file.renameTo(newFile)) {
+                        val inputStream = FileInputStream(newFile)
+                        val fileSize = file.length().toInt()
+                        val byteArray = ByteArray(fileSize)
+                        inputStream.read(byteArray)
+                        val base64String = Base64.getEncoder().encodeToString(byteArray)
+                        val myUser: User = AppStorage.getInstance(context).getUserLocal()
+                        val message = Message()
+                        message.type = Message.Type.IMAGE.ordinal
+                        message.groupType = Message.GroupType.PUBLIC.ordinal
+                        message.message = etInputMessage.text.toString()
+                        message.groupId = groupId
+                        message.status = Message.Status.SENDING.ordinal
+                        message.senderUin = myUser.userId
+                        message.senderAvatar = myUser.avatar.toString()
+                        message.senderName = myUser.userName
+                        message.createdAt = Date()
+                        // Send media message
+                        WebSocketListener.sendMediaMessage(message, base64String)
+                        inputStream.close()
+                    } else {
+                        return
+                    }
+
                 }
             }
         }
