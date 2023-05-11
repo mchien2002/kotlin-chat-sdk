@@ -16,9 +16,7 @@ import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
-import com.example.ae_chat_sdk.data.model.MyResponse
-import com.example.ae_chat_sdk.data.model.User
-import com.example.ae_chat_sdk.data.model.UserOnlineStatus
+import com.example.ae_chat_sdk.data.model.*
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import retrofit2.Call
@@ -71,6 +69,9 @@ class OnstreamAdapter(val listOnStream: List<User>, val context: Context) :
         var status: Int? = null
         var statusValue = 2
         var lastTimeOnline: Date? = null
+        var group: Group? = null
+        lateinit var lastMessage : Message
+        var check : Boolean = false
         val call = UserRepository().getUserOnlineStatus(RestClient().getToken(), itemObject.userId)
         call.enqueue(object : Callback<MyResponse> {
             override fun onFailure(call: Call<MyResponse>, t: Throwable) {
@@ -99,17 +100,46 @@ class OnstreamAdapter(val listOnStream: List<User>, val context: Context) :
                     call: Call<MyResponse>, response: Response<MyResponse>
                 ) {
                    Log.e("RESPONSE",response.body().toString())
+                    val responseData = response.body()?.data
+                    if (responseData != null){
+                        val gson = Gson()
+                        val type = object : TypeToken<Group>() {}.type
+                        group = gson.fromJson<Group>(gson.toJson(response.body()?.data), type)
+                    }
+                    if (group!=null){
+                        lastMessage = group!!.lastMessage!!
+                        check = true
+                        val intent: Intent = Intent(context, BoxChatActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtra("avatar", imageUrl)
+                        intent.putExtra("username", itemObject.userName)
+                        Log.e("CHECK",check.toString())
+                        if (check == true){
+                            intent.putExtra("GroupId", group!!.groupId)
+                            val senderUin = lastMessage.senderUin
+                            if (senderUin != RestClient().getUserId()) {
+                                if (lastMessage.status != Message.Status.SEEN.ordinal) {
+                                    intent.putExtra("lastmessage", lastMessage.messageId)
+                                }
+                            }
+                        }
+                        intent.putExtra("status",status)
+                        val longDate = lastTimeOnline?.time
+                        intent.putExtra("lastTimeOnline", longDate)
+                        context.startActivity(intent)
+                    }else{
+                        val intent: Intent = Intent(context, BoxChatActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        intent.putExtra("userId", itemObject.userId)
+                        intent.putExtra("avatar", imageUrl)
+                        intent.putExtra("username", itemObject.userName)
+                        intent.putExtra("status",status)
+                        val longDate = lastTimeOnline?.time
+                        intent.putExtra("lastTimeOnline", longDate)
+                        context.startActivity(intent)
+                    }
                 }
             })
-
-            val intent: Intent = Intent(context, BoxChatActivity::class.java)
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            intent.putExtra("avatar", imageUrl)
-            intent.putExtra("username", itemObject.userName)
-            intent.putExtra("status",status)
-            val longDate = lastTimeOnline?.time
-            intent.putExtra("lastTimeOnline", longDate)
-            context.startActivity(intent)
         })
     }
 }

@@ -15,12 +15,10 @@ import com.example.ae_chat_sdk.data.socket.SocketRequestType
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import okhttp3.MultipartBody
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
 import okio.ByteString
-import java.io.FileInputStream
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
 import java.util.*
@@ -129,6 +127,15 @@ class WebSocketListener : WebSocketListener() {
                     }
                 }
             )
+        }else if(response.event == SocketRequestType.SOCKET_REQUEST_CREATE_GROUP_SUCCESSFUL){
+//            Handler(Looper.getMainLooper()).post(
+//                Runnable {
+//                    val typeToken = object : TypeToken<Map<String, Any>>() {}.type
+//                    val jsonObject = gson.fromJson(text, typeToken) as Map<String, Any>
+//                    val groupId = (jsonObject["payload"] as? Map<String, String>)?.get("groupId") as? List<Map<String, String>>
+//
+//                }
+//            )
         }
 
         outPut("Received: $text")
@@ -178,6 +185,20 @@ class WebSocketListener : WebSocketListener() {
             Log.e("TOJSON",stringtest)
             myWebSocket.send(gson.toJson(request))
         }
+
+        internal fun createGroup(listMember: List<String>, groupType: Int, nameGroup: String?,creatorUin : String,ownerUin : String){
+            val group : Group = Group()
+            group.groupType = groupType
+            group.name = nameGroup
+            group.members = listMember
+            group.creatorUin = creatorUin
+            group.ownerUin = ownerUin
+            val map: MutableMap<String, Any> = HashMap<String, Any>()
+            map["group"] = group
+            val request:SocketRequest=SocketRequest("create_group",map)
+            Log.e("REQEST",gson.toJson(request))
+            myWebSocket.send(gson.toJson(request))
+        }
     }
 
     fun receiveMessage(webSocket: WebSocket, groupId: String) {
@@ -210,6 +231,5 @@ class WebSocketListener : WebSocketListener() {
         val request: SocketRequest = SocketRequest("seen_message", map)
         webSocket.send(gson.toJson(request))
     }
-
 
 }

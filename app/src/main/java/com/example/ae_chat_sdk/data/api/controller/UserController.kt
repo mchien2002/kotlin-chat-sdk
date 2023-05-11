@@ -21,6 +21,6 @@ interface UserController {
     @GET(ApiConstant.USER_ONLINE_STATUS)
     fun getUserOnlineStatus(@Header("token") token: String,@Query("userId") userId: String) : Call<MyResponse>
 
-    @GET(ApiConstant.GROUP_PROFILE_BY_MEMBER)
+    @POST(ApiConstant.GROUP_PROFILE_BY_MEMBER)
     fun groupProfileByMember(@Header("token") token: String,@Body listUserId : List<String>):Call<MyResponse>
 }

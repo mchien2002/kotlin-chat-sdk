@@ -18,13 +18,13 @@ import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
 import com.example.ae_chat_sdk.acti.home.HomeActivity
+import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 import de.hdodenhof.circleimageview.CircleImageView
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -53,7 +53,7 @@ class BoxChatActivity : AppCompatActivity() {
     lateinit var tvActiveStatus: TextView
     lateinit var ivOnline: ImageView
 
-    lateinit var groupId: String
+    var groupId: String? = null
     lateinit var messageId: String
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_IMAGE_PICK = 2
@@ -79,14 +79,13 @@ class BoxChatActivity : AppCompatActivity() {
         init()
         setProfileReceiver()
 
-        groupId = intent.getStringExtra("GroupId").toString()
-        webSocketListener.receiveMessage(HomeActivity.webSocket, groupId)
+        groupId = intent.getStringExtra("GroupId")
         messageId = intent.getStringExtra("lastmessage").toString()
-        if (messageId != null) {
+        if(groupId != null){
+            webSocketListener.receiveMessage(HomeActivity.webSocket, groupId!!)
             webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
+            showMessage()
         }
-        showMessage()
-
 
 //        etInputMessage.requestFocus()
         // Hiện bàn phím mềm nhưng éo được
@@ -114,7 +113,7 @@ class BoxChatActivity : AppCompatActivity() {
     }
 
     private fun showMessage() {
-        messageAdapter = MessageAdapter(context, groupId)
+        messageAdapter = MessageAdapter(context, groupId!!)
         val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvMessage.layoutManager = linearLayoutManager
         rvMessage.adapter = messageAdapter
@@ -192,7 +191,7 @@ class BoxChatActivity : AppCompatActivity() {
 //        }
 
         btnSendMessage.setOnClickListener {
-            if (etInputMessage.text.trim() != "") {
+            if (etInputMessage.text.trim() != "" && groupId != null) {
                 val myUser: User = AppStorage.getInstance(context).getUserLocal()
                 val message = Message()
                 message.type = Message.Type.TEXT.ordinal
@@ -208,6 +207,12 @@ class BoxChatActivity : AppCompatActivity() {
                 webSocketListener.sendMessage(HomeActivity.webSocket, message)
                 etInputMessage.text.clear()
                 rvMessage.scrollToPosition(messageAdapter!!.itemCount - 1)
+            }else if (etInputMessage.text.trim() != "" && groupId == null){
+                val userIdMe = RestClient().getUserId()
+                val userId = intent.getStringExtra("userId")
+                Log.e("USERIDI",userId.toString())
+                val newList: List<String> = listOf(userIdMe, userId.toString())
+                WebSocketListener.createGroup(newList,Message.GroupType.PUBLIC.ordinal,null,userIdMe,userIdMe)
             }
         }
 

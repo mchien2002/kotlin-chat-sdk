@@ -4,25 +4,31 @@ import com.google.gson.annotations.SerializedName
 
 class Group{
     @SerializedName("groupId")
-    var groupId: String = ""
+    var groupId: String? = null
 
     @SerializedName("name")
-    var name: String = ""
+    var name: String? = null
 
     @SerializedName("groupType")
-    var groupType: Int = GroupType.UNKOWN.ordinal
+    var groupType: Int? = null
 
     @SerializedName("theme")
-    var theme: Int = 0
+    var theme: Int? = null
+
+    @SerializedName("creatorUin")
+    var creatorUin :String? = null
+
+    @SerializedName("ownerUin")
+    var ownerUin : String?= null
 
     @SerializedName("groupStatus")
-    var groupStatus: Int = 0
+    var groupStatus: Int? = null
 
     @SerializedName("members")
-    var members: List<String> = emptyList()
+    var members: List<String>? = null
 
     @SerializedName("lastMessage")
-    var lastMessage: Message = Message()
+    var lastMessage: Message? = null
 }
 
 data class ListGroupResponse(val listGroup: List<Group>)

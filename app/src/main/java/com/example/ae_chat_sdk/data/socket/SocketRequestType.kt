@@ -22,5 +22,6 @@ class SocketRequestType {
         const val SOCKET_REQUEST_REACTION_MESSAGE = "reaction_message"
         const val SOCKET_REQUEST_LIST_REACTION_MESSAGE = "list_reaction_message"
         const val SOCKET_REQUEST_SEEN_LASTEST_MESSAGE = "seen_message"
+        const val SOCKET_REQUEST_CREATE_GROUP_SUCCESSFUL = "create_group_successful"
     }
 }

@@ -70,19 +70,19 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
             }
             val itemObject = listRecent[position]
 
-            if (itemObject.lastMessage.type == Message.Type.FIRST_MESSAGE.ordinal) {
+            if (itemObject.lastMessage!!.type == Message.Type.FIRST_MESSAGE.ordinal) {
                 holder.tvMessage.text = "Hãy bắt đầu cuộc trò chuyện"
-            } else if (itemObject.lastMessage.type == Message.Type.TEXT.ordinal) {
-                val senderUin = itemObject.lastMessage.senderUin
+            } else if (itemObject.lastMessage!!.type == Message.Type.TEXT.ordinal) {
+                val senderUin = itemObject!!.lastMessage!!.senderUin
                 if (itemObject.lastMessage != null && holder.tvMessage != null) {
                     if (senderUin == RestClient().getUserId()) {
-                        holder.tvMessage.text = "Bạn: " + itemObject.lastMessage.message
+                        holder.tvMessage.text = "Bạn: " + itemObject.lastMessage!!.message
                     } else {
-                        holder.tvMessage.text = itemObject.lastMessage.message
+                        holder.tvMessage.text = itemObject.lastMessage!!.message
                     }
                 }
             }
-            var seenUins: ArrayList<String>? = itemObject.lastMessage.seenUins
+            var seenUins: ArrayList<String>? = itemObject.lastMessage!!.seenUins
             Log.e("SEENNN", seenUins.toString())
             //val seenUins = itemObject.lastMessage.seenUins
             if (seenUins != null) {
@@ -99,7 +99,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 }
             }
 
-            val timeString = DateTimeUtil().getTimeFromDate(itemObject.lastMessage.createdAt)
+            val timeString = DateTimeUtil().getTimeFromDate(itemObject.lastMessage!!.createdAt)
             holder.tvTimeReceive.text = timeString
 
             val gson = Gson()
@@ -111,7 +111,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
             var lastTimeOnline: Date? = null
             var imageUrl = ""
             if (itemObject.groupType == TypeView.PUBLIC.typeView) {
-                for (item in itemObject.members) {
+                for (item in itemObject.members!!) {
                     if (item == myUser.userId) {
                         continue
                     } else {
@@ -137,7 +137,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                         break
                     }
                 }
-                for (item in itemObject.members) {
+                for (item in itemObject.members!!) {
                     if (item == myUser.userId) {
                         continue
                     } else {
@@ -179,10 +179,10 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 intent.putExtra("status", status)
                 val longDate = lastTimeOnline?.time
                 intent.putExtra("lastTimeOnline", longDate)
-                val senderUin = itemObject.lastMessage.senderUin
+                val senderUin = itemObject.lastMessage!!.senderUin
                 if (senderUin != RestClient().getUserId()) {
-                    if (itemObject.lastMessage.status != Message.Status.SEEN.ordinal) {
-                        intent.putExtra("lastmessage", itemObject.lastMessage.messageId)
+                    if (itemObject.lastMessage!!.status != Message.Status.SEEN.ordinal) {
+                        intent.putExtra("lastmessage", itemObject.lastMessage!!.messageId)
                     }
                 }
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
