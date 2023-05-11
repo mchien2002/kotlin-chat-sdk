@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/transparent"
-    android:paddingStart="75dp">
+    android:paddingStart="225dp">
 
     <TextView
         android:id="@+id/timeMessage"

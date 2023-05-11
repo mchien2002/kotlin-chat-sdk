@@ -20,16 +20,18 @@ import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
-import com.example.ae_chat_sdk.data.model.* // ktlint-disable no-wildcard-imports
+import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
-import kotlin.collections.ArrayList
 
 class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.ViewHolder>() {
 
@@ -61,125 +63,132 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        GlobalScope.launch(Dispatchers.Main) {
 
-        if (listRecent.isEmpty()) {
-            Log.e("CCCCC", "UUUUUUUUUUUUUUUUU")
-        }
-        val itemObject = listRecent[position]
+            if (listRecent.isEmpty()) {
+                Log.e("CCCCC", "UUUUUUUUUUUUUUUUU")
+            }
+            val itemObject = listRecent[position]
 
-        if (itemObject.lastMessage.type == Message.Type.FIRST_MESSAGE.ordinal) {
-            holder.tvMessage.text = "Hãy bắt đầu cuộc trò chuyện"
-        } else if (itemObject.lastMessage.type == Message.Type.TEXT.ordinal) {
-            val senderUin = itemObject.lastMessage.senderUin
-            if (itemObject.lastMessage != null && holder.tvMessage != null) {
-                if (senderUin == RestClient().getUserId()) {
-                    holder.tvMessage.text = "Bạn: " + itemObject.lastMessage.message
-                } else {
-                    holder.tvMessage.text = itemObject.lastMessage.message
+            if (itemObject.lastMessage.type == Message.Type.FIRST_MESSAGE.ordinal) {
+                holder.tvMessage.text = "Hãy bắt đầu cuộc trò chuyện"
+            } else if (itemObject.lastMessage.type == Message.Type.TEXT.ordinal) {
+                val senderUin = itemObject.lastMessage.senderUin
+                if (itemObject.lastMessage != null && holder.tvMessage != null) {
+                    if (senderUin == RestClient().getUserId()) {
+                        holder.tvMessage.text = "Bạn: " + itemObject.lastMessage.message
+                    } else {
+                        holder.tvMessage.text = itemObject.lastMessage.message
+                    }
                 }
             }
-        }
-        var seenUins: ArrayList<String>? = itemObject.lastMessage.seenUins
-        Log.e("SEENNN", seenUins.toString())
-        //val seenUins = itemObject.lastMessage.seenUins
-        if (seenUins != null) {
-            for (item in seenUins) {
-                Log.e("ITEMMM", item)
-                holder.tvMessage.setTypeface(null, Typeface.BOLD)
-                holder.tvUsername.setTypeface(null, Typeface.BOLD)
-                if (item == RestClient().getUserId()) {
-                    Log.e("USERIDCL", RestClient().getUserId())
-                    holder.tvMessage.setTypeface(null, Typeface.NORMAL)
-                    holder.tvUsername.setTypeface(null, Typeface.NORMAL)
-                    break
+            var seenUins: ArrayList<String>? = itemObject.lastMessage.seenUins
+            Log.e("SEENNN", seenUins.toString())
+            //val seenUins = itemObject.lastMessage.seenUins
+            if (seenUins != null) {
+                for (item in seenUins) {
+                    Log.e("ITEMMM", item)
+                    holder.tvMessage.setTypeface(null, Typeface.BOLD)
+                    holder.tvUsername.setTypeface(null, Typeface.BOLD)
+                    if (item == RestClient().getUserId()) {
+                        Log.e("USERIDCL", RestClient().getUserId())
+                        holder.tvMessage.setTypeface(null, Typeface.NORMAL)
+                        holder.tvUsername.setTypeface(null, Typeface.NORMAL)
+                        break
+                    }
                 }
             }
-        }
 
-        val timeString = DateTimeUtil().getTimeFromDate(itemObject.lastMessage.createdAt)
-        holder.tvTimeReceive.text = timeString
+            val timeString = DateTimeUtil().getTimeFromDate(itemObject.lastMessage.createdAt)
+            holder.tvTimeReceive.text = timeString
 
-        val gson = Gson()
-        val type = object : TypeToken<User>() {}.type
-        val myUser: User = AppStorage.getInstance(context).getUserLocal()
-        var username = ""
-        var status: Int? = null
-        var statusValue = 2
-        var lastTimeOnline: Date? = null
-        var imageUrl = ""
-        if (itemObject.groupType == TypeView.PUBLIC.typeView) {
-            for (item in itemObject.members) {
-                if (item == myUser.userId) {
-                    continue
-                } else {
-                    val call = UserRepository().getUserProfile(RestClient().getToken(), item)
-                    call.enqueue(object : Callback<MyResponse> {
-                        override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                            Log.e("CCCCC", t.toString())
-                        }
-
-                        override fun onResponse(
-                            call: Call<MyResponse>, response: Response<MyResponse>
-                        ) {
-                            val userTemp =
-                                gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                            holder.tvUsername.text = userTemp.fullName
-                            username = userTemp.userName
-                            if (userTemp.avatar != null) {
-                                imageUrl = ApiConstant.URL_IMAGE + userTemp.avatar
-                                Glide.with(context).load(imageUrl).into(holder.ivAvatarRecent)
+            val gson = Gson()
+            val type = object : TypeToken<User>() {}.type
+            val myUser: User = AppStorage.getInstance(context).getUserLocal()
+            var username = ""
+            var status: Int? = null
+            var statusValue = 2
+            var lastTimeOnline: Date? = null
+            var imageUrl = ""
+            if (itemObject.groupType == TypeView.PUBLIC.typeView) {
+                for (item in itemObject.members) {
+                    if (item == myUser.userId) {
+                        continue
+                    } else {
+                        val call = UserRepository().getUserProfile(RestClient().getToken(), item)
+                        call.enqueue(object : Callback<MyResponse> {
+                            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                                Log.e("CCCCC", t.toString())
                             }
-                        }
-                    })
-                    break
-                }
-            }
-            for (item in itemObject.members) {
-                if (item == myUser.userId) {
-                    continue
-                } else {
-                    val call = UserRepository().getUserOnlineStatus(RestClient().getToken(), item)
-                    call.enqueue(object : Callback<MyResponse> {
-                        override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                            Log.e("CCCCC", t.toString())
-                        }
-                        override fun onResponse(
-                            call: Call<MyResponse>, response: Response<MyResponse>
-                        ) {
-                            val typeOnline = object : TypeToken<UserOnlineStatus>() {}.type
-                            val userTemp =
-                                gson.fromJson<UserOnlineStatus>(gson.toJson(response.body()?.data), typeOnline)
-                            status = userTemp.status
-                            lastTimeOnline = userTemp.lastTimeOnline
-                            if (userTemp.status == UserOnlineStatus.UserStatus.ONLINE.ordinal){
-                                holder.ivOnline.visibility = View.VISIBLE
-                            }else{
-                                holder.ivOnline.visibility = View.GONE
+
+                            override fun onResponse(
+                                call: Call<MyResponse>, response: Response<MyResponse>
+                            ) {
+                                val userTemp =
+                                    gson.fromJson<User>(gson.toJson(response.body()?.data), type)
+                                holder.tvUsername.text = userTemp.fullName
+                                username = userTemp.userName
+                                if (userTemp.avatar != null) {
+                                    imageUrl = ApiConstant.URL_IMAGE + userTemp.avatar
+                                    Glide.with(context).load(imageUrl).into(holder.ivAvatarRecent)
+                                }
                             }
-                        }
-                    })
-                    break
+                        })
+                        break
+                    }
+                }
+                for (item in itemObject.members) {
+                    if (item == myUser.userId) {
+                        continue
+                    } else {
+                        val call =
+                            UserRepository().getUserOnlineStatus(RestClient().getToken(), item)
+                        call.enqueue(object : Callback<MyResponse> {
+                            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                                Log.e("CCCCC", t.toString())
+                            }
+
+                            override fun onResponse(
+                                call: Call<MyResponse>, response: Response<MyResponse>
+                            ) {
+                                val typeOnline = object : TypeToken<UserOnlineStatus>() {}.type
+                                val userTemp =
+                                    gson.fromJson<UserOnlineStatus>(
+                                        gson.toJson(response.body()?.data),
+                                        typeOnline
+                                    )
+                                status = userTemp.status
+                                lastTimeOnline = userTemp.lastTimeOnline
+                                if (userTemp.status == UserOnlineStatus.UserStatus.ONLINE.ordinal) {
+                                    holder.ivOnline.visibility = View.VISIBLE
+                                } else {
+                                    holder.ivOnline.visibility = View.GONE
+                                }
+                            }
+                        })
+                        break
+                    }
                 }
             }
+            // holder.tvUsername.text = itemObject.groupId
+            holder.flRecent.setOnClickListener(View.OnClickListener {
+                val intent: Intent = Intent(context, BoxChatActivity::class.java)
+                intent.putExtra("GroupId", itemObject.groupId)
+                intent.putExtra("avatar", imageUrl)
+                intent.putExtra("username", username)
+                intent.putExtra("status", status)
+                val longDate = lastTimeOnline?.time
+                intent.putExtra("lastTimeOnline", longDate)
+                val senderUin = itemObject.lastMessage.senderUin
+                if (senderUin != RestClient().getUserId()) {
+                    if (itemObject.lastMessage.status != Message.Status.SEEN.ordinal) {
+                        intent.putExtra("lastmessage", itemObject.lastMessage.messageId)
+                    }
+                }
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                context.startActivity(intent)
+            })
         }
-        // holder.tvUsername.text = itemObject.groupId
-        holder.flRecent.setOnClickListener(View.OnClickListener {
-            val intent: Intent = Intent(context, BoxChatActivity::class.java)
-            intent.putExtra("GroupId", itemObject.groupId)
-            intent.putExtra("avatar", imageUrl)
-            intent.putExtra("username", username)
-            intent.putExtra("status",status)
-            val longDate = lastTimeOnline?.time
-            intent.putExtra("lastTimeOnline", longDate)
-            val senderUin = itemObject.lastMessage.senderUin
-            if (senderUin != RestClient().getUserId()) {
-                if (itemObject.lastMessage.status != Message.Status.SEEN.ordinal) {
-                    intent.putExtra("lastmessage", itemObject.lastMessage.messageId)
-                }
-            }
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        })
     }
 
     @SuppressLint("NotifyDataSetChanged")
