@@ -6,15 +6,20 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.data.api.ApiConstant
@@ -54,8 +59,12 @@ class ProfileActivity : AppCompatActivity() {
         const val MY_IMAGES = "imgFile"
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        hideSystemUI()
+
         setContentView(R.layout.activity_profile)
         context = applicationContext
         appStorage = AppStorage.getInstance(context)
@@ -63,6 +72,21 @@ class ProfileActivity : AppCompatActivity() {
 
         init()
         setUserData()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun hideSystemUI() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+//        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+        WindowInsetsControllerCompat(window,
+            window.decorView.findViewById(android.R.id.content)).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.navigationBars())
+
+            // When the screen is swiped up at the bottom
+            // of the application, the navigationBar shall
+            // appear for some time
+            controller.systemBarsBehavior = WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     private fun setUserData() {

@@ -51,6 +51,7 @@
         android:paddingStart="10dp"
         android:background="@drawable/bg_frame_input"
         android:elevation="10dp"
+        android:layout_margin="5dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -107,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:fontFamily="@font/roboto_black"
+                    android:fontFamily="@font/roboto"
                     android:letterSpacing="0.02"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
@@ -122,7 +123,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
-                    android:fontFamily="@font/roboto"
+                    android:fontFamily="@font/roboto_light"
                     android:letterSpacing="0.02"
                     android:paddingTop="0dp"
                     android:paddingBottom="0dp"
@@ -169,9 +170,10 @@
         android:layout_height="wrap_content"
         android:overScrollMode="never"
         android:scrollbars="vertical"
+        android:layout_marginTop="30dp"
         app:layout_constraintBottom_toTopOf="@id/llBottom"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent" />
+        app:layout_constraintRight_toRightOf="parent"/>
 
     <LinearLayout
         android:id="@+id/llBottom"
@@ -179,6 +181,8 @@
         android:layout_height="wrap_content"
         android:elevation="0dp"
         android:orientation="horizontal"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent">
@@ -191,8 +195,8 @@
 
             <ImageButton
                 android:id="@+id/ibImage"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:contentDescription="@string/choose_image"
@@ -206,8 +210,8 @@
 
             <ImageButton
                 android:id="@+id/ibExpand"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:elevation="5dp"
@@ -222,8 +226,8 @@
 
             <ImageButton
                 android:id="@+id/ibMic"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:contentDescription="@string/record"
@@ -247,19 +251,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/bg_frame_input"
-                android:fontFamily="@font/roboto_medium"
+                android:fontFamily="@font/roboto"
                 android:hint="@string/hint_input_message_here"
                 android:imeOptions="actionSend"
                 android:importantForAutofill="no"
                 android:inputType="text|textMultiLine"
                 android:paddingStart="20dp"
-                android:paddingTop="15dp"
+                android:paddingTop="10dp"
                 android:paddingEnd="20dp"
-                android:paddingBottom="15dp"
+                android:paddingBottom="10dp"
                 android:textColor="@color/Black"
                 android:textColorHint="@color/Outline"
                 android:textSize="14sp"
-                android:layout_marginEnd="55dp"
+                android:layout_marginEnd="40dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintHorizontal_bias="1"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -267,14 +271,14 @@
                 app:layout_constraintTop_toTopOf="parent"
                 android:lineSpacingExtra="5dp"
                 android:maxLines="4"
-                tools:ignore="TextContrastCheck,VisualLintTextFieldSize" />
+                tools:ignore="TextContrastCheck,VisualLintTextFieldSize"
+                android:cursorVisible="true"
+                />
 
             <ImageButton
                 android:id="@+id/ibSendMessage"
-                android:layout_width="50dp"
-                android:layout_height="50dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
                 android:adjustViewBounds="true"
                 android:background="@color/transparent"
                 android:contentDescription="@string/send_message"

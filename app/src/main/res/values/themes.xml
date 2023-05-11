@@ -1,18 +1,14 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Aechatsdk" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/transparent</item>
         <item name="colorPrimaryVariant">@color/transparent</item>
         <item name="colorOnPrimary">@color/transparent</item>
-        <item name="android:navigationBarColor">
-            @android:color/transparent
-        </item>
+        <item name="android:navigationBarColor">@color/transparent</item>
 
         <!-- Optional: set to transparent if your app is drawing behind the status bar. -->
-        <item name="android:statusBarColor">
-            @android:color/transparent
-        </item>
+        <item name="android:statusBarColor">@color/transparent</item>
 
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/transparent</item>

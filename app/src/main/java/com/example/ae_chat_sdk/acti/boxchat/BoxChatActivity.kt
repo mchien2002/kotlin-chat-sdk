@@ -11,6 +11,9 @@ import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -24,7 +27,6 @@ import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 import de.hdodenhof.circleimageview.CircleImageView
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -69,8 +71,12 @@ class BoxChatActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        hideSystemUI()
+
         setContentView(R.layout.activity_box_chat)
         context = applicationContext
 
@@ -88,10 +94,30 @@ class BoxChatActivity : AppCompatActivity() {
         showMessage()
 
 
-//        etInputMessage.requestFocus()
+        etInputMessage.requestFocus()
         // Hiện bàn phím mềm nhưng éo được
 //        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 //        imm.showSoftInput(etInputMessage, InputMethodManager.SHOW_IMPLICIT)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun hideSystemUI() {
+//        WindowCompat.setDecorFitsSystemWindows(window, false)
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        WindowInsetsControllerCompat(
+            window,
+            window.decorView.findViewById(android.R.id.content)
+        ).let { controller ->
+            controller.hide(
+                WindowInsetsCompat.Type.navigationBars()
+            )
+
+            // When the screen is swiped up at the bottom
+            // of the application, the navigationBar shall
+            // appear for some time
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     private fun init() {

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
-    android:paddingTop="100dp"
+    android:paddingTop="130dp"
     android:visibility="visible"
     app:behavior_hideable="false"
     app:behavior_peekHeight="0dp"
@@ -85,9 +85,11 @@
                         app:errorEnabled="false"
                         app:hintTextColor="@color/Primary40"
                         app:placeholderText="@string/placeholder_email"
-                        app:placeholderTextColor="@color/Primary10">
+                        app:placeholderTextColor="@color/Primary10"
+                        >
 
                         <EditText
+                            android:fontFamily="@font/roboto"
                             android:id="@+id/etEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -101,7 +103,7 @@
                     <Button
                         android:id="@+id/bSendEmail"
                         android:layout_width="wrap_content"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_margin="10dp"
                         android:backgroundTint="@color/Primary40"
@@ -325,7 +327,7 @@
                         </LinearLayout>
 
                         <TextView
-                            android:id="@+id/txtCountdown"
+                            android:id="@+id/tvCountdown"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/llTextInputOTP"
@@ -340,7 +342,7 @@
                             android:id="@+id/llOTPRequest"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_below="@id/txtCountdown"
+                            android:layout_below="@id/tvCountdown"
                             android:layout_centerHorizontal="true">
 
                             <TextView
@@ -372,7 +374,7 @@
                     <Button
                         android:id="@+id/bInputEmailAgain"
                         android:layout_width="wrap_content"
-                        android:layout_height="48dp"
+                        android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="250dp"
                         android:backgroundTint="@color/Secondary40"

@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -12,10 +13,13 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
 import android.widget.CompoundButton.OnCheckedChangeListener
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,7 +39,6 @@ import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.button.MaterialButton
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import de.hdodenhof.circleimageview.CircleImageView
@@ -56,7 +59,6 @@ class HomeActivity : AppCompatActivity() {
     // RecyclerView Message Home
     lateinit var rvOnstream: RecyclerView
     lateinit var rvRecent: RecyclerView
-    lateinit var rvListContact: RecyclerView
 
     lateinit var btnLogOut: Button
     lateinit var swState: SwitchCompat
@@ -80,19 +82,25 @@ class HomeActivity : AppCompatActivity() {
 
     lateinit var progressBar: ProgressBar
 
-    var listContact: Boolean = false
+
     var draggingUp: Boolean = false
+
+//    appStorage.saveData("User", gson.toJson(response.body()?.data))
 
     companion object {
         lateinit var recentAdapter: RecentAdapter
         lateinit var webSocket: WebSocket
     }
 
+    @RequiresApi(Build.VERSION_CODES.R)
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
+        // A function to hide NavigationBar
+        hideSystemUI()
+
         setContentView(R.layout.activity_home)
+
         context = applicationContext
 
         BlurUtils.setBlur(
@@ -104,11 +112,41 @@ class HomeActivity : AppCompatActivity() {
 
         connectSocket()
         init()
+        checkStatus()
         setButtonOnClickListener()
         searchUser("")
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
         setUserData()
+    }
+
+    private fun checkStatus() {
+        val appStorage = AppStorage.getInstance(context)
+        appStorage.saveData("swState", swState.isChecked.toString())
+        val state: Boolean = appStorage.getSWStatus()
+        if (state) {
+            rLayoutOnStream.visibility = View.VISIBLE
+        } else {
+            rLayoutOnStream.visibility = View.GONE
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun hideSystemUI() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        WindowInsetsControllerCompat(
+            window,
+            window.decorView.findViewById(android.R.id.content)
+        ).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.navigationBars())
+
+            // When the screen is swiped up at the bottom
+            // of the application, the navigationBar shall
+            // appear for some time
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     private fun connectSocket() {
@@ -158,11 +196,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setButtonOnClickListener() {
-        // Open list Contact
-        findViewById<MaterialButton>(R.id.mbListContact).setOnClickListener(View.OnClickListener {
-            listContact = true
-            bottomSheetHomeBehavior.state = BottomSheetBehavior.STATE_EXPANDED
-        })
 
         // Open Profile
         avatarUser.setOnClickListener(View.OnClickListener {
@@ -185,11 +218,7 @@ class HomeActivity : AppCompatActivity() {
 
         // Update state
         swState.setOnCheckedChangeListener(OnCheckedChangeListener { compoundButton, b ->
-            if (swState.isChecked) {
-                rLayoutOnStream.visibility = View.VISIBLE
-            } else {
-                rLayoutOnStream.visibility = View.GONE
-            }
+            checkStatus()
         })
     }
 
@@ -200,7 +229,6 @@ class HomeActivity : AppCompatActivity() {
         rLayoutOnStream = findViewById(R.id.rlOnstream)
         rvOnstream = findViewById(R.id.rvHorizonalOnstream)
         rvRecent = findViewById(R.id.rvVerticalRecent)
-        rvListContact = findViewById(R.id.rvHorizonalContact)
 
         bottomSheetHomeBehavior = BottomSheetBehavior.from(ctLayoutBottomSheetHome)
 
@@ -220,7 +248,10 @@ class HomeActivity : AppCompatActivity() {
         tvPagename = findViewById(R.id.tvPageName)
 
         btnLogOut = findViewById(R.id.mbLogOut)
+
+        val appStorage = AppStorage.getInstance(context)
         swState = findViewById(R.id.switchStatus)
+        swState.isChecked = appStorage.getSWStatus()
 
         progressBar = findViewById(R.id.progressBar)
     }
@@ -235,20 +266,21 @@ class HomeActivity : AppCompatActivity() {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         draggingUp = false
-                        if (listContact) {
-                            listContact = false
-                            tvPagename.setTextColor(Color.parseColor("#FF400012"))
-                            tvPagename.text = "Danh sách liên hệ"
-                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.GONE
-                            findViewById<RelativeLayout>(R.id.rlListContact).visibility =
-                                View.VISIBLE
-                        }
-                        if(tvPagename.alpha==0F){
-                            tvPagename.animate().alpha(1F).setDuration(500).setListener(null)
-                        }
-
+//                        if (listContact) {
+//                            listContact = false
+//                            tvPagename.setTextColor(Color.parseColor("#FF400012"))
+//                            tvPagename.text = "Danh sách liên hệ"
+//                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.GONE
+//                            findViewById<RelativeLayout>(R.id.rlListContact).visibility =
+//                                View.VISIBLE
+//                        }
+//                        if(tvPagename.alpha==0F){
+//                            tvPagename.animate().alpha(1F).setDuration(500).setListener(null)
+//                        }
+                        tvPagename.animate().alpha(1F).setDuration(500).setListener(null)
                         rLayoutOption.visibility = View.GONE
                         rLayoutMessageHome.visibility = View.VISIBLE
+//                        bottomSheetHomeBehavior.isDraggable = true
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         draggingUp = true
@@ -257,17 +289,16 @@ class HomeActivity : AppCompatActivity() {
 //                            tvPagename.visibility = View.GONE
 //
 //                        }, 100)
-                        if(tvPagename.alpha==1F){
+                        if (tvPagename.alpha == 1F) {
                             tvPagename.animate().alpha(0F).setDuration(500).setListener(null)
                         }
 
+                        tvPagename.setTextColor(Color.parseColor("#FFB0294B"))
+                        tvPagename.text = "Username"
+                        findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+//                        bottomSheetHomeBehavior.isDraggable = false
 
-                        if (!listContact) {
-                            tvPagename.setTextColor(Color.parseColor("#FFB0294B"))
-                            tvPagename.text = "Username"
-                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
-                            findViewById<RelativeLayout>(R.id.rlListContact).visibility = View.GONE
-                        }
+
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         tvPagename.visibility = View.VISIBLE
@@ -304,11 +335,10 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun setUserData() {
-        val appStorage = AppStorage.getInstance(context)
         val myUser: User = AppStorage.getInstance(context).getUserLocal()
         tvUserName.text = myUser.userName.toString()
         tvEmail.text = myUser.email.toString()
-
+        val appStorage = AppStorage.getInstance(context)
         val imgLocal = appStorage?.getData("avatar", "").toString()
         if (imgLocal.length > 1) {
             Glide.with(this).load(imgLocal).into(avatarUser)

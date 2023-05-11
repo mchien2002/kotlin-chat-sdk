@@ -5,13 +5,12 @@
     android:id="@+id/ctBottomSheetHome"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingTop="15dp"
+    android:paddingTop="50dp"
     android:background="@color/transparent"
     android:nestedScrollingEnabled="true"
     app:behavior_hideable="false"
-    app:behavior_peekHeight="60dp"
+    app:behavior_peekHeight="110dp"
     app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior">
-
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -49,7 +48,7 @@
 
         <ImageView
             android:id="@+id/ivButtonDown"
-            android:layout_width="65dp"
+            android:layout_width="100dp"
             android:layout_height="8dp"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
@@ -98,7 +97,7 @@
                     android:background="@drawable/bg_frame_recent"
                     android:backgroundTint="#4D847374"
                     android:drawableEnd="@drawable/ic_search"
-                    android:fontFamily="@font/roboto_medium"
+                    android:fontFamily="@font/roboto"
                     android:hint="@string/Search"
                     android:inputType="text"
                     android:padding="10dp"
@@ -121,12 +120,12 @@
                     android:id="@+id/rlOnstream"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="5dp">
+                    android:paddingBottom="10dp">
 
                     <ImageView
                         android:id="@+id/ivOnstream"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="100dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="15dp"
                         android:background="@drawable/label_onstream"
                         tools:ignore="ContentDescription" />
@@ -149,13 +148,12 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
-                    android:layout_below="@id/rlOnstream"
-                    android:paddingTop="10dp">
+                    android:layout_below="@id/rlOnstream">
 
                     <ImageView
                         android:id="@+id/ivRecent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="80dp"
+                        android:layout_height="20dp"
                         android:layout_marginStart="15dp"
                         android:background="@drawable/label_recent"
                         tools:ignore="ContentDescription" />
@@ -173,14 +171,15 @@
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
                             android:nestedScrollingEnabled="true"
-                            android:orientation="vertical" />
+                            android:orientation="vertical"
+                            android:paddingBottom="50dp"/>
                     </RelativeLayout>
 
                 </RelativeLayout>
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rlListContact"
+                android:id="@+id/rlListSearch"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rlSearch"
@@ -190,7 +189,7 @@
                 android:visibility="gone">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rvHorizonalContact"
+                    android:id="@+id/rvHorizonalSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal" />
