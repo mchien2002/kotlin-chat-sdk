@@ -104,6 +104,8 @@ class MessageAdapter(val context: Context, val groupId: String) :
                     val gson = Gson()
                     val img = gson.fromJson(gson.toJson(data.attachment), Image::class.java)
                     Glide.with(context).load(ApiConstant.URL_IMAGE + img.url)
+                        .placeholder(R.drawable.image_default)
+                        .error(R.drawable.image_default)
                         .apply(RequestOptions().override(600, 800))
                         .into(binding.ivImageMessageSender)
                 }
@@ -126,6 +128,8 @@ class MessageAdapter(val context: Context, val groupId: String) :
                     val gson = Gson()
                     val img = gson.fromJson(gson.toJson(data.attachment), Image::class.java)
                     Glide.with(context).load(ApiConstant.URL_IMAGE + img.url)
+                        .placeholder(R.drawable.image_default)
+                        .error(R.drawable.image_default)
                         .apply(RequestOptions().override(600, 800))
                         .into(binding.ivImageMessageReceiver)
                 }
@@ -134,8 +138,6 @@ class MessageAdapter(val context: Context, val groupId: String) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-
-        Log.d("cccccc", viewType.toString())
         return if (viewType == TypeView.FIRST_MESSAGE.ordinal) {
             val view = LayoutFrameMessageBeginBinding.inflate(
                 LayoutInflater.from(parent.context),

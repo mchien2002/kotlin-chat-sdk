@@ -203,6 +203,7 @@ class HomeActivity : AppCompatActivity() {
         bottomSheetHomeBehavior = BottomSheetBehavior.from(ctLayoutBottomSheetHome)
 
         etSearch = findViewById(R.id.etInputSearch)
+        etSearch.clearFocus()
 
         etSearch.addTextChangedListener {
             it?.let { string ->

@@ -157,7 +157,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setButtonOnClickListener() {
         // Email
         btnSendEmail.setOnClickListener(View.OnClickListener {
-
+            resetOTP()
             hideKeyboard()
 
             progressBar.visibility = View.VISIBLE
@@ -262,9 +262,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun verifyOTP() {
-        hideKeyboard()
         progressBar.visibility = View.VISIBLE
-        resetOTP()
         val call = RegisterRepository().verifyOTP(email, OTP)
         call.enqueue(object : Callback<MyResponse> {
             override fun onFailure(call: Call<MyResponse>, t: Throwable) {
@@ -289,11 +287,14 @@ class LoginActivity : AppCompatActivity() {
                     Handler(Looper.getMainLooper()).postDelayed({
                         setStartHomeActivity()
                     }, 1000)
+                    hideKeyboard()
                     progressBar.visibility = View.GONE
+//                    resetOTP()
                 }
 
             }
         })
+
     }
 
     private fun setTextChangeListener(

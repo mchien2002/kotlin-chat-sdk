@@ -24,7 +24,6 @@ import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 import de.hdodenhof.circleimageview.CircleImageView
-import okio.ByteString
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -40,7 +39,8 @@ class BoxChatActivity : AppCompatActivity() {
     var isBottom : Boolean = false
 
     lateinit var btnBack: ImageButton
-//    lateinit var btnNotification: ImageButton
+
+    //    lateinit var btnNotification: ImageButton
     lateinit var btnSendMessage: ImageButton
     lateinit var ibImage: ImageButton
     lateinit var ibMic: ImageButton
@@ -49,14 +49,16 @@ class BoxChatActivity : AppCompatActivity() {
     lateinit var tvUsername: TextView
     lateinit var etInputMessage: EditText
 
-    lateinit var tvActiveStatus : TextView
-    lateinit var ivOnline:ImageView
+    lateinit var tvActiveStatus: TextView
+    lateinit var ivOnline: ImageView
 
     lateinit var groupId: String
     lateinit var messageId: String
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_IMAGE_PICK = 2
     private var IMAGE_PATH = ""
+
+    lateinit var progressBar: ProgressBar
 
 
     private val webSocketListener: WebSocketListener = WebSocketListener()
@@ -82,18 +84,9 @@ class BoxChatActivity : AppCompatActivity() {
         if (messageId != null) {
             webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
         }
-        messageAdapter = MessageAdapter(context, groupId)
-        val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
-        rvMessage.layoutManager =linearLayoutManager
-            rvMessage.adapter = messageAdapter
-        messageAdapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
-            override fun onChanged() {
-                if (!isBottom) {
-                    rvMessage.scrollToPosition(messageAdapter!!.itemCount - 1)
-                    isBottom = true
-                }
-            }
-        })
+        showMessage()
+
+
 //        etInputMessage.requestFocus()
         // Hiện bàn phím mềm nhưng éo được
 //        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -113,15 +106,31 @@ class BoxChatActivity : AppCompatActivity() {
         tvUsername = findViewById(R.id.tvUsername)
         etInputMessage = findViewById(R.id.etInputMessage)
         ivOnline = findViewById(R.id.ivOnline)
+        progressBar = findViewById(R.id.progressBar)
         setOnClickListener()
         setOnFocusChangeListener()
         addTextChangedListener()
     }
 
+    private fun showMessage() {
+        messageAdapter = MessageAdapter(context, groupId)
+        val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+        rvMessage.layoutManager = linearLayoutManager
+        rvMessage.adapter = messageAdapter
+        messageAdapter!!.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+            override fun onChanged() {
+                if (!isBottom) {
+                    rvMessage.scrollToPosition(messageAdapter!!.itemCount - 1)
+                    isBottom = true
+                }
+            }
+        })
+    }
+
     private fun addTextChangedListener() {
         etInputMessage.addTextChangedListener {
-            it?.let { string->
-                if(string.toString().trim()!=""){
+            it?.let { string ->
+                if (string.toString().trim() != "") {
                     showOptions(false)
                 }
             }
@@ -158,7 +167,7 @@ class BoxChatActivity : AppCompatActivity() {
         val dateValue = Date(lastTimeOnline)
         Log.e("TIMEON", dateValue.toString())
         if (status == 2) {
-            Toast.makeText(context, "Mất kết nối!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Mất kết nối! Dong 70 trong box chat", Toast.LENGTH_SHORT).show()
         } else {
             if (status == UserOnlineStatus.UserStatus.ONLINE.ordinal) {
                 tvActiveStatus.text = "Đang hoạt động"

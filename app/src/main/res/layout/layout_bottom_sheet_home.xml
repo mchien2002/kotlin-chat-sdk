@@ -90,6 +90,7 @@
                 android:layout_margin="20dp">
 
                 <EditText
+                    android:focusable="auto"
                     android:id="@+id/etInputSearch"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -106,7 +107,7 @@
                     android:textColorHint="@color/Outline"
                     android:textSize="14sp"
                     tools:ignore="RtlSymmetry,TouchTargetSizeCheck,VisualLintTextFieldSize"
-                    android:autofillHints="username" />
+                    android:autofillHints="username"/>
             </RelativeLayout>
 
             <RelativeLayout
