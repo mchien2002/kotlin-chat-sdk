@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
@@ -202,6 +203,7 @@ class HomeActivity : AppCompatActivity() {
             val intent = Intent(context, ProfileActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
+            finish()
         })
 
         // Log out
@@ -336,15 +338,16 @@ class HomeActivity : AppCompatActivity() {
 
     private fun setUserData() {
         val myUser: User = AppStorage.getInstance(context).getUserLocal()
+        Log.d("CCCCCCCCCCCCC", myUser.toString())
         tvUserName.text = myUser.userName.toString()
         tvEmail.text = myUser.email.toString()
         val appStorage = AppStorage.getInstance(context)
         val imgLocal = appStorage?.getData("avatar", "").toString()
         if (imgLocal.length > 1) {
-            Glide.with(this).load(imgLocal).into(avatarUser)
+            Glide.with(this).load(imgLocal).placeholder(R.drawable.avatardefault).into(avatarUser)
         } else if (myUser.avatar != null) {
             val imageUrl = ApiConstant.URL_IMAGE + myUser.avatar
-            Glide.with(this).load(imageUrl).into(avatarUser)
+            Glide.with(this).load(imageUrl).placeholder(R.drawable.avatardefault).into(avatarUser)
         }
     }
 

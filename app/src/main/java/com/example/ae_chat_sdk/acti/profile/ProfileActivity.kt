@@ -22,6 +22,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
+import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
@@ -30,6 +32,8 @@ import com.example.ae_chat_sdk.data.model.RealPathUtil
 import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -37,6 +41,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
+
 
 class ProfileActivity : AppCompatActivity() {
 
@@ -74,12 +79,20 @@ class ProfileActivity : AppCompatActivity() {
         setUserData()
     }
 
+    private fun setStartHomeActivity() {
+        val intent = Intent(context, HomeActivity::class.java)
+        this.startActivity(intent)
+        finish()
+    }
+
     @RequiresApi(Build.VERSION_CODES.R)
     private fun hideSystemUI() {
         WindowCompat.setDecorFitsSystemWindows(window, false)
 //        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
-        WindowInsetsControllerCompat(window,
-            window.decorView.findViewById(android.R.id.content)).let { controller ->
+        WindowInsetsControllerCompat(
+            window,
+            window.decorView.findViewById(android.R.id.content)
+        ).let { controller ->
             controller.hide(WindowInsetsCompat.Type.navigationBars())
 
             // When the screen is swiped up at the bottom
@@ -116,19 +129,60 @@ class ProfileActivity : AppCompatActivity() {
 
     private fun setButtonOnClickListener() {
         findViewById<ImageButton>(R.id.ibBack).setOnClickListener(View.OnClickListener {
-            if (etInputEmail.text.toString().trim() != myUser.email.toString().trim() || etInputUsername.text.toString().trim() != myUser.userName.toString().trim()) {
+            if (etInputEmail.text.toString().trim() != myUser.email.toString().trim()
+                || etInputUsername.text.toString().trim() != myUser.userName.toString().trim()) {
                 val alertDialogBuilder = AlertDialog.Builder(this)
                 alertDialogBuilder.setTitle("Bạn có muốn lưu thay đổi không?")
                 alertDialogBuilder.setMessage("Vui lòng kiểm tra lại thông tin trước khi lưu!")
                 alertDialogBuilder.setPositiveButton("Lưu") { _, _ ->
                     // Save
+                    val token2 = RestClient().getToken()
+                    val appStorage = AppStorage.getInstance(context!!)
+                    appStorage.saveData("avatar", IMAGE_PATH)
+                    val user: User = User(
+                        myUser.avatar,
+                        myUser.createdAt,
+                        myUser.email,
+                        myUser.fullName,
+                        myUser.localName,
+                        myUser.phone,
+                        myUser.token,
+                        myUser.userId,
+                        etInputUsername.text.toString().trim()
+                    )
+                    val call = UserRepository().updateUser(
+                        token2, user
+                    )
+                    call.enqueue(object : Callback<MyResponse> {
+                        override fun onResponse(
+                            call: Call<MyResponse>?,
+                            response: Response<MyResponse>?
+                        ) {
+                            val gson = Gson()
+                            appStorage.saveData("User", gson.toJson(user))
+                            Toast.makeText(
+                                applicationContext,
+                                "Cập nhật thành công",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+
+                        override fun onFailure(call: Call<MyResponse>?, t: Throwable?) {
+                            Toast.makeText(
+                                applicationContext, "Cập nhật không thành công", Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    })
+                    setStartHomeActivity()
                     finish()
                 }
                 alertDialogBuilder.setNegativeButton("Thoát") { _, _ ->
+                    setStartHomeActivity()
                     finish()
                 }
                 alertDialogBuilder.show()
             } else {
+                setStartHomeActivity()
                 finish()
             }
         })
@@ -222,12 +276,25 @@ class ProfileActivity : AppCompatActivity() {
         )
         call.enqueue(object : Callback<MyResponse> {
             override fun onResponse(call: Call<MyResponse>?, response: Response<MyResponse>?) {
+                val user: User = User(
+                    IMAGE_PATH,
+                    myUser.createdAt,
+                    myUser.email,
+                    myUser.fullName,
+                    myUser.localName,
+                    myUser.phone,
+                    myUser.token,
+                    myUser.userId,
+                    myUser.userName
+                )
+                val gson = Gson()
+                appStorage.saveData("User", gson.toJson(user))
                 setLocalAvatar()
             }
 
             override fun onFailure(call: Call<MyResponse>?, t: Throwable?) {
                 Toast.makeText(
-                    applicationContext, "this is toast message 2", Toast.LENGTH_SHORT
+                    applicationContext, "Cập nhật ảnh thất bại!", Toast.LENGTH_SHORT
                 ).show()
             }
         })

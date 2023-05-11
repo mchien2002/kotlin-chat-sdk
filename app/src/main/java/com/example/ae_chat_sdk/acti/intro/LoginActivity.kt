@@ -150,6 +150,7 @@ class LoginActivity : AppCompatActivity() {
     private fun setStartHomeActivity() {
         val intent = Intent(this, HomeActivity::class.java)
         this.startActivity(intent)
+        timer.cancel()
         finish()
     }
 
