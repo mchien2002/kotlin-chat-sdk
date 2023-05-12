@@ -25,6 +25,7 @@ import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
@@ -342,13 +343,13 @@ class HomeActivity : AppCompatActivity() {
         tvUserName.text = myUser.userName.toString()
         tvEmail.text = myUser.email.toString()
         val appStorage = AppStorage.getInstance(context)
-        val imgLocal = appStorage?.getData("avatar", "").toString()
-        if (imgLocal.length > 1) {
-            Glide.with(this).load(imgLocal).placeholder(R.drawable.avatardefault).into(avatarUser)
-        } else if (myUser.avatar != null) {
-            val imageUrl = ApiConstant.URL_IMAGE + myUser.avatar
-            Glide.with(this).load(imageUrl).placeholder(R.drawable.avatardefault).into(avatarUser)
-        }
+//        val imgLocal = appStorage?.getData("avatar", "").toString()
+        val imageUrl = ApiConstant.URL_IMAGE + myUser.avatar
+        Glide.with(this).load(imageUrl).skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(R.drawable.avatardefault)
+            .error(R.drawable.avatardefault).into(avatarUser)
+
     }
 
     private fun renderDataRecyclerView() {

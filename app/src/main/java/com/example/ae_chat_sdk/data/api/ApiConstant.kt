@@ -2,8 +2,8 @@ package com.example.ae_chat_sdk.data.api
 
 class ApiConstant {
     companion object {
-        const val URL = "https://d03a-2001-ee0-4fc7-dce0-342e-fff5-29b4-c028.ngrok-free.app/api/v1/"
-        const val MEDIA = "https://d03a-2001-ee0-4fc7-dce0-342e-fff5-29b4-c028.ngrok-free.app/"
+        const val URL = "https://a2cb-42-117-135-8.ngrok-free.app/api/v1/"
+        const val MEDIA = "https://a2cb-42-117-135-8.ngrok-free.app/"
         const val URL_IMAGE = MEDIA + "image/"
         const val ACCOUNT_POST_EMAIL = "register-by-email"
         const val VERIFY_OTP = "verifyOTP-email"

@@ -289,6 +289,7 @@ class BoxChatActivity : AppCompatActivity() {
                     message.senderAvatar = myUser.avatar.toString()
                     message.senderName = myUser.userName
                     message.createdAt = Date()
+                    messageAdapter!!.addMessageSeeding(message)
                     // Send media message
                     WebSocketListener.sendMediaMessage(message, base64String)
                     inputStream.close()

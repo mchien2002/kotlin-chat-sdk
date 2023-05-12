@@ -150,7 +150,6 @@ class LoginActivity : AppCompatActivity() {
     private fun setStartHomeActivity() {
         val intent = Intent(this, HomeActivity::class.java)
         this.startActivity(intent)
-        timer.cancel()
         finish()
     }
 
@@ -358,6 +357,7 @@ class LoginActivity : AppCompatActivity() {
                     val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
                     val appStorage = AppStorage.getInstance(context)
                     appStorage.saveData("User", gson.toJson(response.body()?.data))
+                    appStorage.saveData("token", user.token)
                     Log.e("USERID5",user.userId)
                     Log.d(
                         "Success",
@@ -367,6 +367,7 @@ class LoginActivity : AppCompatActivity() {
                         setStartHomeActivity()
                     }, 1000)
                     hideKeyboard()
+                    timer.cancel()
                     progressBar.visibility = View.GONE
 //                    resetOTP()
                 }

@@ -67,5 +67,6 @@ dependencies {
     implementation 'com.eightbitlab:blurview:1.6.3'
     implementation 'com.eightbitlab:supportrenderscriptblur:1.0.2'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 
 }

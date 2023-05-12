@@ -21,8 +21,8 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
@@ -33,7 +33,6 @@ import com.example.ae_chat_sdk.data.model.User
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -108,14 +107,11 @@ class ProfileActivity : AppCompatActivity() {
         etInputEmail.setText(myUser.email.toString())
         etInputUsername.setText((myUser.userName.toString()))
 
-        val imgLocal = appStorage?.getData("avatar", "").toString()
-        if (imgLocal.length > 1) {
-            Glide.with(this).load(imgLocal).into(iViewAvatarUser)
-        } else if (myUser.avatar != null) {
-            val imageUrl = ApiConstant.URL_IMAGE + myUser.avatar
-            Log.d("link", imageUrl.toString())
-            Glide.with(this).load(imageUrl).into(iViewAvatarUser)
-        }
+        val imageUrl = ApiConstant.URL_IMAGE + myUser.avatar
+        Glide.with(context).load(imageUrl).skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(R.drawable.avatardefault)
+            .error(R.drawable.avatardefault).into(iViewAvatarUser)
     }
 
     private fun init() {
@@ -137,8 +133,7 @@ class ProfileActivity : AppCompatActivity() {
                 alertDialogBuilder.setPositiveButton("Lưu") { _, _ ->
                     // Save
                     val token2 = RestClient().getToken()
-                    val appStorage = AppStorage.getInstance(context!!)
-                    appStorage.saveData("avatar", IMAGE_PATH)
+                    myUser = AppStorage.getInstance(context).getUserLocal()
                     val user: User = User(
                         myUser.avatar,
                         myUser.createdAt,
@@ -146,7 +141,7 @@ class ProfileActivity : AppCompatActivity() {
                         myUser.fullName,
                         myUser.localName,
                         myUser.phone,
-                        myUser.token,
+                        token2,
                         myUser.userId,
                         etInputUsername.text.toString().trim()
                     )
@@ -159,31 +154,32 @@ class ProfileActivity : AppCompatActivity() {
                             response: Response<MyResponse>?
                         ) {
                             val gson = Gson()
-                            appStorage.saveData("User", gson.toJson(user))
+                            val appStorage = AppStorage.getInstance(context!!)
+                            if (response != null) {
+                                appStorage.saveData("User", gson.toJson(response.body()?.data))
+                            }
                             Toast.makeText(
                                 applicationContext,
                                 "Cập nhật thành công",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            setStartHomeActivity()
                         }
 
                         override fun onFailure(call: Call<MyResponse>?, t: Throwable?) {
                             Toast.makeText(
                                 applicationContext, "Cập nhật không thành công", Toast.LENGTH_SHORT
                             ).show()
+                            setStartHomeActivity()
                         }
                     })
-                    setStartHomeActivity()
-                    finish()
                 }
                 alertDialogBuilder.setNegativeButton("Thoát") { _, _ ->
                     setStartHomeActivity()
-                    finish()
                 }
                 alertDialogBuilder.show()
             } else {
                 setStartHomeActivity()
-                finish()
             }
         })
         findViewById<ImageButton>(R.id.ibChangeAvatar).setOnClickListener(View.OnClickListener {
@@ -276,19 +272,11 @@ class ProfileActivity : AppCompatActivity() {
         )
         call.enqueue(object : Callback<MyResponse> {
             override fun onResponse(call: Call<MyResponse>?, response: Response<MyResponse>?) {
-                val user: User = User(
-                    IMAGE_PATH,
-                    myUser.createdAt,
-                    myUser.email,
-                    myUser.fullName,
-                    myUser.localName,
-                    myUser.phone,
-                    myUser.token,
-                    myUser.userId,
-                    myUser.userName
-                )
+
                 val gson = Gson()
-                appStorage.saveData("User", gson.toJson(user))
+                if (response != null) {
+                    appStorage.saveData("User", gson.toJson(response.body()?.data))
+                }
                 setLocalAvatar()
             }
 
@@ -301,10 +289,10 @@ class ProfileActivity : AppCompatActivity() {
     }
 
     private fun setLocalAvatar() {
-        val imageUrl = IMAGE_PATH
-        Log.d("link", imageUrl.toString())
-        Glide.with(this).load(imageUrl).into(iViewAvatarUser)
-        val appStorage = AppStorage.getInstance(context!!)
-        appStorage.saveData("avatar", IMAGE_PATH)
+        val imageUrl = ApiConstant.URL_IMAGE + AppStorage.getInstance(context).getUserLocal().avatar
+        Glide.with(context).load(imageUrl).skipMemoryCache(true)
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .placeholder(R.drawable.avatardefault)
+            .error(R.drawable.avatardefault).into(iViewAvatarUser)
     }
 }
