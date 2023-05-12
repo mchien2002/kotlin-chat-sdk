@@ -20,7 +20,6 @@ import com.github.chrisbanes.photoview.PhotoView
 class PhotoActivity : AppCompatActivity() {
     lateinit var photoView: PhotoView
     lateinit var btnBack: ImageButton
-    lateinit var tvUsername: TextView
     lateinit var context: Context
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -56,14 +55,11 @@ class PhotoActivity : AppCompatActivity() {
 
     private fun init() {
         btnBack = findViewById(R.id.ibBack)
-        tvUsername = findViewById(R.id.tvUsername)
 
         photoView = findViewById(R.id.photo_view)
     }
 
     private fun setData() {
-        val appStorage = AppStorage.getInstance(context)
-        tvUsername.text = appStorage.getUserLocal().userName
 
         val url = intent.getStringExtra("imageUrl")
         Glide.with(applicationContext).load(url).skipMemoryCache(true)
