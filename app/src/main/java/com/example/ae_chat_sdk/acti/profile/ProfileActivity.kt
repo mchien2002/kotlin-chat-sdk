@@ -260,6 +260,7 @@ class ProfileActivity : AppCompatActivity() {
     fun ChangeAvatarUser() {
 
         val file = File(IMAGE_PATH)
+        Log.d("IMAGE_PATH", IMAGE_PATH)
         val requestFile: RequestBody =
             RequestBody.create("multipart/form-data".toMediaTypeOrNull(), file)
         val partbodyavatar = MultipartBody.Part.createFormData("imgFile", file.name, requestFile)

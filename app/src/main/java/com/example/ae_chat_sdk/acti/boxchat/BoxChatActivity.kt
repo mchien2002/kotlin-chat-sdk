@@ -1,6 +1,7 @@
 package com.example.ae_chat_sdk.acti.boxchat
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -9,7 +10,6 @@ import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -17,11 +17,13 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.content.PackageManagerCompat.LOG_TAG
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
@@ -37,6 +39,7 @@ import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
+import java.io.IOException
 import java.util.*
 
 @Suppress("DEPRECATION")
@@ -69,9 +72,10 @@ class BoxChatActivity : AppCompatActivity() {
     private var IMAGE_PATH = ""
 
     lateinit var progressBar: ProgressBar
+    var onMic = false
 
     private var output: String? = null
-    private lateinit var mediaRecorder: MediaRecorder
+    private var mediaRecorder: MediaRecorder? = null
     private var state: Boolean = false
     private var recordingStopped: Boolean = false
 
@@ -130,6 +134,7 @@ class BoxChatActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun init() {
         btnBack = findViewById(R.id.ibBack)
 //        btnNotification = findViewById(R.id.ibNotification)
@@ -222,6 +227,7 @@ class BoxChatActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setOnClickListener() {
         btnBack.setOnClickListener {
             messageAdapter = null
@@ -267,25 +273,20 @@ class BoxChatActivity : AppCompatActivity() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showBottomSheetAudioRecord() {
         val bottomSheet = BottomSheetDialog(this)
         val view = layoutInflater.inflate(R.layout.layout_bottom_sheet_audio_record, null)
         bottomSheet.setContentView(view)
 
-        val permissions = arrayOf(
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        )
-        ActivityCompat.requestPermissions(this, permissions, 0)
 
         if (ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.RECORD_AUDIO
+                this, Manifest.permission.RECORD_AUDIO
             ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
-                this,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                this, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             val permissions = arrayOf(
                 Manifest.permission.RECORD_AUDIO,
@@ -295,13 +296,7 @@ class BoxChatActivity : AppCompatActivity() {
             ActivityCompat.requestPermissions(this, permissions, 0)
         }
 
-        mediaRecorder = MediaRecorder()
-        output = Environment.getExternalStorageDirectory().absolutePath + "/recording.mp3"
 
-        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
-        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-        mediaRecorder.setOutputFile(output)
 
         bottomSheet.window?.decorView?.let {
             WindowInsetsControllerCompat(
@@ -319,54 +314,112 @@ class BoxChatActivity : AppCompatActivity() {
         val btnMic: ImageButton = view.findViewById(R.id.ibMicRecord)
         val btnDelete: ImageButton = view.findViewById(R.id.ibDelete)
         val btnSendAudio: ImageButton = view.findViewById(R.id.ibSend)
+        val lotMic: LottieAnimationView = view.findViewById(R.id.animation_view)
 
+
+        lotMic.setOnClickListener {
+            onMic = false
+            btnSendAudio.visibility = View.VISIBLE
+            btnMic.visibility = View.VISIBLE
+            lotMic.visibility = View.GONE
+            stopRecording()
+        }
         btnMic.setOnClickListener {
 
-                btnMic.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.bg_button_mic_focus
-                    )
+            onMic = true
+            lotMic.visibility = View.VISIBLE
+            btnMic.visibility = View.GONE
+            btnDelete.visibility = View.VISIBLE
+            btnSendAudio.visibility = View.GONE
+
+            if (ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.RECORD_AUDIO
+                ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                    this, Manifest.permission.READ_EXTERNAL_STORAGE
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                val permissions = arrayOf(
+                    Manifest.permission.RECORD_AUDIO,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
                 )
-                btnMic.isClickable = false
-                btnMic.clearFocus()
-                btnDelete.visibility = View.VISIBLE
-                btnSendAudio.visibility = View.VISIBLE
-                startRecording()
+                ActivityCompat.requestPermissions(this, permissions, 0)
+            }
+
+            startRecording()
+
 
         }
 
         btnSendAudio.setOnClickListener {
-            stopRecording()
+            val file = File(output)
+            val inputStream = FileInputStream(file)
+            val fileSize = file.length().toInt()
+            val byteArray = ByteArray(fileSize)
+            inputStream.read(byteArray)
+            val base64String = Base64.getEncoder().encodeToString(byteArray)
+            val myUser: User = AppStorage.getInstance(context).getUserLocal()
+            val message = Message()
+            message.type = Message.Type.AUDIO.ordinal
+            message.groupType = Message.GroupType.PUBLIC.ordinal
+            message.message = ""
+            message.groupId = groupId
+            message.status = Message.Status.SENDING.ordinal
+            message.senderUin = myUser.userId
+            message.senderAvatar = myUser.avatar.toString()
+            message.senderName = myUser.userName
+            message.createdAt = Date()
+            // Send media message
+            WebSocketListener.sendMediaMessage(message, base64String)
+            inputStream.close()
+            bottomSheet.hide()
         }
 
         btnDelete.setOnClickListener {
-            stopRecording()
+            if (onMic) {
+                stopRecording()
+            }
+            output = null
+            btnDelete.visibility = View.GONE
+            btnSendAudio.visibility = View.GONE
+            btnMic.visibility = View.VISIBLE
+            lotMic.visibility = View.GONE
+
+            onMic = false
         }
 
         bottomSheet.show()
     }
 
+    @SuppressLint("RestrictedApi")
     private fun startRecording() {
-//        try {
-        mediaRecorder.prepare()
-        mediaRecorder.start()
+        output = "${externalCacheDir?.absolutePath}" + "/recording.mp3"
+        mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            MediaRecorder(applicationContext)
+        } else {
+            MediaRecorder()
+        }.apply {
+            setAudioSource(MediaRecorder.AudioSource.MIC)
+            setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+            setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+            setOutputFile(output)
+            try {
+                prepare()
+            } catch (e: IOException) {
+                Log.e(LOG_TAG, "prepare() failed")
+            }
+            start()
+        }
         state = true
-        Toast.makeText(this, "Recording started!", Toast.LENGTH_SHORT).show()
-//        } catch (e: IllegalStateException) {
-//            e.printStackTrace()
-//        } catch (e: IOException) {
-//            e.printStackTrace()
-//        }
     }
 
     private fun stopRecording() {
         if (state) {
-            mediaRecorder.stop()
-            mediaRecorder.release()
+            mediaRecorder?.stop()
+            mediaRecorder?.release()
             state = false
-        } else {
-            Toast.makeText(this, "You are not recording right now!", Toast.LENGTH_SHORT).show()
         }
     }
 
