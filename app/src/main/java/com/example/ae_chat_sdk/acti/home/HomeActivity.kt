@@ -269,39 +269,17 @@ class HomeActivity : AppCompatActivity() {
                 when (newState) {
                     BottomSheetBehavior.STATE_EXPANDED -> {
                         draggingUp = false
-//                        if (listContact) {
-//                            listContact = false
-//                            tvPagename.setTextColor(Color.parseColor("#FF400012"))
-//                            tvPagename.text = "Danh sách liên hệ"
-//                            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.GONE
-//                            findViewById<RelativeLayout>(R.id.rlListContact).visibility =
-//                                View.VISIBLE
-//                        }
-//                        if(tvPagename.alpha==0F){
-//                            tvPagename.animate().alpha(1F).setDuration(500).setListener(null)
-//                        }
                         tvPagename.animate().alpha(1F).setDuration(500).setListener(null)
                         rLayoutOption.visibility = View.GONE
                         rLayoutMessageHome.visibility = View.VISIBLE
-//                        bottomSheetHomeBehavior.isDraggable = true
                     }
                     BottomSheetBehavior.STATE_COLLAPSED -> {
                         draggingUp = true
                         rLayoutMessageHome.visibility = View.GONE
-//                        Handler(Looper.getMainLooper()).postDelayed({
-//                            tvPagename.visibility = View.GONE
-//
-//                        }, 100)
                         if (tvPagename.alpha == 1F) {
                             tvPagename.animate().alpha(0F).setDuration(500).setListener(null)
                         }
-
-                        tvPagename.setTextColor(Color.parseColor("#FFB0294B"))
-                        tvPagename.text = "Username"
                         findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
-//                        bottomSheetHomeBehavior.isDraggable = false
-
-
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         tvPagename.visibility = View.VISIBLE
@@ -340,6 +318,7 @@ class HomeActivity : AppCompatActivity() {
     private fun setUserData() {
         val myUser: User = AppStorage.getInstance(context).getUserLocal()
         Log.d("CCCCCCCCCCCCC", myUser.toString())
+        tvPagename.text = myUser.userName.toString()
         tvUserName.text = myUser.userName.toString()
         tvEmail.text = myUser.email.toString()
         val appStorage = AppStorage.getInstance(context)

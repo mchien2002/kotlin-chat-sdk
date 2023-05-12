@@ -1,17 +1,22 @@
 package com.example.ae_chat_sdk.acti.boxchat
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Bitmap
+import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.WindowCompat
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
@@ -27,6 +32,7 @@ import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import de.hdodenhof.circleimageview.CircleImageView
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -64,6 +70,10 @@ class BoxChatActivity : AppCompatActivity() {
 
     lateinit var progressBar: ProgressBar
 
+    private var output: String? = null
+    private lateinit var mediaRecorder: MediaRecorder
+    private var state: Boolean = false
+    private var recordingStopped: Boolean = false
 
     private val webSocketListener: WebSocketListener = WebSocketListener()
 
@@ -134,6 +144,9 @@ class BoxChatActivity : AppCompatActivity() {
         etInputMessage = findViewById(R.id.etInputMessage)
         ivOnline = findViewById(R.id.ivOnline)
         progressBar = findViewById(R.id.progressBar)
+
+
+
         setOnClickListener()
         setOnFocusChangeListener()
         addTextChangedListener()
@@ -185,7 +198,8 @@ class BoxChatActivity : AppCompatActivity() {
     private fun setProfileReceiver() {
         val imageUrl = intent.getStringExtra("avatar")
         if (imageUrl != "") {
-            Glide.with(context).load(imageUrl).into(ivAvatar)
+            Glide.with(context).load(imageUrl).placeholder(R.drawable.avatardefault)
+                .error(R.drawable.avatardefault).into(ivAvatar)
         }
         val username = intent.getStringExtra("username")
         val status = intent.getIntExtra("status", 2)
@@ -213,9 +227,6 @@ class BoxChatActivity : AppCompatActivity() {
             messageAdapter = null
             finish()
         }
-
-//        btnNotification.setOnClickListener {
-//        }
 
         btnSendMessage.setOnClickListener {
             if (etInputMessage.text.trim() != "" && groupId != null) {
@@ -247,15 +258,124 @@ class BoxChatActivity : AppCompatActivity() {
             showOptions(true)
         }
 
-        ibImage.setOnClickListener{
+        ibImage.setOnClickListener {
             openGallery()
         }
+
+        ibMic.setOnClickListener {
+            showBottomSheetAudioRecord()
+        }
     }
+
+    private fun showBottomSheetAudioRecord() {
+        val bottomSheet = BottomSheetDialog(this)
+        val view = layoutInflater.inflate(R.layout.layout_bottom_sheet_audio_record, null)
+        bottomSheet.setContentView(view)
+
+        val permissions = arrayOf(
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        )
+        ActivityCompat.requestPermissions(this, permissions, 0)
+
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.RECORD_AUDIO
+            ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)!=PackageManager.PERMISSION_GRANTED
+        ) {
+            val permissions = arrayOf(
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            ActivityCompat.requestPermissions(this, permissions, 0)
+        }
+
+        mediaRecorder = MediaRecorder()
+        output = Environment.getExternalStorageDirectory().absolutePath + "/recording.mp3"
+
+        mediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        mediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        mediaRecorder.setOutputFile(output)
+
+        bottomSheet.window?.decorView?.let {
+            WindowInsetsControllerCompat(
+                bottomSheet.window!!,
+                it.findViewById(android.R.id.content)
+            ).let { controller ->
+                controller.hide(
+                    WindowInsetsCompat.Type.navigationBars()
+                )
+                controller.systemBarsBehavior =
+                    WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+            }
+        }
+
+        val btnMic: ImageButton = view.findViewById(R.id.ibMicRecord)
+        val btnDelete: ImageButton = view.findViewById(R.id.ibDelete)
+        val btnSendAudio: ImageButton = view.findViewById(R.id.ibSend)
+
+        btnMic.setOnClickListener {
+
+                btnMic.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.bg_button_mic_focus
+                    )
+                )
+                btnMic.isClickable = false
+                btnMic.clearFocus()
+                btnDelete.visibility = View.VISIBLE
+                btnSendAudio.visibility = View.VISIBLE
+                startRecording()
+
+        }
+
+        btnSendAudio.setOnClickListener {
+            stopRecording()
+        }
+
+        btnDelete.setOnClickListener {
+            stopRecording()
+        }
+
+        bottomSheet.show()
+    }
+
+    private fun startRecording() {
+//        try {
+        mediaRecorder.prepare()
+        mediaRecorder.start()
+        state = true
+        Toast.makeText(this, "Recording started!", Toast.LENGTH_SHORT).show()
+//        } catch (e: IllegalStateException) {
+//            e.printStackTrace()
+//        } catch (e: IOException) {
+//            e.printStackTrace()
+//        }
+    }
+
+    private fun stopRecording() {
+        if (state) {
+            mediaRecorder.stop()
+            mediaRecorder.release()
+            state = false
+        } else {
+            Toast.makeText(this, "You are not recording right now!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
     fun openGallery() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, REQUEST_IMAGE_PICK)
     }
+
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

@@ -59,5 +59,7 @@
     <string name="help">Trợ giúp</string>
     <string name="delete_account">Xóa tài khoản</string>
     <string name="timeMessage">--:--</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
