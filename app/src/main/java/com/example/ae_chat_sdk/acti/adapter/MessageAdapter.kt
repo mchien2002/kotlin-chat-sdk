@@ -118,10 +118,17 @@ class MessageAdapter(val context: Context, val groupId: String) :
                     )
                 );
             } else {
+                val gson = Gson()
+                val img = gson.fromJson(gson.toJson(data.attachment), Image::class.java)
+                val url = ApiConstant.URL_IMAGE + img.url
+                binding.ivImageMessageReceiver.setOnClickListener(View.OnClickListener {
+                    val intent = Intent(context, PhotoActivity::class.java)
+                    intent.putExtra("imageUrl", url)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                })
                 GlobalScope.launch(Dispatchers.Main) {
-                    val gson = Gson()
-                    val img = gson.fromJson(gson.toJson(data.attachment), Image::class.java)
-                    Glide.with(context).load(ApiConstant.URL_IMAGE + img.url)
+                    Glide.with(context).load(url)
                         .placeholder(R.drawable.image_default)
                         .error(R.drawable.image_default)
                         .apply(RequestOptions().override(600, 800))
