@@ -9,12 +9,9 @@ import com.google.gson.reflect.TypeToken
 
 class RestClient {
     fun getToken(): String {
-        val gson = Gson()
-        val type = object : TypeToken<User>() {}.type
         val appStorage = AppStorage.getInstance()
-        val userString: String = appStorage.getData("User", "").toString()
-        val user = gson.fromJson<User>(userString, type)
-        return "Bearer " + user.token
+        val token: String = appStorage.getData("token", "").toString()
+        return "Bearer " + token
     }
     fun getUserId(): String {
         val gson = Gson()

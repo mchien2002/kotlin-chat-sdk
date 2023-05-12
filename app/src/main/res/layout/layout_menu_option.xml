@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/transparent"
-    android:visibility="invisible">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:paddingTop="50dp"
+    android:visibility="visible">
 
     <RelativeLayout
         android:id="@+id/rlAvatar"
@@ -31,14 +33,14 @@
             android:layout_below="@id/ivAvatar"
             android:ellipsize="end"
             android:text="@string/username"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/roboto_black"
             android:letterSpacing="0.05"
             android:maxLines="1"
             android:paddingTop="10dp"
-            android:paddingBottom="2dp"
+            android:paddingBottom="0dp"
             android:textAlignment="center"
             android:textColor="@color/Primary10"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/tvEmail"
@@ -48,13 +50,13 @@
             android:layout_marginLeft="50dp"
             android:layout_marginRight="50dp"
             android:ellipsize="end"
-            android:fontFamily="@font/roboto_bold"
+            android:fontFamily="@font/roboto_light"
             android:letterSpacing="0.05"
             android:maxLines="1"
             android:text="@string/email_address"
             android:textAlignment="center"
             android:textColor="#4D400012"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
     </RelativeLayout>
 
@@ -63,123 +65,131 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/rlAvatar"
         android:layout_centerInParent="true"
-        android:layout_centerVertical="true"
         android:padding="20dp">
 
-        <LinearLayout
+        <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:orientation="vertical">
+            android:outlineSpotShadowColor="@color/transparent"
+            app:cardCornerRadius="15dp"
+            tools:cardElevation="0dp">
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbListContact"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_top"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="start|center"
-                android:letterSpacing="0.03"
-                android:text="@string/list_contact"
-                android:textAllCaps="false"
-                android:textColor="@color/Primary10"
-                android:textSize="12sp"
-                app:backgroundTint="@color/White"
-                app:icon="@drawable/ic_right"
-                app:iconGravity="end"
-                app:iconTint="@color/Primary10"
-                app:rippleColor="@color/Primary90"/>
+                android:orientation="vertical">
 
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/switchStatus"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical|end"
-                android:paddingStart="15dp"
-                android:paddingEnd="10dp"
-                android:background="@color/White"
-                android:checked="true"
-                android:fontFamily="@font/roboto_medium"
-                android:letterSpacing="0.03"
-                android:text="@string/status"
-                android:textColor="@color/Primary10"
-                android:textSize="12sp"
-                app:thumbTint="@drawable/switch_thumb"
-                app:trackTint="@drawable/switch_track"
-                android:elevation="2dp"/>
+<!--                <com.google.android.material.button.MaterialButton-->
+<!--                    android:id="@+id/mbListMessage"-->
+<!--                    android:layout_width="match_parent"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:background="@drawable/bg_retangle_button"-->
+<!--                    android:fontFamily="@font/roboto_medium"-->
+<!--                    android:gravity="start|center"-->
+<!--                    android:letterSpacing="0.03"-->
+<!--                    android:text="@string/list_message"-->
+<!--                    android:textAllCaps="false"-->
+<!--                    android:textColor="@color/Primary10"-->
+<!--                    android:textSize="12sp"-->
+<!--                    app:backgroundTint="@color/White"-->
+<!--                    app:icon="@drawable/ic_right"-->
+<!--                    app:iconGravity="end"-->
+<!--                    app:iconTint="@color/Primary10"-->
+<!--                    app:rippleColor="@color/Primary90" />-->
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbNotificationAndSound"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_body"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="start|center"
-                android:letterSpacing="0.03"
-                android:text="@string/notification_sound"
-                android:textAllCaps="false"
-                android:textColor="@color/Primary10"
-                android:textSize="12sp"
-                app:backgroundTint="@color/White"
-                app:icon="@drawable/ic_right"
-                app:iconGravity="end"
-                app:iconTint="@color/Primary10"
-                app:rippleColor="#332F2E41" />
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbChangeLanguage"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_body"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="start|center"
-                android:letterSpacing="0.03"
-                android:text="@string/language"
-                android:textAllCaps="false"
-                android:textColor="@color/Primary10"
-                android:textSize="12sp"
-                app:backgroundTint="@color/White"
-                app:icon="@drawable/ic_right"
-                app:iconGravity="end"
-                app:iconTint="@color/Primary10"
-                app:rippleColor="#332F2E41" />
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/switchStatus"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:background="@color/White"
+                    android:checked="true"
+                    android:elevation="2dp"
+                    android:fontFamily="@font/roboto_medium"
+                    android:letterSpacing="0.03"
+                    android:paddingStart="15dp"
+                    android:paddingEnd="10dp"
+                    android:text="@string/status"
+                    android:textColor="@color/Primary10"
+                    android:textSize="12sp"
+                    app:thumbTint="@drawable/switch_thumb"
+                    app:trackTint="@drawable/switch_track" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mbNotificationAndSound"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_retangle_button"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="start|center"
+                    android:letterSpacing="0.03"
+                    android:text="@string/notification_sound"
+                    android:textAllCaps="false"
+                    android:textColor="@color/Primary10"
+                    android:textSize="12sp"
+                    app:backgroundTint="@color/White"
+                    app:icon="@drawable/ic_right"
+                    app:iconGravity="end"
+                    app:iconTint="@color/Primary10"
+                    app:rippleColor="#332F2E41" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mbChangeLanguage"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_retangle_button"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="start|center"
+                    android:letterSpacing="0.03"
+                    android:text="@string/language"
+                    android:textAllCaps="false"
+                    android:textColor="@color/Primary10"
+                    android:textSize="12sp"
+                    app:backgroundTint="@color/White"
+                    app:icon="@drawable/ic_right"
+                    app:iconGravity="end"
+                    app:iconTint="@color/Primary10"
+                    app:rippleColor="#332F2E41" />
 
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbHelpAndSupport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_body"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="start|center"
-                android:letterSpacing="0.03"
-                android:text="@string/support"
-                android:textAllCaps="false"
-                android:textColor="@color/Primary10"
-                android:textSize="12sp"
-                app:backgroundTint="@color/White"
-                app:icon="@drawable/ic_right"
-                app:iconGravity="end"
-                app:iconTint="@color/Primary10"
-                app:rippleColor="#332F2E41" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mbHelpAndSupport"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_retangle_button"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="start|center"
+                    android:letterSpacing="0.03"
+                    android:text="@string/support"
+                    android:textAllCaps="false"
+                    android:textColor="@color/Primary10"
+                    android:textSize="12sp"
+                    app:backgroundTint="@color/White"
+                    app:icon="@drawable/ic_right"
+                    app:iconGravity="end"
+                    app:iconTint="@color/Primary10"
+                    app:rippleColor="#332F2E41" />
 
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/mbLogOut"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_button_bottom"
-                android:fontFamily="@font/roboto_medium"
-                android:gravity="start|center"
-                android:letterSpacing="0.03"
-                android:text="@string/log_out"
-                android:textAllCaps="false"
-                android:textColor="@color/Primary40"
-                android:textSize="12sp"
-                app:backgroundTint="@color/White"
-                app:icon="@drawable/ic_log_out"
-                app:iconGravity="start"
-                app:iconTint="@color/Primary40"
-                app:rippleColor="#332F2E41"/>
-        </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/mbLogOut"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_retangle_button"
+                    android:fontFamily="@font/roboto_medium"
+                    android:gravity="start|center"
+                    android:letterSpacing="0.03"
+                    android:text="@string/log_out"
+                    android:textAllCaps="false"
+                    android:textColor="@color/Primary40"
+                    android:textSize="12sp"
+                    app:backgroundTint="@color/White"
+                    app:icon="@drawable/ic_log_out"
+                    app:iconGravity="start"
+                    app:iconTint="@color/Primary40"
+                    app:rippleColor="#332F2E41" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </RelativeLayout>
 
 

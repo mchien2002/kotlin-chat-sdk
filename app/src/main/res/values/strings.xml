@@ -12,7 +12,7 @@
     <string name="photo">Chụp ảnh</string>
     <string name="description_button_down">Button drop down</string>
     <string name="sign_in">Đăng nhập</string>
-    <string name="list_contact">Danh sách liên hệ</string>
+    <string name="list_message">Tin nhắn</string>
     <string name="status">Trạng thái hoạt động</string>
     <string name="language">Ngôn ngữ</string>
     <string name="support">Trợ giúp &amp; hỗ trợ</string>
@@ -25,7 +25,7 @@
     <string name="username">--</string>
     <string name="email_address">username@gmail.com</string>
     <string name="account">Tài khoản</string>
-    <string name="note_edit_email">Ấn để thay đổi Email</string>
+    <string name="note_edit_email">Không thể thay để thay đổi Email</string>
     <string name="note_edit_username">Ấn để thay đổi tên</string>
     <string name="notify_sended_email">OTP send to \n email</string>
     <string name="count_down">00:30</string>

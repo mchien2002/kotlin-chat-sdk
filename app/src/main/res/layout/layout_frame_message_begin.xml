@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/roboto_light_italic"
         android:text="@string/begin_message"
-        android:paddingTop="100dp"
+        android:paddingTop="500dp"
         android:textAlignment="center"
         android:textSize="12sp"
         android:paddingBottom="10dp"

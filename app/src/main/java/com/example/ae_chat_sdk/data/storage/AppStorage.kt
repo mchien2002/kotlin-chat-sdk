@@ -37,12 +37,18 @@ class AppStorage private constructor(context: Context) {
         sharedPreferences.edit().clear().apply()
     }
 
-     fun getUserLocal(): User {
+    fun getUserLocal(): User {
         val gson = Gson()
         val type = object : TypeToken<User>() {}.type
         val appStorage = AppStorage.getInstance()
         val userString: String = appStorage.getData("User", "").toString()
         val user = gson.fromJson<User>(userString, type)
         return user
+    }
+
+    fun getSWStatus(): Boolean {
+        val appStorage = AppStorage.getInstance()
+        val state: Boolean = appStorage.getData("swState", "false").toBoolean()
+        return state
     }
 }

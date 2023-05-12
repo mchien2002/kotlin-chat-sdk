@@ -1,15 +1,19 @@
 package com.example.ae_chat_sdk.acti.adapter
 
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.example.ae_chat_sdk.PhotoActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
@@ -74,36 +78,26 @@ class MessageAdapter(val context: Context, val groupId: String) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Message) {
             if (data.attachment == null) {
-                binding.ivImageMessageSender.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.image_default
-                    )
-                );
-            } else {
-//                Handler(Looper.getMainLooper()).postDelayed({
-//                    GlobalScope.launch(Dispatchers.Main) {
-//                        val gson = Gson()
-//                        val img = gson.fromJson(gson.toJson(data.attachment), Image::class.java)
-//                        Glide.with(context).load(ApiConstant.URL_IMAGE + img.url)
-//                            .apply(RequestOptions().override(600, 800))
-//                            .into(binding.ivImageMessageSender)
-//                    }
-//                }, 2000)
-//                doAsync {
-//                    val gson = Gson()
-//                    val img = gson.fromJson(gson.toJson(data.attachment), Image::class.java)
-//                    uiThread {
-//                        Glide.with(context).load(ApiConstant.URL_IMAGE + img.url)
-//                            .apply(RequestOptions().override(600, 800))
-//                            .into(binding.ivImageMessageSender)
-//                    }
-//
-//                }
                 GlobalScope.launch(Dispatchers.Main) {
-                    val gson = Gson()
-                    val img = gson.fromJson(gson.toJson(data.attachment), Image::class.java)
-                    Glide.with(context).load(ApiConstant.URL_IMAGE + img.url)
+                    Glide.with(context).load("")
+                        .skipMemoryCache(true).diskCacheStrategy(DiskCacheStrategy.NONE)
+                        .placeholder(R.drawable.image_default)
+                        .error(R.drawable.image_default)
+                        .apply(RequestOptions().override(600, 800))
+                        .into(binding.ivImageMessageSender)
+                }
+            } else {
+                val gson = Gson()
+                val img = gson.fromJson(gson.toJson(data.attachment), Image::class.java)
+                val url = ApiConstant.URL_IMAGE + img.url
+                binding.ivImageMessageSender.setOnClickListener(View.OnClickListener {
+                    val intent = Intent(context, PhotoActivity::class.java)
+                    intent.putExtra("imageUrl", url)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                })
+                GlobalScope.launch(Dispatchers.Main) {
+                    Glide.with(context).load(url)
                         .placeholder(R.drawable.image_default)
                         .error(R.drawable.image_default)
                         .apply(RequestOptions().override(600, 800))
@@ -195,34 +189,11 @@ class MessageAdapter(val context: Context, val groupId: String) :
         } else {
             (holder as SendMessageFooterHolder).bind(message)
         }
-
-//        if (holder is ImageReceiverHolder) {
-//            GlobalScope.launch(Dispatchers.Main) {
-//                val gson = Gson()
-//                val img =
-//                    gson.fromJson(gson.toJson(message.attachment), Image::class.java)
-//                Glide.with(context).load(ApiConstant.URL_IMAGE + img.url)
-//                    .apply(RequestOptions().override(600, 800))
-//                    .into(holder.binding.ivImageMessageReceiver)
-//            }
-//        }
-//
-//        if (holder is ImageSenderHolder) {
-//            val gson = Gson()
-//            val img = gson.fromJson(gson.toJson(message.attachment), Image::class.java)
-//            Glide.with(context).load(ApiConstant.URL_IMAGE + img.url)
-//                .apply(RequestOptions().override(600, 800))
-//                .into(holder.binding.ivImageMessageSender)
-//
-//        }
-
         val senderUin = message.senderUin
         if (senderUin == RestClient().getUserId()) {
             if (position == listMessage.size - 1 && message.status == Message.Status.SEEN.ordinal) {
                 Log.e("LASTMS", message.message.toString())
                 if (holder is SendMessageFooterHolder) {
-//                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
-                    //holder.binding.ivCheckSeen.setImageDrawable(null)
                     holder.binding.ivCheckSeen.setImageDrawable(
                         ContextCompat.getDrawable(
                             context,
@@ -238,9 +209,23 @@ class MessageAdapter(val context: Context, val groupId: String) :
                             R.drawable.ic_check_sending
                         )
                     )
+                } else if (holder is ImageSenderHolder) {
+                    holder.binding.ivCheckSeen.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            holder.itemView.context,
+                            R.drawable.ic_check_sending
+                        )
+                    )
                 }
             } else if (message.status == Message.Status.SENT.ordinal) {
                 if (holder is SendMessageFooterHolder) {
+                    holder.binding.ivCheckSeen.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            holder.itemView.context,
+                            R.drawable.ic_check_seen
+                        )
+                    )
+                } else if (holder is ImageSenderHolder) {
                     holder.binding.ivCheckSeen.setImageDrawable(
                         ContextCompat.getDrawable(
                             holder.itemView.context,
@@ -382,12 +367,9 @@ class MessageAdapter(val context: Context, val groupId: String) :
             if (message.messageId != null && message.senderUin != RestClient().getUserId()) {
                 listMessage.add(message)
                 webSocketListener.seenMessage(HomeActivity.webSocket, message.messageId!!)
-            }else if (message.type == Message.Type.IMAGE.ordinal) {
-                listMessage.add(message)
             }
             else {
                 for (i in listMessage.indices.reversed()) {
-
                     if (listMessage[i].createdAt.toString() == message.createdAt.toString() && listMessage[i].status == Message.Status.SENDING.ordinal) {
                         listMessage[i] = message
                         break

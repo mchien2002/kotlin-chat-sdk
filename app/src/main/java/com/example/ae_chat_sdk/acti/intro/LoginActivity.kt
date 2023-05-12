@@ -4,9 +4,7 @@ package com.example.ae_chat_sdk.acti.intro
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.os.*
 import android.text.TextUtils
 import android.util.Log
 import android.util.Patterns
@@ -14,7 +12,11 @@ import android.view.KeyEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.*
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
@@ -31,6 +33,7 @@ import eightbitlab.com.blurview.BlurView
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.util.concurrent.TimeUnit
 
 class LoginActivity : AppCompatActivity() {
     lateinit var email: String
@@ -54,12 +57,19 @@ class LoginActivity : AppCompatActivity() {
     lateinit var inputOTP4: EditText
     lateinit var inputOTP5: EditText
     lateinit var inputOTP6: EditText
+    lateinit var tvCountdown: TextView
+    lateinit var btnSendOTPAgain: TextView
 
     lateinit var progressBar: ProgressBar
+    lateinit var timer: CountDownTimer
 
 
+    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        hideSystemUI()
+
         setContentView(R.layout.activity_login)
         context = applicationContext
         checkLogged()
@@ -69,6 +79,24 @@ class LoginActivity : AppCompatActivity() {
         init()
         showBottomSheet()
         setListenerOTP()
+    }
+
+    @RequiresApi(Build.VERSION_CODES.R)
+    private fun hideSystemUI() {
+        WindowCompat.setDecorFitsSystemWindows(window, false)
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR)
+        WindowInsetsControllerCompat(
+            window,
+            window.decorView.findViewById(android.R.id.content)
+        ).let { controller ->
+            controller.hide(WindowInsetsCompat.Type.navigationBars())
+
+            // When the screen is swiped up at the bottom
+            // of the application, the navigationBar shall
+            // appear for some time
+            controller.systemBarsBehavior =
+                WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        }
     }
 
     private fun init() {
@@ -86,8 +114,26 @@ class LoginActivity : AppCompatActivity() {
         inputOTP4 = findViewById(R.id.etInputOTP4)
         inputOTP5 = findViewById(R.id.etInputOTP5)
         inputOTP6 = findViewById(R.id.etInputOTP6)
+        tvCountdown = findViewById(R.id.tvCountdown)
+        btnSendOTPAgain = findViewById(R.id.tvButtonSendOTPAgain)
 
         progressBar = findViewById(R.id.progressBar)
+
+        timer = object : CountDownTimer(60000, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)
+                if (seconds < 10) {
+                    tvCountdown.text = "00:0$seconds"
+                } else {
+                    tvCountdown.text = "00:$seconds"
+                }
+            }
+
+            override fun onFinish() {
+                Toast.makeText(context, "Mã OTP đã hết hiệu lực!", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
 
         setButtonOnClickListener()
     }
@@ -138,6 +184,8 @@ class LoginActivity : AppCompatActivity() {
             rLayoutWrapInputOTP.visibility = View.GONE
             return
         }
+        timer.cancel()
+        timer.start()
         rLayoutWrapInputEmail.visibility = View.GONE
         rLayoutWrapInputOTP.visibility = View.VISIBLE
     }
@@ -175,6 +223,8 @@ class LoginActivity : AppCompatActivity() {
                 ) {
                     findViewById<TextView>(R.id.tvEmailInformation).text =
                         "Mã xác thực đã được gửi đến\n" + email
+                    Toast.makeText(context, "Mã OTP đã được gửi!", Toast.LENGTH_SHORT)
+                        .show()
                     resetOTP()
                     setListenerOTP()
                     showInput(false)
@@ -186,6 +236,34 @@ class LoginActivity : AppCompatActivity() {
         // OTP
         findViewById<Button>(R.id.bInputEmailAgain).setOnClickListener(View.OnClickListener {
             showInput(true)
+        })
+
+        // Send OTP
+        btnSendOTPAgain.setOnClickListener(View.OnClickListener {
+            resetOTP()
+            hideKeyboard()
+
+            progressBar.visibility = View.VISIBLE
+            val call = RegisterRepository().registerByMail(email)
+
+            call.enqueue(object : Callback<MyResponse> {
+                override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                    Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+                override fun onResponse(
+                    call: Call<MyResponse>,
+                    response: Response<MyResponse>
+                ) {
+                    findViewById<TextView>(R.id.tvEmailInformation).text =
+                        "Mã xác thực đã được gửi đến\n" + email
+                    Toast.makeText(context, "Mã OTP đã được gửi!", Toast.LENGTH_SHORT)
+                        .show()
+                    showInput(false)
+                    progressBar.visibility = View.GONE
+                }
+            })
         })
     }
 
@@ -279,6 +357,7 @@ class LoginActivity : AppCompatActivity() {
                     val user = gson.fromJson<User>(gson.toJson(response.body()?.data), type)
                     val appStorage = AppStorage.getInstance(context)
                     appStorage.saveData("User", gson.toJson(response.body()?.data))
+                    appStorage.saveData("token", user.token)
                     Log.e("USERID5",user.userId)
                     Log.d(
                         "Success",
@@ -288,6 +367,7 @@ class LoginActivity : AppCompatActivity() {
                         setStartHomeActivity()
                     }, 1000)
                     hideKeyboard()
+                    timer.cancel()
                     progressBar.visibility = View.GONE
 //                    resetOTP()
                 }

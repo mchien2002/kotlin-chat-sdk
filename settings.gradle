@@ -12,6 +12,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         jcenter()
+        // add the following
+        maven { url "https://jitpack.io" }
     }
 }
 rootProject.name = "ae-chat-sdk"

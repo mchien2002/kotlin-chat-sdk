@@ -4,6 +4,7 @@ import com.example.ae_chat_sdk.data.api.controller.RegisterController
 import com.example.ae_chat_sdk.data.api.controller.UserController
 import com.example.ae_chat_sdk.data.model.ApiResponse
 import com.example.ae_chat_sdk.data.model.MyResponse
+import com.example.ae_chat_sdk.data.model.User
 import okhttp3.MultipartBody
 import retrofit2.Call
 
@@ -31,5 +32,9 @@ public class UserService constructor() : UserController {
 
     override fun groupProfileByMember(token: String, listUserId: List<String>):Call<MyResponse> {
         return userService.groupProfileByMember(token,listUserId)
+    }
+
+    override fun updateUser(token: String, user: User): Call<MyResponse> {
+        return userService.updateUser(token, user)
     }
 }

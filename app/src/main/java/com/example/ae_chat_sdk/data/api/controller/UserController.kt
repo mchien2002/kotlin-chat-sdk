@@ -3,6 +3,7 @@ package com.example.ae_chat_sdk.data.api.controller
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.model.ApiResponse
 import com.example.ae_chat_sdk.data.model.MyResponse
+import com.example.ae_chat_sdk.data.model.User
 import okhttp3.MultipartBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -23,4 +24,7 @@ interface UserController {
 
     @POST(ApiConstant.GROUP_PROFILE_BY_MEMBER)
     fun groupProfileByMember(@Header("token") token: String,@Body listUserId : List<String>):Call<MyResponse>
+
+    @POST(ApiConstant.UPDATE_USER)
+    fun updateUser(@Header("token") token:String, @Body user: User):Call<MyResponse>
 }
