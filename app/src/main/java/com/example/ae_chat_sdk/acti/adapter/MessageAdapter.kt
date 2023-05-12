@@ -250,86 +250,86 @@ class MessageAdapter(val context: Context, val groupId: String) :
                         )
                     )
                 }
+            } else {
             }
-        } else {
-        }
-        if (senderUin == RestClient().getUserId()) {
-            if (position < listMessage.size - 1 && position > 0) {
-                if (listMessage[position - 1].senderUin == senderUin && listMessage[position + 1].senderUin == senderUin) {
-                    if (holder is SendMessageFooterHolder) {
-                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_two)
+            if (senderUin == RestClient().getUserId()) {
+                if (position < listMessage.size - 1 && position > 0) {
+                    if (listMessage[position - 1].senderUin == senderUin && listMessage[position + 1].senderUin == senderUin) {
+                        if (holder is SendMessageFooterHolder) {
+                            holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_two)
+                        }
+                    } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin == senderUin) {
+                        if (holder is SendMessageFooterHolder) {
+                            holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_bottom)
+                        }
+                    } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin != senderUin) {
+                        if (holder is SendMessageFooterHolder) {
+                            holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
+                        }
+                    } else {
+                        if (holder is SendMessageFooterHolder) {
+                            holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_top)
+                        }
                     }
-                } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin == senderUin) {
-                    if (holder is SendMessageFooterHolder) {
-                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_bottom)
+                } else if (position == listMessage.size - 1) {
+                    if (listMessage[position - 1].senderUin != senderUin) {
+                        if (holder is SendMessageFooterHolder) {
+                            holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
+                        }
+                    } else {
+                        if (holder is SendMessageFooterHolder) {
+                            holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_top)
+                        }
                     }
-                } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin != senderUin) {
-                    if (holder is SendMessageFooterHolder) {
-                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
-                    }
-                } else {
-                    if (holder is SendMessageFooterHolder) {
-                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_top)
-                    }
-                }
-            } else if (position == listMessage.size - 1) {
-                if (listMessage[position - 1].senderUin != senderUin) {
-                    if (holder is SendMessageFooterHolder) {
-                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
-                    }
-                } else {
-                    if (holder is SendMessageFooterHolder) {
-                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_top)
-                    }
-                }
-            } else if (position == 0) {
-                if (listMessage[position + 1].senderUin == senderUin) {
-                    if (holder is SendMessageFooterHolder) {
-                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_bottom)
-                    }
-                } else {
-                    if (holder is SendMessageFooterHolder) {
-                        holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
-                    }
-                }
-            }
-        } else {
-            if (position < listMessage.size - 1 && position > 0) {
-                if (listMessage[position - 1].senderUin == senderUin && listMessage[position + 1].senderUin == senderUin) {
-                    if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_two)
-                    }
-                } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin == senderUin) {
-                    if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_bottom)
-                    }
-                } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin != senderUin) {
-                    if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
-                    }
-                } else {
-                    if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_top)
+                } else if (position == 0) {
+                    if (listMessage[position + 1].senderUin == senderUin) {
+                        if (holder is SendMessageFooterHolder) {
+                            holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_one_bottom)
+                        }
+                    } else {
+                        if (holder is SendMessageFooterHolder) {
+                            holder.binding.tvSenderFooter.setBackgroundResource(R.drawable.bg_message_send_four)
+                        }
                     }
                 }
-            } else if (position == listMessage.size - 1) {
-                if (listMessage[position - 1].senderUin != senderUin) {
-                    if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
+            } else {
+                if (position < listMessage.size - 1 && position > 0) {
+                    if (listMessage[position - 1].senderUin == senderUin && listMessage[position + 1].senderUin == senderUin) {
+                        if (holder is ReceiveMessageFooterHolder) {
+                            holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_two)
+                        }
+                    } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin == senderUin) {
+                        if (holder is ReceiveMessageFooterHolder) {
+                            holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_bottom)
+                        }
+                    } else if (listMessage[position - 1].senderUin != senderUin && listMessage[position + 1].senderUin != senderUin) {
+                        if (holder is ReceiveMessageFooterHolder) {
+                            holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
+                        }
+                    } else {
+                        if (holder is ReceiveMessageFooterHolder) {
+                            holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_top)
+                        }
                     }
-                } else {
-                    if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_top)
+                } else if (position == listMessage.size - 1) {
+                    if (listMessage[position - 1].senderUin != senderUin) {
+                        if (holder is ReceiveMessageFooterHolder) {
+                            holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
+                        }
+                    } else {
+                        if (holder is ReceiveMessageFooterHolder) {
+                            holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_top)
+                        }
                     }
-                }
-            } else if (position == 0) {
-                if (listMessage[position + 1].senderUin == senderUin) {
-                    if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_bottom)
-                    }
-                } else {
-                    if (holder is ReceiveMessageFooterHolder) {
-                        holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
+                } else if (position == 0) {
+                    if (listMessage[position + 1].senderUin == senderUin) {
+                        if (holder is ReceiveMessageFooterHolder) {
+                            holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_one_bottom)
+                        }
+                    } else {
+                        if (holder is ReceiveMessageFooterHolder) {
+                            holder.binding.tvReceiverFooter.setBackgroundResource(R.drawable.bg_message_receive_four)
+                        }
                     }
                 }
             }

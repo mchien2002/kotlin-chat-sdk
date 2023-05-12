@@ -1,6 +1,7 @@
 package com.example.ae_chat_sdk.data.model
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
 class Group{
     @SerializedName("groupId")
@@ -29,6 +30,9 @@ class Group{
 
     @SerializedName("lastMessage")
     var lastMessage: Message? = null
+
+    @SerializedName("createdAt")
+    var createdAt: Date? = null
 }
 
 data class ListGroupResponse(val listGroup: List<Group>)

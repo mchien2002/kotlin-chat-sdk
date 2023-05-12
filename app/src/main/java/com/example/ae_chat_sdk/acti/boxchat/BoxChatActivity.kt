@@ -36,7 +36,6 @@ import java.util.*
 @Suppress("DEPRECATION")
 class BoxChatActivity : AppCompatActivity() {
 
-    private lateinit var context: Context
 
     lateinit var rvMessage: RecyclerView
 
@@ -56,7 +55,7 @@ class BoxChatActivity : AppCompatActivity() {
     lateinit var tvActiveStatus: TextView
     lateinit var ivOnline: ImageView
 
-    var groupId: String? = null
+
     lateinit var messageId: String
     private val REQUEST_IMAGE_CAPTURE = 1
     private val REQUEST_IMAGE_PICK = 2
@@ -69,6 +68,8 @@ class BoxChatActivity : AppCompatActivity() {
 
     companion object {
         var messageAdapter: MessageAdapter? = null
+        var groupId: String? = null
+        lateinit var context: Context
     }
 
 
@@ -90,7 +91,9 @@ class BoxChatActivity : AppCompatActivity() {
         messageId = intent.getStringExtra("lastmessage").toString()
         if(groupId != null){
             webSocketListener.receiveMessage(HomeActivity.webSocket, groupId!!)
-            webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
+            if (messageId!=null){
+                webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
+            }
             showMessage()
         }
 
@@ -207,19 +210,21 @@ class BoxChatActivity : AppCompatActivity() {
 
     }
 
-
     private fun setOnClickListener() {
         btnBack.setOnClickListener {
             messageAdapter = null
             finish()
+//            val intent: Intent = Intent(context, HomeActivity::class.java)
+//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//            context.startActivity(intent)
         }
 
 //        btnNotification.setOnClickListener {
 //        }
 
         btnSendMessage.setOnClickListener {
+            val myUser: User = AppStorage.getInstance(context).getUserLocal()
             if (etInputMessage.text.trim() != "" && groupId != null) {
-                val myUser: User = AppStorage.getInstance(context).getUserLocal()
                 val message = Message()
                 message.type = Message.Type.TEXT.ordinal
                 message.groupType = Message.GroupType.PUBLIC.ordinal
@@ -237,9 +242,18 @@ class BoxChatActivity : AppCompatActivity() {
             }else if (etInputMessage.text.trim() != "" && groupId == null){
                 val userIdMe = RestClient().getUserId()
                 val userId = intent.getStringExtra("userId")
-                Log.e("USERIDI",userId.toString())
                 val newList: List<String> = listOf(userIdMe, userId.toString())
-                WebSocketListener.createGroup(newList,Message.GroupType.PUBLIC.ordinal,null,userIdMe,userIdMe)
+                val message = Message()
+                message.type = Message.Type.TEXT.ordinal
+                message.groupType = Message.GroupType.PUBLIC.ordinal
+                message.message = etInputMessage.text.toString()
+                message.status = Message.Status.SENDING.ordinal
+                message.senderUin = myUser.userId
+                message.senderAvatar = myUser.avatar.toString()
+                message.senderName = myUser.userName
+                messageAdapter!!.addMessageSeeding(message)
+                message.createdAt = Date()
+                WebSocketListener.createGroup(newList,Message.GroupType.PUBLIC.ordinal,null,userIdMe,userIdMe,message)
             }
         }
 
