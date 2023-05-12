@@ -127,9 +127,11 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                             ) {
                                 val userTemp =
                                     gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                                holder.tvUsername.text = userTemp.fullName
-                                username = userTemp.userName
-                                userId = userTemp.userId
+                                if(userTemp != null){
+                                    holder.tvUsername.text = userTemp.fullName
+                                    username = userTemp.userName
+                                    userId = userTemp.userId
+                                }
                                 if (userTemp.avatar != null) {
                                     imageUrl = ApiConstant.URL_IMAGE + userTemp.avatar
                                     Glide.with(context).load(imageUrl).into(holder.ivAvatarRecent)
@@ -162,12 +164,13 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                                 if (userTemp!=null){
                                     status = userTemp.status
                                     lastTimeOnline = userTemp.lastTimeOnline
+                                    if (userTemp.status == UserOnlineStatus.UserStatus.ONLINE.ordinal) {
+                                        holder.ivOnline.visibility = View.VISIBLE
+                                    } else {
+                                        holder.ivOnline.visibility = View.GONE
+                                    }
                                 }
-                                if (userTemp.status == UserOnlineStatus.UserStatus.ONLINE.ordinal) {
-                                    holder.ivOnline.visibility = View.VISIBLE
-                                } else {
-                                    holder.ivOnline.visibility = View.GONE
-                                }
+
                             }
                         })
                         break

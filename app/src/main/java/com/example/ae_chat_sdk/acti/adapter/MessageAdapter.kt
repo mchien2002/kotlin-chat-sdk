@@ -184,24 +184,8 @@ class MessageAdapter(
             (holder as SendMessageFooterHolder).bind(message)
         }
         val senderUin = message.senderUin
-        if (senderUin == RestClient().getUserId()) {
-            if (position == listMessage.size - 1 && message.status == Message.Status.SEEN.ordinal) {
-                Log.e("LASTMS", message.message.toString())
-                if (holder is SendMessageFooterHolder) {
-                    if (listMessage[position].senderAvatar != null){
-                        Glide.with(context).load(ApiConstant.URL_IMAGE+ listMessage[position].senderAvatar).into(holder.binding.ivCheckSeen)
-                    }else{
-                        Glide.with(context).load(R.drawable.avatardefault).into(holder.binding.ivCheckSeen)
-                    }
-                }
-                else if (holder is ImageSenderHolder) {
-                    if (listMessage[position].senderAvatar != null){
-                        Glide.with(context).load(ApiConstant.URL_IMAGE+ listMessage[position].senderAvatar).into(holder.binding.ivCheckSeen)
-                    }else{
-                        Glide.with(context).load(R.drawable.avatardefault).into(holder.binding.ivCheckSeen)
-                    }
-                }
-            } else if (message.status == Message.Status.SENDING.ordinal) {
+        if (senderUin == RestClient().getUserId()){
+            if (message.status == Message.Status.SENDING.ordinal){
                 if (holder is SendMessageFooterHolder) {
                     holder.binding.ivCheckSeen.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -215,7 +199,7 @@ class MessageAdapter(
                         )
                     )
                 }
-            } else if (message.status == Message.Status.SENT.ordinal) {
+            }else if (message.status == Message.Status.SENT.ordinal){
                 if (holder is SendMessageFooterHolder) {
                     holder.binding.ivCheckSeen.setImageDrawable(
                         ContextCompat.getDrawable(
@@ -229,31 +213,132 @@ class MessageAdapter(
                         )
                     )
                 }
-            } else if (message.status == Message.Status.SEEN.ordinal && listMessage[position + 1].status != Message.Status.SEEN.ordinal) {
-                if (holder is SendMessageFooterHolder) {
-//                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
-                    holder.binding.ivCheckSeen.setImageDrawable(
-                        ContextCompat.getDrawable(
-                            context, R.drawable.avatardefault
-                        )
-                    )
-                }
-                else if (holder is ImageSenderHolder){
-                    if (listMessage[position].senderAvatar != null){
-                        Glide.with(context).load(ApiConstant.URL_IMAGE+ listMessage[position].senderAvatar).into(holder.binding.ivCheckSeen)
-                    }else{
-                        Glide.with(context).load(R.drawable.avatardefault).into(holder.binding.ivCheckSeen)
+            }else if (message.status == Message.Status.SEEN.ordinal){
+                if (position == listMessage.size - 1 && message.status == Message.Status.SEEN.ordinal){
+                    if (holder is SendMessageFooterHolder) {
+                        if (listMessage[position].senderAvatar != null) {
+                            Glide.with(context)
+                                .load(ApiConstant.URL_IMAGE + listMessage[position].senderAvatar)
+                                .into(holder.binding.ivCheckSeen)
+                        } else {
+                            Glide.with(context).load(R.drawable.avatardefault)
+                                .into(holder.binding.ivCheckSeen)
+                        }
+                    } else if (holder is ImageSenderHolder) {
+                        if (listMessage[position].senderAvatar != null) {
+                            Glide.with(context)
+                                .load(ApiConstant.URL_IMAGE + listMessage[position].senderAvatar)
+                                .into(holder.binding.ivCheckSeen)
+                        } else {
+                            Glide.with(context).load(R.drawable.avatardefault)
+                                .into(holder.binding.ivCheckSeen)
+                        }
                     }
-                }
-            } else {
-                if (holder is SendMessageFooterHolder) {
-                    holder.binding.ivCheckSeen.visibility = View.INVISIBLE
-                }
-                else if (holder is ImageSenderHolder){
-                    holder.binding.ivCheckSeen.visibility = View.INVISIBLE
+                }else if (message.status == Message.Status.SEEN.ordinal && listMessage[position + 1].status != Message.Status.SEEN.ordinal){
+                    if (holder is SendMessageFooterHolder) {
+                        if (listMessage[position].senderAvatar != null) {
+                            Glide.with(context)
+                                .load(ApiConstant.URL_IMAGE + listMessage[position].senderAvatar)
+                                .into(holder.binding.ivCheckSeen)
+                        } else {
+                            Glide.with(context).load(R.drawable.avatardefault)
+                                .into(holder.binding.ivCheckSeen)
+                        }
+                    } else if (holder is ImageSenderHolder) {
+                        if (listMessage[position].senderAvatar != null) {
+                            Glide.with(context)
+                                .load(ApiConstant.URL_IMAGE + listMessage[position].senderAvatar)
+                                .into(holder.binding.ivCheckSeen)
+                        } else {
+                            Glide.with(context).load(R.drawable.avatardefault)
+                                .into(holder.binding.ivCheckSeen)
+                        }
+                    }
+                }else if (message.status == Message.Status.SEEN.ordinal && listMessage[position + 1].status == Message.Status.SEEN.ordinal){
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.ivCheckSeen.visibility = View.INVISIBLE
+                    } else if (holder is ImageSenderHolder) {
+                        holder.binding.ivCheckSeen.visibility = View.INVISIBLE
+                    }
+                }else if(message.status == Message.Status.SEEN.ordinal && message.senderUin != RestClient().getUserId()){
+                    if (holder is SendMessageFooterHolder) {
+                        holder.binding.ivCheckSeen.visibility = View.INVISIBLE
+                    } else if (holder is ImageSenderHolder) {
+                        holder.binding.ivCheckSeen.visibility = View.INVISIBLE
+                    }
                 }
             }
         }
+//        if (senderUin == RestClient().getUserId()) {
+//            if (position == listMessage.size - 1 && message.status == Message.Status.SEEN.ordinal) {
+//                Log.e("LASTMS", message.message.toString())
+//                if (holder is SendMessageFooterHolder) {
+//                    if (listMessage[position].senderAvatar != null){
+//                        Glide.with(context).load(ApiConstant.URL_IMAGE+ listMessage[position].senderAvatar).into(holder.binding.ivCheckSeen)
+//                    }else{
+//                        Glide.with(context).load(R.drawable.avatardefault).into(holder.binding.ivCheckSeen)
+//                    }
+//                }
+//                else if (holder is ImageSenderHolder) {
+//                    if (listMessage[position].senderAvatar != null){
+//                        Glide.with(context).load(ApiConstant.URL_IMAGE+ listMessage[position].senderAvatar).into(holder.binding.ivCheckSeen)
+//                    }else{
+//                        Glide.with(context).load(R.drawable.avatardefault).into(holder.binding.ivCheckSeen)
+//                    }
+//                }
+//            } else if (message.status == Message.Status.SENDING.ordinal) {
+//                if (holder is SendMessageFooterHolder) {
+//                    holder.binding.ivCheckSeen.setImageDrawable(
+//                        ContextCompat.getDrawable(
+//                            holder.itemView.context, R.drawable.ic_check_sending
+//                        )
+//                    )
+//                } else if (holder is ImageSenderHolder) {
+//                    holder.binding.ivCheckSeen.setImageDrawable(
+//                        ContextCompat.getDrawable(
+//                            holder.itemView.context, R.drawable.ic_check_sending
+//                        )
+//                    )
+//                }
+//            } else if (message.status == Message.Status.SENT.ordinal) {
+//                if (holder is SendMessageFooterHolder) {
+//                    holder.binding.ivCheckSeen.setImageDrawable(
+//                        ContextCompat.getDrawable(
+//                            holder.itemView.context, R.drawable.ic_check_seen
+//                        )
+//                    )
+//                } else if (holder is ImageSenderHolder) {
+//                    holder.binding.ivCheckSeen.setImageDrawable(
+//                        ContextCompat.getDrawable(
+//                            holder.itemView.context, R.drawable.ic_check_seen
+//                        )
+//                    )
+//                }
+//            } else if (message.status == Message.Status.SEEN.ordinal && listMessage[position + 1].status != Message.Status.SEEN.ordinal) {
+//                if (holder is SendMessageFooterHolder) {
+////                    Glide.with(context).load(imageUrl).into(holder.binding.ivCheckSeen)
+//                    holder.binding.ivCheckSeen.setImageDrawable(
+//                        ContextCompat.getDrawable(
+//                            context, R.drawable.avatardefault
+//                        )
+//                    )
+//                }
+//                else if (holder is ImageSenderHolder){
+//                    if (listMessage[position].senderAvatar != null){
+//                        Glide.with(context).load(ApiConstant.URL_IMAGE+ listMessage[position].senderAvatar).into(holder.binding.ivCheckSeen)
+//                    }else{
+//                        Glide.with(context).load(R.drawable.avatardefault).into(holder.binding.ivCheckSeen)
+//                    }
+//                }
+//            } else if (message.status == Message.Status.SEEN.ordinal && listMessage[position + 1].status == Message.Status.SEEN.ordinal){
+//                if (holder is SendMessageFooterHolder) {
+//                    holder.binding.ivCheckSeen.visibility = View.INVISIBLE
+//                }
+//                else if (holder is ImageSenderHolder){
+//                    holder.binding.ivCheckSeen.visibility = View.INVISIBLE
+//                }
+//            }
+//        }
         if (getItemViewType(position) != TypeView.FIRST_MESSAGE.ordinal) {
             if (senderUin == RestClient().getUserId()) {
                 if (position < listMessage.size - 1 && position > 0) {
