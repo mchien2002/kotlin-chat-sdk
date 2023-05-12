@@ -159,8 +159,10 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                                         gson.toJson(response.body()?.data),
                                         typeOnline
                                     )
-                                status = userTemp.status
-                                lastTimeOnline = userTemp.lastTimeOnline
+                                if (userTemp!=null){
+                                    status = userTemp.status
+                                    lastTimeOnline = userTemp.lastTimeOnline
+                                }
                                 if (userTemp.status == UserOnlineStatus.UserStatus.ONLINE.ordinal) {
                                     holder.ivOnline.visibility = View.VISIBLE
                                 } else {
@@ -179,9 +181,9 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 intent.putExtra("avatar", imageUrl)
                 intent.putExtra("username", username)
                 //intent.putExtra("userId", userId)
-//                intent.putExtra("status", status)
-//                val longDate = lastTimeOnline?.time
-//                intent.putExtra("lastTimeOnline", longDate)
+                intent.putExtra("status", status)
+                val longDate = lastTimeOnline?.time
+                intent.putExtra("lastTimeOnline", longDate)
                 val senderUin = itemObject.lastMessage!!.senderUin
                 if (senderUin != RestClient().getUserId()) {
                     if (itemObject.lastMessage!!.status != Message.Status.SEEN.ordinal) {

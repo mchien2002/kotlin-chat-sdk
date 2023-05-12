@@ -43,6 +43,7 @@ class BoxChatActivity : AppCompatActivity() {
 
 
     lateinit var rvMessage: RecyclerView
+    lateinit var context: Context
 
     var isBottom : Boolean = false
 
@@ -91,10 +92,6 @@ class BoxChatActivity : AppCompatActivity() {
     companion object {
         var messageAdapter: MessageAdapter? = null
         var groupId: String? = null
-        var userId: String? = null
-        lateinit var context: Context
-
-
     }
 
 
@@ -230,6 +227,8 @@ class BoxChatActivity : AppCompatActivity() {
         btnBack.setOnClickListener {
             messageAdapter = null
             finish()
+            groupId = null
+
 //            val intent: Intent = Intent(context, HomeActivity::class.java)
 //            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
 //            context.startActivity(intent)
