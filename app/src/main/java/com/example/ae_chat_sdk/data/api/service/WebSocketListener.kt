@@ -151,43 +151,13 @@ class WebSocketListener : WebSocketListener() {
 
                 val members = jsonObject.getAsJsonObject("payload").getAsJsonObject("group")
                     .getAsJsonArray("members").map { it.asString }
+                BoxChatActivity.groupId = groupId
                 if (firstMessage != null) {
                     firstMessage!!.groupId = groupId
                     sendMessage(myWebSocket, firstMessage!!)
                 }
-                var imageUrl = ""
-                var username = ""
-                for (item in members){
-                    val call = UserRepository().getUserProfile(RestClient().getToken(), item)
-                    call.enqueue(object : Callback<MyResponse> {
-                        override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                            Log.e("CCCCC", t.toString())
-                        }
-
-                        override fun onResponse(
-                            call: Call<MyResponse>, response: retrofit2.Response<MyResponse>
-                        ) {
-                            val gson = Gson()
-                            val type = object : TypeToken<User>() {}.type
-                            val userTemp =
-                                gson.fromJson<User>(gson.toJson(response.body()?.data), type)
-                            imageUrl = userTemp.avatar.toString()
-                            username = userTemp.userName
-                            Log.e("HAHAHAHAH",imageUrl + " kkkkk " + username)
-                        }
-                    })
-                    break
-                }
-
-                val context = BoxChatActivity.context
-                BoxChatActivity.messageAdapter = null
-                BoxChatActivity().finish()
-                val intent = Intent(context, BoxChatActivity::class.java)
-                intent.putExtra("GroupId", groupId)
-                intent.putExtra("avatar", imageUrl)
-                intent.putExtra("username", username)
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(intent)
+                Log.e("GROUPID7",BoxChatActivity.groupId.toString())
+                (BoxChatActivity.messageAdapter!!.appCompatActivity as BoxChatActivity).reCreateActivity()
             })
         }
 

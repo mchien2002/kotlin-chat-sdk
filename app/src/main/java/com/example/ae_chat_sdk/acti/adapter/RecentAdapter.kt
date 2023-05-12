@@ -106,6 +106,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
             val type = object : TypeToken<User>() {}.type
             val myUser: User = AppStorage.getInstance(context).getUserLocal()
             var username = ""
+            var userId = ""
             var status: Int? = null
             var statusValue = 2
             var lastTimeOnline: Date? = null
@@ -128,6 +129,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                                     gson.fromJson<User>(gson.toJson(response.body()?.data), type)
                                 holder.tvUsername.text = userTemp.fullName
                                 username = userTemp.userName
+                                userId = userTemp.userId
                                 if (userTemp.avatar != null) {
                                     imageUrl = ApiConstant.URL_IMAGE + userTemp.avatar
                                     Glide.with(context).load(imageUrl).into(holder.ivAvatarRecent)
@@ -176,9 +178,10 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 intent.putExtra("GroupId", itemObject.groupId)
                 intent.putExtra("avatar", imageUrl)
                 intent.putExtra("username", username)
-                intent.putExtra("status", status)
-                val longDate = lastTimeOnline?.time
-                intent.putExtra("lastTimeOnline", longDate)
+                //intent.putExtra("userId", userId)
+//                intent.putExtra("status", status)
+//                val longDate = lastTimeOnline?.time
+//                intent.putExtra("lastTimeOnline", longDate)
                 val senderUin = itemObject.lastMessage!!.senderUin
                 if (senderUin != RestClient().getUserId()) {
                     if (itemObject.lastMessage!!.status != Message.Status.SEEN.ordinal) {

@@ -22,12 +22,17 @@ import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.RestClient
+import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
+import com.google.gson.reflect.TypeToken
 import de.hdodenhof.circleimageview.CircleImageView
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -43,7 +48,6 @@ class BoxChatActivity : AppCompatActivity() {
 
     lateinit var btnBack: ImageButton
 
-    //    lateinit var btnNotification: ImageButton
     lateinit var btnSendMessage: ImageButton
     lateinit var ibImage: ImageButton
     lateinit var ibMic: ImageButton
@@ -66,10 +70,31 @@ class BoxChatActivity : AppCompatActivity() {
 
     private val webSocketListener: WebSocketListener = WebSocketListener()
 
+    private fun init() {
+        btnBack = findViewById(R.id.ibBack)
+        btnSendMessage = findViewById(R.id.ibSendMessage)
+        rvMessage = findViewById(R.id.rvMessage)
+        ibImage = findViewById(R.id.ibImage)
+        ibMic = findViewById(R.id.ibMic)
+        ibExpand = findViewById(R.id.ibExpand)
+        tvActiveStatus = findViewById(R.id.tvActiveStatus)
+        ivAvatar = findViewById(R.id.ivAvatar)
+        tvUsername = findViewById(R.id.tvUsername)
+        etInputMessage = findViewById(R.id.etInputMessage)
+        ivOnline = findViewById(R.id.ivOnline)
+        progressBar = findViewById(R.id.progressBar)
+        setOnClickListener()
+        setOnFocusChangeListener()
+        addTextChangedListener()
+    }
+
     companion object {
         var messageAdapter: MessageAdapter? = null
         var groupId: String? = null
+        var userId: String? = null
         lateinit var context: Context
+
+
     }
 
 
@@ -79,6 +104,7 @@ class BoxChatActivity : AppCompatActivity() {
 
         hideSystemUI()
 
+
         setContentView(R.layout.activity_box_chat)
         context = applicationContext
 
@@ -87,7 +113,9 @@ class BoxChatActivity : AppCompatActivity() {
         init()
         setProfileReceiver()
 
-        groupId = intent.getStringExtra("GroupId")
+        if (groupId==null){
+            groupId = intent.getStringExtra("GroupId")
+        }
         messageId = intent.getStringExtra("lastmessage").toString()
         if(groupId != null){
             webSocketListener.receiveMessage(HomeActivity.webSocket, groupId!!)
@@ -95,6 +123,8 @@ class BoxChatActivity : AppCompatActivity() {
                 webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
             }
             showMessage()
+        }else{
+            messageAdapter = MessageAdapter(context,this,"")
         }
 
         etInputMessage.requestFocus()
@@ -123,27 +153,13 @@ class BoxChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun init() {
-        btnBack = findViewById(R.id.ibBack)
-//        btnNotification = findViewById(R.id.ibNotification)
-        btnSendMessage = findViewById(R.id.ibSendMessage)
-        rvMessage = findViewById(R.id.rvMessage)
-        ibImage = findViewById(R.id.ibImage)
-        ibMic = findViewById(R.id.ibMic)
-        ibExpand = findViewById(R.id.ibExpand)
-        tvActiveStatus = findViewById(R.id.tvActiveStatus)
-        ivAvatar = findViewById(R.id.ivAvatar)
-        tvUsername = findViewById(R.id.tvUsername)
-        etInputMessage = findViewById(R.id.etInputMessage)
-        ivOnline = findViewById(R.id.ivOnline)
-        progressBar = findViewById(R.id.progressBar)
-        setOnClickListener()
-        setOnFocusChangeListener()
-        addTextChangedListener()
+    public fun reCreateActivity(){
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+        recreate();
     }
 
-    private fun showMessage() {
-        messageAdapter = MessageAdapter(context, groupId!!)
+    public fun showMessage() {
+        messageAdapter = MessageAdapter(context,this, groupId!!)
         val linearLayoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvMessage.layoutManager = linearLayoutManager
         rvMessage.adapter = messageAdapter
@@ -251,9 +267,10 @@ class BoxChatActivity : AppCompatActivity() {
                 message.senderUin = myUser.userId
                 message.senderAvatar = myUser.avatar.toString()
                 message.senderName = myUser.userName
-                messageAdapter!!.addMessageSeeding(message)
+                //messageAdapter!!.addMessageSeeding(message)
                 message.createdAt = Date()
                 WebSocketListener.createGroup(newList,Message.GroupType.PUBLIC.ordinal,null,userIdMe,userIdMe,message)
+                etInputMessage.text.clear()
             }
         }
 

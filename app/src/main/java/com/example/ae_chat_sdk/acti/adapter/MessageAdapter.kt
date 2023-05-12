@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -27,7 +28,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
-class MessageAdapter(val context: Context, val groupId: String) :
+class MessageAdapter(val context: Context,val appCompatActivity: AppCompatActivity, val groupId: String) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val webSocketListener: WebSocketListener = WebSocketListener()
     var listMessage: ArrayList<Message> = ArrayList()
@@ -375,13 +376,15 @@ class MessageAdapter(val context: Context, val groupId: String) :
                 listMessage.add(message)
                 webSocketListener.seenMessage(HomeActivity.webSocket, message.messageId!!)
             }
-            else {
+            else if (listMessage.size>0 ){
                 for (i in listMessage.indices.reversed()) {
-                    if (listMessage[i].createdAt.toString() == message.createdAt.toString() && listMessage[i].status == Message.Status.SENDING.ordinal) {
+                    if (listMessage[i].createdAt.toString() == message.createdAt.toString() && listMessage[i].status == Message.Status.SENDING.ordinal && listMessage[i].type != Message.Type.FIRST_MESSAGE.ordinal) {
                         listMessage[i] = message
                         break
                     }
                 }
+            }else{
+                listMessage.add(message)
             }
             notifyDataSetChanged()
         }
