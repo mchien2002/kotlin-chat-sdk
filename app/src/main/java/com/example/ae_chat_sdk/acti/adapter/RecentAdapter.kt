@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
@@ -33,7 +34,7 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.util.*
 
-class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.ViewHolder>() {
+class RecentAdapter(val progressBar: ProgressBar, val context: Context) : RecyclerView.Adapter<RecentAdapter.ViewHolder>() {
 
     var listRecent: ArrayList<Group> = ArrayList()
 
@@ -63,8 +64,6 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
     @SuppressLint("SuspiciousIndentation")
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        GlobalScope.launch(Dispatchers.Main) {
-
             if (listRecent.isEmpty()) {
                 Log.e("CCCCC", "UUUUUUUUUUUUUUUUU")
             }
@@ -196,7 +195,7 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
             })
-        }
+
     }
 
     @SuppressLint("NotifyDataSetChanged")
@@ -207,7 +206,9 @@ class RecentAdapter(val context: Context) : RecyclerView.Adapter<RecentAdapter.V
 
     @SuppressLint("NotifyDataSetChanged")
     fun getListgroup(group: ArrayList<Group>) {
+        progressBar.visibility=View.VISIBLE
         this.listRecent = group
+        progressBar.visibility=View.GONE
         notifyDataSetChanged()
     }
 }

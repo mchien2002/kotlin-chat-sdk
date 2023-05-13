@@ -51,17 +51,25 @@
                 android:background="@drawable/ic_play"
                 tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-            <SeekBar
-                android:id="@+id/sbVoice"
+<!--            <SeekBar-->
+<!--                android:id="@+id/sbVoice"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:minHeight="40dp"-->
+<!--                android:outlineProvider="none"-->
+<!--                android:padding="10dp"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:progressBackgroundTint="@color/Primary95"-->
+<!--                android:progressTint="@color/Primary95"-->
+<!--                android:thumbTint="@color/Primary95" />-->
+            <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:minHeight="40dp"
-                android:outlineProvider="none"
-                android:padding="10dp"
-                android:layout_gravity="center_vertical"
-                android:progressBackgroundTint="@color/Primary95"
-                android:progressTint="@color/Primary95"
-                android:thumbTint="@color/Primary95" />
+                android:layout_height="match_parent"
+                android:id="@+id/animation_view"
+                app:lottie_rawRes="@raw/audio_wave_sender"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:visibility="visible"/>
         </LinearLayout>
 
         <de.hdodenhof.circleimageview.CircleImageView

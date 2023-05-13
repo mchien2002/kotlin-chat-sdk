@@ -60,17 +60,25 @@
                 android:backgroundTint="@color/Secondary10"
                 tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-            <SeekBar
-                android:id="@+id/sbVoice"
+<!--            <SeekBar-->
+<!--                android:id="@+id/sbVoice"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:minHeight="40dp"-->
+<!--                android:outlineProvider="none"-->
+<!--                android:padding="10dp"-->
+<!--                android:progressBackgroundTint="@color/Secondary10"-->
+<!--                android:progressTint="@color/Secondary10"-->
+<!--                android:thumbTint="@color/Secondary10"-->
+<!--                android:layout_gravity="center_vertical"/>-->
+            <com.airbnb.lottie.LottieAnimationView
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:minHeight="40dp"
-                android:outlineProvider="none"
-                android:padding="10dp"
-                android:progressBackgroundTint="@color/Secondary10"
-                android:progressTint="@color/Secondary10"
-                android:thumbTint="@color/Secondary10"
-                android:layout_gravity="center_vertical"/>
+                android:layout_height="match_parent"
+                android:id="@+id/animation_view"
+                app:lottie_rawRes="@raw/audio_wave_receiver"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:visibility="visible"/>
         </LinearLayout>
 
 

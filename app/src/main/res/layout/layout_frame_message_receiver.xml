@@ -83,6 +83,37 @@
                 android:scaleType="centerCrop"
                 android:src="@drawable/image_default" />
         </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/llAnimation"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_message_receive_four">
+
+            <ImageButton
+                android:id="@+id/ibPlay"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:background="@drawable/ic_play"
+                android:backgroundTint="@color/Black"
+                tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <com.airbnb.lottie.LottieAnimationView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/animation_view"
+                app:lottie_rawRes="@raw/audio_wave_receiver"
+                app:lottie_autoPlay="true"
+                app:lottie_loop="true"
+                android:visibility="visible"/>
+        </LinearLayout>
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

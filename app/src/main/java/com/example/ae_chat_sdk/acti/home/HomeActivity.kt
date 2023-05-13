@@ -4,11 +4,12 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.InputMethodManager
@@ -21,14 +22,13 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.core.widget.addTextChangedListener
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.ae_chat_sdk.R
-import com.example.ae_chat_sdk.acti.adapter.OnstreamAdapter
 import com.example.ae_chat_sdk.acti.adapter.RecentAdapter
+import com.example.ae_chat_sdk.acti.adapter.SearchAdpater
 import com.example.ae_chat_sdk.acti.intro.LoginActivity
 import com.example.ae_chat_sdk.acti.profile.ProfileActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
@@ -61,6 +61,7 @@ class HomeActivity : AppCompatActivity() {
     // RecyclerView Message Home
     lateinit var rvOnstream: RecyclerView
     lateinit var rvRecent: RecyclerView
+    lateinit var rvSearch: RecyclerView
 
     lateinit var btnLogOut: Button
     lateinit var swState: SwitchCompat
@@ -86,6 +87,7 @@ class HomeActivity : AppCompatActivity() {
 
 
     var draggingUp: Boolean = false
+    var onSearch: Boolean = false
 
 //    appStorage.saveData("User", gson.toJson(response.body()?.data))
 
@@ -115,6 +117,7 @@ class HomeActivity : AppCompatActivity() {
         connectSocket()
         init()
         checkStatus()
+        addTextChangeListener()
         setButtonOnClickListener()
         searchUser("")
         renderDataRecyclerView()
@@ -167,34 +170,38 @@ class HomeActivity : AppCompatActivity() {
 
     private fun searchUser(searchText: String) {
         val token = RestClient().getToken()
+        progressBar.visibility = View.VISIBLE
+
         val call = UserRepository().searchUser(token, searchText)
         call.enqueue(object : Callback<ApiResponse> {
             override fun onFailure(call: Call<ApiResponse>, t: Throwable) {
-                Toast.makeText(context, "Không thể gửi mã xác thực!", Toast.LENGTH_SHORT).show()
-
+                Toast.makeText(context, "Đã xảy ra lỗi!", Toast.LENGTH_SHORT).show()
+                progressBar.visibility = View.GONE
             }
+
             override fun onResponse(
                 call: Call<ApiResponse>, response: Response<ApiResponse>
             ) {
                 if (response.code() == 403) {
                     setStartLoginActivity()
-                    val appStorage = context?.let { AppStorage.getInstance(it) }
-                    val userString = appStorage?.clearData()
+                    progressBar.visibility = View.GONE
                 } else if (response.code() == 200) {
                     val gson = Gson()
                     val type = object : TypeToken<List<User>>() {}.type
-                    val user = gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
+                    val user =
+                        gson.fromJson<List<User>>(gson.toJson(response.body()?.data), type)
                     if (user != null) {
-                        val listUserId: List<User> = user
-                        rvOnstream.layoutManager =
-                            LinearLayoutManager(context, RecyclerView.HORIZONTAL, false)
-                        rvOnstream.adapter = OnstreamAdapter(listUserId as List<User>, context)
+                        val listUser: List<User> = user
+                        rvSearch.layoutManager =
+                            LinearLayoutManager(context, RecyclerView.VERTICAL, false)
+                        rvSearch.adapter = SearchAdpater(listUser, context)
                     }
+                    progressBar.visibility = View.GONE
+
                 }
 
             }
         })
-
     }
 
     private fun setButtonOnClickListener() {
@@ -232,17 +239,12 @@ class HomeActivity : AppCompatActivity() {
         rLayoutOnStream = findViewById(R.id.rlOnstream)
         rvOnstream = findViewById(R.id.rvHorizonalOnstream)
         rvRecent = findViewById(R.id.rvVerticalRecent)
+        rvSearch = findViewById(R.id.rvHorizonalSearch)
 
         bottomSheetHomeBehavior = BottomSheetBehavior.from(ctLayoutBottomSheetHome)
 
         etSearch = findViewById(R.id.etInputSearch)
         etSearch.clearFocus()
-
-        etSearch.addTextChangedListener {
-            it?.let { string ->
-                searchUser(etSearch.text.toString())
-            }
-        }
 
         avatarUser = findViewById(R.id.ivAvatar)
 
@@ -257,6 +259,45 @@ class HomeActivity : AppCompatActivity() {
         swState.isChecked = appStorage.getSWStatus()
 
         progressBar = findViewById(R.id.progressBar)
+    }
+
+    private fun addTextChangeListener() {
+        etSearch.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable?) {
+                if (etSearch.text.toString() == "") {
+                    onSearch = false
+                    findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+                    findViewById<RelativeLayout>(R.id.rlListSearch).visibility = View.GONE
+
+                    etSearch.clearFocus()
+                } else {
+                    onSearch = true
+                    findViewById<RelativeLayout>(R.id.rlHome).visibility = View.GONE
+                    findViewById<RelativeLayout>(R.id.rlListSearch).visibility = View.VISIBLE
+                    searchUser(etSearch.text.toString())
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+            }
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            }
+        })
+    }
+
+
+    override fun onBackPressed() {
+        if (etSearch.visibility == View.VISIBLE) {
+            onSearch = false
+            findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+            findViewById<RelativeLayout>(R.id.rlListSearch).visibility = View.GONE
+
+            etSearch.clearFocus()
+        } else {
+            super.onBackPressed()
+
+        }
     }
 
     private fun setBottomSheetBehaviorHome() {
@@ -321,8 +362,6 @@ class HomeActivity : AppCompatActivity() {
         tvPagename.text = myUser.userName.toString()
         tvUserName.text = myUser.userName.toString()
         tvEmail.text = myUser.email.toString()
-        val appStorage = AppStorage.getInstance(context)
-//        val imgLocal = appStorage?.getData("avatar", "").toString()
         val imageUrl = ApiConstant.URL_IMAGE + myUser.avatar
         Glide.with(this).load(imageUrl).skipMemoryCache(true)
             .diskCacheStrategy(DiskCacheStrategy.NONE)
@@ -332,15 +371,11 @@ class HomeActivity : AppCompatActivity() {
     }
 
     private fun renderDataRecyclerView() {
-        progressBar.visibility = View.VISIBLE
-        recentAdapter = RecentAdapter(context)
+        recentAdapter = RecentAdapter(progressBar,context)
         rvRecent.layoutManager = LinearLayoutManager(context, RecyclerView.VERTICAL, false)
         rvRecent.adapter = recentAdapter
         recentAdapter.notifyDataSetChanged()
-//        progressBar.visibility = View.GONE
-        Handler(Looper.getMainLooper()).postDelayed({
-            progressBar.visibility = View.GONE
-        }, 3000)
+
     }
 
     private fun setStartLoginActivity() {
