@@ -88,7 +88,7 @@ class WebSocketListener : WebSocketListener() {
                 }
 
                 if (mess != null && BoxChatActivity.messageAdapter != null) {
-                    BoxChatActivity.messageAdapter!!.getMessages(mess as ArrayList<Message>)
+                    BoxChatActivity.messageAdapter!!.setMessages(mess as ArrayList<Message>)
                 }
             })
         } else if (response.event == SocketRequestType.SOCKET_REQUEST_CREATE_MESSAGE) {
