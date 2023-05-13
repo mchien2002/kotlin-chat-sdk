@@ -3,6 +3,7 @@ package com.example.ae_chat_sdk.acti.adapter
 import android.content.Context
 import android.content.Intent
 import android.media.MediaPlayer
+import android.net.Uri
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
@@ -329,9 +330,10 @@ class MessageAdapter(
                     val gson = Gson()
                     val video = gson.fromJson(gson.toJson(message.attachment), Video::class.java)
                     val url = ApiConstant.URL_VIDEO + video.url
-                    Log.d("HSJDHFKS", url)
+                    val videoUri = Uri.parse(url)
+                    Log.d("HSJDHFKS", videoUri.toString())
 
-                    holder.vvVideoMessage.setVideoPath(url)
+                    holder.vvVideoMessage.setVideoPath(videoUri.toString())
                     holder.vvVideoMessage.seekTo(1);
                     holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
                         if (videoPlaying) {
