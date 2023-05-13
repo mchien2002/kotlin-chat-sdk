@@ -2,18 +2,22 @@ package com.example.ae_chat_sdk.acti.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.media.MediaPlayer
 import android.os.Build
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
@@ -37,9 +41,16 @@ class MessageAdapter(
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val webSocketListener: WebSocketListener = WebSocketListener()
     var listMessage: ArrayList<Message> = ArrayList()
+    var mediaPlayer: MediaPlayer? = null
 
     enum class TypeView(val typeView: Int) {
-        FIRST_MESSAGE(0), TEXT_SEND(1), TEXT_RECEIVE(2), IMG_SEND(3), IMG_RECEVIE(4)
+        FIRST_MESSAGE(0),
+        TEXT_SEND(1),
+        TEXT_RECEIVE(2),
+        IMG_SEND(3),
+        IMG_RECEVIE(4),
+        AUDIO_SEND(5),
+        AUDIO_RECEIVE(6)
     }
 
     inner class MessageSenderHolder(private val binding: LayoutFrameMessageSenderBinding) :
@@ -48,11 +59,17 @@ class MessageAdapter(
         lateinit var ivCheckSeen: CircleImageView
         lateinit var ivImageMessage: ImageView
         lateinit var cvImageMessage: CardView
-        fun bind(data: Message) {
+        lateinit var llAudio: LinearLayout
+        lateinit var ibPlay: ImageButton
+        lateinit var aniAudio: LottieAnimationView
+        fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivCheckSeen = binding.ivCheckSeen
             ivImageMessage = binding.ivImageMessage
             cvImageMessage = binding.cvImageMessage
+            llAudio = binding.llAudio
+            ibPlay = binding.ibPlay
+            aniAudio = binding.animationView
         }
     }
 
@@ -62,11 +79,17 @@ class MessageAdapter(
         lateinit var ivAvatar: CircleImageView
         lateinit var ivImageMessage: ImageView
         lateinit var cvImageMessage: CardView
+        lateinit var llAudio: LinearLayout
+        lateinit var ibPlay: ImageButton
+        lateinit var aniAudio: LottieAnimationView
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivAvatar = binding.ivAvatar
             ivImageMessage = binding.ivImageMessage
             cvImageMessage = binding.cvImageMessage
+            llAudio = binding.llAudio
+            ibPlay = binding.ibPlay
+            aniAudio = binding.animationView
         }
     }
 
@@ -80,14 +103,16 @@ class MessageAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TypeView.TEXT_SEND.ordinal,
-            TypeView.IMG_SEND.ordinal -> {
+            TypeView.IMG_SEND.ordinal,
+            TypeView.AUDIO_SEND.ordinal -> {
                 val view = LayoutFrameMessageSenderBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
                 MessageSenderHolder(view)
             }
             TypeView.TEXT_RECEIVE.ordinal,
-            TypeView.IMG_RECEVIE.ordinal -> {
+            TypeView.IMG_RECEVIE.ordinal,
+            TypeView.AUDIO_RECEIVE.ordinal -> {
                 val view = LayoutFrameMessageReceiverBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
@@ -109,6 +134,7 @@ class MessageAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message: Message = listMessage[position]
         val senderUin = message.senderUin
+        var audioPlaying = false
 
         when (getItemViewType(position)) {
             TypeView.FIRST_MESSAGE.ordinal -> {
@@ -120,12 +146,7 @@ class MessageAdapter(
 
                 holder.tvMessageContent.text = message.message
                 holder.ivAvatar.visibility = View.INVISIBLE
-                if (message.senderAvatar != null) {
-                    Glide.with(context).load(ApiConstant.URL_IMAGE + message.senderAvatar)
-                        .into(holder.ivAvatar)
-                } else {
-                    Glide.with(context).load(R.drawable.avatardefault).into(holder.ivAvatar)
-                }
+
 
                 // Edit frame
                 if (position < listMessage.size - 1 && position > 0) {
@@ -184,12 +205,6 @@ class MessageAdapter(
                 (holder as MessageReceiverHolder).bind()
                 holder.cvImageMessage.visibility = View.VISIBLE
 
-                if (message.senderAvatar != null) {
-                    Glide.with(context).load(ApiConstant.URL_IMAGE + message.senderAvatar)
-                        .into(holder.ivAvatar)
-                } else {
-                    Glide.with(context).load(R.drawable.avatardefault).into(holder.ivAvatar)
-                }
                 holder.ivAvatar.visibility = View.INVISIBLE
                 if (message.attachment == null) {
                     holder.ivImageMessage.setImageDrawable(
@@ -215,8 +230,75 @@ class MessageAdapter(
                     }
                 }
             }
+            TypeView.AUDIO_RECEIVE.ordinal -> {
+                (holder as MessageReceiverHolder).bind()
+                holder.llAudio.visibility = View.VISIBLE
+                holder.ibPlay.setOnClickListener(View.OnClickListener {
+                    if (audioPlaying) {
+                        mediaPlayer?.stop()
+                        mediaPlayer?.release()
+                        mediaPlayer = null
+                        audioPlaying = false
+                        holder.ibPlay.background =
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.ic_play
+                            )
+                        holder.aniAudio.pauseAnimation()
+                    } else {
+                        val gson = Gson()
+                        val img = gson.fromJson(gson.toJson(message.attachment), Image::class.java)
+                        val url = ApiConstant.URL_AUDIO + img.url
+
+                        GlobalScope.launch(Dispatchers.Main) {
+                            mediaPlayer = MediaPlayer().apply {
+                                setDataSource(url)
+                                prepareAsync()
+                                setOnCompletionListener {
+                                    this.stop()
+                                    this.release()
+                                    mediaPlayer = null
+                                    audioPlaying = false
+                                    holder.ibPlay.background =
+                                        ContextCompat.getDrawable(
+                                            context,
+                                            R.drawable.ic_play
+                                        )
+
+                                    holder.aniAudio.pauseAnimation()
+                                }
+                                setOnErrorListener { mediaPlayer, i, i2 ->
+                                    audioPlaying = false
+                                    holder.ibPlay.background =
+                                        ContextCompat.getDrawable(
+                                            context,
+                                            R.drawable.ic_play
+                                        )
+
+                                    holder.aniAudio.pauseAnimation()
+                                    true
+                                }
+                                setOnPreparedListener { mediaPlayer ->
+                                    mediaPlayer.start()
+                                }
+
+                            }
+
+                        }
+
+                        audioPlaying = true
+                        holder.ibPlay.background =
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.ic_pause
+                            )
+                        holder.aniAudio.playAnimation()
+                    }
+
+                })
+            }
             TypeView.TEXT_SEND.ordinal -> {
-                (holder as MessageSenderHolder).bind(message)
+                (holder as MessageSenderHolder).bind()
                 holder.tvMessageContent.visibility = View.VISIBLE
 
                 holder.tvMessageContent.text = message.message
@@ -276,7 +358,7 @@ class MessageAdapter(
                 }
             }
             TypeView.IMG_SEND.ordinal -> {
-                (holder as MessageSenderHolder).bind(message)
+                (holder as MessageSenderHolder).bind()
                 holder.cvImageMessage.visibility = View.VISIBLE
 
                 if (message.attachment == null) {
@@ -304,6 +386,75 @@ class MessageAdapter(
                             .into(holder.ivImageMessage)
                     }
                 }
+            }
+            TypeView.AUDIO_SEND.ordinal -> {
+                (holder as MessageSenderHolder).bind()
+                Log.d("CHKADDFSK", message.attachment.toString())
+
+                holder.llAudio.visibility = View.VISIBLE
+                holder.ibPlay.setOnClickListener(View.OnClickListener {
+                    if (audioPlaying) {
+                        mediaPlayer?.stop()
+                        mediaPlayer?.release()
+                        mediaPlayer = null
+                        audioPlaying = false
+                        holder.ibPlay.background =
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.ic_play
+                            )
+
+                        holder.aniAudio.pauseAnimation()
+                    } else {
+                        val gson = Gson()
+                        val img = gson.fromJson(gson.toJson(message.attachment), Image::class.java)
+                        val url = ApiConstant.URL_AUDIO + img.url
+                        GlobalScope.launch(Dispatchers.Main) {
+                            mediaPlayer = MediaPlayer().apply {
+                                setDataSource(url)
+                                prepareAsync()
+                                setOnCompletionListener {
+                                    this.stop()
+                                    this.release()
+                                    mediaPlayer = null
+                                    audioPlaying = false
+                                    holder.ibPlay.background =
+                                        ContextCompat.getDrawable(
+                                            context,
+                                            R.drawable.ic_play
+                                        )
+
+                                    holder.aniAudio.pauseAnimation()
+                                }
+                                setOnErrorListener { mediaPlayer, i, i2 ->
+                                    audioPlaying = false
+                                    holder.ibPlay.background =
+                                        ContextCompat.getDrawable(
+                                            context,
+                                            R.drawable.ic_play
+                                        )
+
+                                    holder.aniAudio.pauseAnimation()
+                                    true
+                                }
+                                setOnPreparedListener { mediaPlayer ->
+                                    mediaPlayer.start()
+                                }
+
+                            }
+
+                        }
+
+                        audioPlaying = true
+                        holder.ibPlay.background =
+                            ContextCompat.getDrawable(
+                                context,
+                                R.drawable.ic_pause
+                            )
+                        holder.aniAudio.playAnimation()
+                    }
+
+                })
             }
         }
 
@@ -347,6 +498,10 @@ class MessageAdapter(
         }
         if (holder is MessageReceiverHolder) {
             holder.ivAvatar.visibility = View.INVISIBLE
+            Glide.with(context).load(ApiConstant.URL_IMAGE + message.senderAvatar)
+                .placeholder(R.drawable.avatardefault).error(R.drawable.avatardefault)
+                .into(holder.ivAvatar)
+
             if (position < listMessage.size - 1 && position > 0) {
                 var messAfter = listMessage[position + 1]
                 if (messAfter.senderUin != senderUin)
@@ -372,11 +527,13 @@ class MessageAdapter(
             when (ms.type?.toFloat()!!.toInt()) {
                 Message.Type.TEXT.ordinal -> return TypeView.TEXT_SEND.ordinal
                 Message.Type.IMAGE.ordinal -> return TypeView.IMG_SEND.ordinal
+                Message.Type.AUDIO.ordinal -> return TypeView.AUDIO_SEND.ordinal
             }
         } else if (ms.senderUin != RestClient().getUserId()) {
             when (ms.type?.toFloat()!!.toInt()) {
                 Message.Type.TEXT.ordinal -> return TypeView.TEXT_RECEIVE.ordinal
                 Message.Type.IMAGE.ordinal -> return TypeView.IMG_RECEVIE.ordinal
+                Message.Type.AUDIO.ordinal -> return TypeView.AUDIO_RECEIVE.ordinal
             }
         }
         return 0

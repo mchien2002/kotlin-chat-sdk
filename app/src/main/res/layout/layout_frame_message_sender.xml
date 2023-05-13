@@ -31,7 +31,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeMessage"
-        android:paddingStart="45dp">
+        android:paddingStart="110dp">
 
         <TextView
             android:id="@+id/tvMessageContent"
@@ -74,7 +74,7 @@
                 android:src="@drawable/image_default" />
         </androidx.cardview.widget.CardView>
         <LinearLayout
-            android:id="@+id/llAnimation"
+            android:id="@+id/llAudio"
             android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="45dp"
@@ -82,14 +82,16 @@
             android:layout_marginTop="2dp"
             android:layout_marginEnd="5dp"
             android:layout_weight="1"
-            android:background="@drawable/bg_message_send_four">
+            android:clickable="true"
+            android:background="@drawable/bg_message_send_four"
+            android:focusable="true">
 
             <ImageButton
                 android:id="@+id/ibPlay"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/ic_play"
                 tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
@@ -109,9 +111,9 @@
                 android:layout_height="match_parent"
                 android:id="@+id/animation_view"
                 app:lottie_rawRes="@raw/audio_wave_sender"
-                app:lottie_autoPlay="true"
                 app:lottie_loop="true"
-                android:visibility="visible"/>
+                android:visibility="visible"
+                app:lottie_autoPlay="false" />
         </LinearLayout>
 
 

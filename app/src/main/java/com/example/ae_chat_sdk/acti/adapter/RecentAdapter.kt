@@ -26,9 +26,6 @@ import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.DateTimeUtil
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -133,7 +130,9 @@ class RecentAdapter(val progressBar: ProgressBar, val context: Context) : Recycl
                                 }
                                 if (userTemp.avatar != null) {
                                     imageUrl = ApiConstant.URL_IMAGE + userTemp.avatar
-                                    Glide.with(context).load(imageUrl).into(holder.ivAvatarRecent)
+                                    Glide.with(context).load(imageUrl)
+                                        .placeholder(R.drawable.avatardefault)
+                                        .error(R.drawable.avatardefault).into(holder.ivAvatarRecent)
                                 }
                             }
                         })

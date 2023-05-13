@@ -10,6 +10,8 @@ import android.media.MediaRecorder
 import android.net.Uri
 import android.os.Build.*
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -239,13 +241,13 @@ class BoxChatActivity : AppCompatActivity() {
     @RequiresApi(VERSION_CODES.O)
     private fun setOnClickListener() {
         btnBack.setOnClickListener {
+            messageAdapter?.mediaPlayer?.stop()
+            messageAdapter?.mediaPlayer?.release()
+            messageAdapter?.mediaPlayer = null
             messageAdapter = null
             finish()
             groupId = null
 
-//            val intent: Intent = Intent(context, HomeActivity::class.java)
-//            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//            context.startActivity(intent)
         }
 
         btnSendMessage.setOnClickListener {
@@ -339,9 +341,32 @@ class BoxChatActivity : AppCompatActivity() {
         val btnDelete: ImageButton = view.findViewById(R.id.ibDelete)
         val btnSendAudio: ImageButton = view.findViewById(R.id.ibSend)
         val lotMic: LottieAnimationView = view.findViewById(R.id.animation_view)
+        val tvCountDown: TextView = view.findViewById(R.id.tvCountdown)
+        var time = 0
+        var handler = Handler(Looper.getMainLooper())
+        var runnable: Runnable = object : Runnable {
+            override fun run() {
+                time++
+                val minutes = (time % 3600) / 60
+                val seconds = time % 60
+                val timeString = String.format("%02d:%02d", minutes, seconds)
+                if (time > 60) {
+                    onMic = false
+                    btnSendAudio.visibility = View.VISIBLE
+                    btnMic.visibility = View.VISIBLE
+                    lotMic.visibility = View.GONE
+                    stopRecording()
+                    return
+                }
+                tvCountDown.text = timeString
+                handler.postDelayed(this, 1000)
+            }
+        }
 
+        tvCountDown.text = "00:00"
 
         lotMic.setOnClickListener {
+            handler.removeCallbacks(runnable)
             onMic = false
             btnSendAudio.visibility = View.VISIBLE
             btnMic.visibility = View.VISIBLE
@@ -372,11 +397,12 @@ class BoxChatActivity : AppCompatActivity() {
             }
 
             startRecording()
-
-
+            handler.postDelayed(runnable, 1000)
         }
 
         btnSendAudio.setOnClickListener {
+            handler.removeCallbacks(runnable)
+            tvCountDown.text = "00:00"
             val file = File(output)
             val inputStream = FileInputStream(file)
             val fileSize = file.length().toInt()
@@ -394,6 +420,7 @@ class BoxChatActivity : AppCompatActivity() {
             message.senderAvatar = myUser.avatar.toString()
             message.senderName = myUser.userName
             message.createdAt = Date()
+            messageAdapter!!.addMessageSeeding(message)
             // Send media message
             WebSocketListener.sendMediaMessage(message, base64String)
             inputStream.close()
@@ -401,6 +428,8 @@ class BoxChatActivity : AppCompatActivity() {
         }
 
         btnDelete.setOnClickListener {
+            handler.removeCallbacks(runnable)
+            tvCountDown.text = "00:00"
             if (onMic) {
                 stopRecording()
             }
@@ -443,6 +472,7 @@ class BoxChatActivity : AppCompatActivity() {
             mediaRecorder?.stop()
             mediaRecorder?.release()
             state = false
+            Log.d("CCCCI", output.toString())
         }
     }
 
@@ -498,5 +528,14 @@ class BoxChatActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        messageAdapter?.mediaPlayer?.stop()
+        messageAdapter?.mediaPlayer?.release()
+        messageAdapter?.mediaPlayer = null
+        messageAdapter = null
+
     }
 }

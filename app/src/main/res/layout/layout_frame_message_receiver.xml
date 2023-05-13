@@ -32,7 +32,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/timeMessage"
-        android:paddingEnd="20dp">
+        android:paddingEnd="65dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ivAvatar"
@@ -86,7 +86,7 @@
 
         <LinearLayout
             android:visibility="gone"
-            android:id="@+id/llAnimation"
+            android:id="@+id/llAudio"
             android:layout_width="0dp"
             android:layout_height="45dp"
             android:layout_marginStart="10dp"
@@ -96,10 +96,10 @@
 
             <ImageButton
                 android:id="@+id/ibPlay"
-                android:layout_width="25dp"
-                android:layout_height="25dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="10dp"
                 android:background="@drawable/ic_play"
                 android:backgroundTint="@color/Black"
                 tools:ignore="ContentDescription,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
@@ -109,7 +109,7 @@
                 android:layout_height="match_parent"
                 android:id="@+id/animation_view"
                 app:lottie_rawRes="@raw/audio_wave_receiver"
-                app:lottie_autoPlay="true"
+                app:lottie_autoPlay="false"
                 app:lottie_loop="true"
                 android:visibility="visible"/>
         </LinearLayout>

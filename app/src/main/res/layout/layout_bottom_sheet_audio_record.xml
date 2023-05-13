@@ -7,14 +7,22 @@
     android:layout_height="wrap_content"
     android:padding="20dp">
 
-
+    <TextView
+        android:id="@+id/tvCountdown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/Primary40"
+        android:fontFamily="@font/roboto_bold"
+        android:text="@string/count_down"
+        android:textSize="24dp"
+        android:layout_centerHorizontal="true"/>
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cvButtonMic"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="50dp"
         android:layout_marginBottom="20dp"
         app:cardCornerRadius="360dp"
         tools:cardElevation="10dp">
