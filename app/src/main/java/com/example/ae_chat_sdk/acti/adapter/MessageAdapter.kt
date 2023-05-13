@@ -8,10 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.TextView
+import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
@@ -29,6 +26,7 @@ import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.Image
 import com.example.ae_chat_sdk.data.model.Message
+import com.example.ae_chat_sdk.data.model.Video
 import com.example.ae_chat_sdk.databinding.*
 import com.google.gson.Gson
 import de.hdodenhof.circleimageview.CircleImageView
@@ -50,7 +48,9 @@ class MessageAdapter(
         IMG_SEND(3),
         IMG_RECEVIE(4),
         AUDIO_SEND(5),
-        AUDIO_RECEIVE(6)
+        AUDIO_RECEIVE(6),
+        VIDEO_SEND(7),
+        VIDEO_RECEIVE(8)
     }
 
     inner class MessageSenderHolder(private val binding: LayoutFrameMessageSenderBinding) :
@@ -62,6 +62,9 @@ class MessageAdapter(
         lateinit var llAudio: LinearLayout
         lateinit var ibPlay: ImageButton
         lateinit var aniAudio: LottieAnimationView
+        lateinit var vvVideoMessage: VideoView
+        lateinit var cvVideoMessage: CardView
+        lateinit var ibPlayVideo: ImageButton
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivCheckSeen = binding.ivCheckSeen
@@ -70,6 +73,14 @@ class MessageAdapter(
             llAudio = binding.llAudio
             ibPlay = binding.ibPlay
             aniAudio = binding.animationView
+            vvVideoMessage = binding.vvVideoMessage
+            cvVideoMessage = binding.cvVideoMessage
+            ibPlayVideo = binding.ibPlayVideo
+//            val layoutParams = vvVideoMessage.layoutParams
+//            layoutParams.width = 400
+//            layoutParams.height = 250
+//            vvVideoMessage.layoutParams = layoutParams
+//            ivThumbnail = binding.ivThumbnail
         }
     }
 
@@ -82,6 +93,9 @@ class MessageAdapter(
         lateinit var llAudio: LinearLayout
         lateinit var ibPlay: ImageButton
         lateinit var aniAudio: LottieAnimationView
+        lateinit var vvVideoMessage: VideoView
+        lateinit var cvVideoMessage: CardView
+        lateinit var ibPlayVideo: ImageButton
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivAvatar = binding.ivAvatar
@@ -90,6 +104,13 @@ class MessageAdapter(
             llAudio = binding.llAudio
             ibPlay = binding.ibPlay
             aniAudio = binding.animationView
+            vvVideoMessage = binding.vvVideoMessage
+            cvVideoMessage = binding.cvVideoMessage
+            ibPlayVideo = binding.ibPlayVideo
+            val layoutParams = vvVideoMessage.layoutParams
+            layoutParams.width = 400
+            layoutParams.height = 250
+            vvVideoMessage.layoutParams = layoutParams
         }
     }
 
@@ -104,7 +125,8 @@ class MessageAdapter(
         return when (viewType) {
             TypeView.TEXT_SEND.ordinal,
             TypeView.IMG_SEND.ordinal,
-            TypeView.AUDIO_SEND.ordinal -> {
+            TypeView.AUDIO_SEND.ordinal,
+            TypeView.VIDEO_SEND.ordinal -> {
                 val view = LayoutFrameMessageSenderBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
@@ -112,7 +134,8 @@ class MessageAdapter(
             }
             TypeView.TEXT_RECEIVE.ordinal,
             TypeView.IMG_RECEVIE.ordinal,
-            TypeView.AUDIO_RECEIVE.ordinal -> {
+            TypeView.AUDIO_RECEIVE.ordinal,
+            TypeView.VIDEO_RECEIVE.ordinal -> {
                 val view = LayoutFrameMessageReceiverBinding.inflate(
                     LayoutInflater.from(parent.context), parent, false
                 )
@@ -297,6 +320,40 @@ class MessageAdapter(
 
                 })
             }
+            TypeView.VIDEO_RECEIVE.ordinal -> {
+                (holder as MessageReceiverHolder).bind()
+                var videoPlaying = false
+
+                holder.cvVideoMessage.visibility = View.VISIBLE
+                if (message.attachment != null) {
+                    val gson = Gson()
+                    val video = gson.fromJson(gson.toJson(message.attachment), Video::class.java)
+                    val url = ApiConstant.URL_VIDEO + video.url
+                    Log.d("HSJDHFKS", url)
+
+                    holder.vvVideoMessage.setVideoPath(url)
+                    holder.vvVideoMessage.seekTo(1);
+                    holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
+                        if (videoPlaying) {
+                            videoPlaying = false
+                            holder.ibPlayVideo.visibility = View.VISIBLE
+                            holder.vvVideoMessage.pause()
+                        }
+                    })
+                    holder.vvVideoMessage.setOnCompletionListener {
+                        videoPlaying = false
+                        holder.ibPlayVideo.visibility = View.VISIBLE
+                    }
+                    holder.ibPlayVideo.setOnClickListener(View.OnClickListener {
+                        if (!videoPlaying) {
+                            holder.ibPlayVideo.visibility = View.GONE
+                            holder.vvVideoMessage.start()
+                            videoPlaying = true
+                        }
+                    })
+                }
+
+            }
             TypeView.TEXT_SEND.ordinal -> {
                 (holder as MessageSenderHolder).bind()
                 holder.tvMessageContent.visibility = View.VISIBLE
@@ -456,6 +513,67 @@ class MessageAdapter(
 
                 })
             }
+            TypeView.VIDEO_SEND.ordinal -> {
+                (holder as MessageSenderHolder).bind()
+                var videoPlaying = false
+
+                holder.cvVideoMessage.visibility = View.VISIBLE
+//                val url_video = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
+//                holder.vvVideoMessage.setVideoPath(url_video.toString())
+//                holder.vvVideoMessage.seekTo(1);
+//                holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
+//                    if (videoPlaying) {
+//                        videoPlaying = false
+//                        holder.ibPlayVideo.visibility = View.VISIBLE
+//                        holder.vvVideoMessage.pause()
+//                    }
+//                })
+//                holder.vvVideoMessage.setOnCompletionListener {
+//                    videoPlaying = false
+//                    holder.ibPlayVideo.visibility = View.VISIBLE
+//                }
+//                holder.ibPlayVideo.setOnClickListener(View.OnClickListener {
+//                    if (!videoPlaying) {
+//                        holder.ibPlayVideo.visibility = View.GONE
+//                        holder.vvVideoMessage.start()
+//                        videoPlaying = true
+//                    }
+//                })
+
+                if (message.attachment != null) {
+                    val gson = Gson()
+                    val video = gson.fromJson(gson.toJson(message.attachment), Video::class.java)
+                    val url = ApiConstant.URL_VIDEO + video.url
+//                    holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
+//                        val intent = Intent(context, PhotoActivity::class.java)
+//                        intent.putExtra("imageUrl", url)
+//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+//                        context.startActivity(intent)
+//                    })
+                    Log.d("HSJDHFKS", url)
+
+                    holder.vvVideoMessage.setVideoPath(url)
+                    holder.vvVideoMessage.seekTo(1);
+                    holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
+                        if (videoPlaying) {
+                            videoPlaying = false
+                            holder.ibPlayVideo.visibility = View.VISIBLE
+                            holder.vvVideoMessage.pause()
+                        }
+                    })
+                    holder.vvVideoMessage.setOnCompletionListener {
+                        videoPlaying = false
+                        holder.ibPlayVideo.visibility = View.VISIBLE
+                    }
+                    holder.ibPlayVideo.setOnClickListener(View.OnClickListener {
+                        if (!videoPlaying) {
+                            holder.ibPlayVideo.visibility = View.GONE
+                            holder.vvVideoMessage.start()
+                            videoPlaying = true
+                        }
+                    })
+                }
+            }
         }
 
         if (holder is MessageSenderHolder) {
@@ -528,12 +646,14 @@ class MessageAdapter(
                 Message.Type.TEXT.ordinal -> return TypeView.TEXT_SEND.ordinal
                 Message.Type.IMAGE.ordinal -> return TypeView.IMG_SEND.ordinal
                 Message.Type.AUDIO.ordinal -> return TypeView.AUDIO_SEND.ordinal
+                Message.Type.VIDEO.ordinal -> return TypeView.VIDEO_SEND.ordinal
             }
         } else if (ms.senderUin != RestClient().getUserId()) {
             when (ms.type?.toFloat()!!.toInt()) {
                 Message.Type.TEXT.ordinal -> return TypeView.TEXT_RECEIVE.ordinal
                 Message.Type.IMAGE.ordinal -> return TypeView.IMG_RECEVIE.ordinal
                 Message.Type.AUDIO.ordinal -> return TypeView.AUDIO_RECEIVE.ordinal
+                Message.Type.VIDEO.ordinal -> return TypeView.VIDEO_SEND.ordinal
             }
         }
         return 0

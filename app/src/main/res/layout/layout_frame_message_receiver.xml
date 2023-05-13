@@ -65,7 +65,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginTop="2dp"
-            android:layout_marginEnd="180dp"
+            android:layout_marginEnd="135dp"
             android:layout_marginBottom="2dp"
             android:outlineSpotShadowColor="@color/transparent"
             android:visibility="gone"
@@ -82,6 +82,40 @@
                 android:elevation="0dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/image_default" />
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cvVideoMessage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp"
+            android:outlineSpotShadowColor="@color/transparent"
+            android:visibility="gone"
+            app:cardCornerRadius="15dp"
+            tools:cardElevation="0dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <VideoView
+                    android:id="@+id/vvVideoMessage"
+                    android:layout_width="280dp"
+                    android:layout_height="160dp"
+                    android:minWidth="280dp"
+                    android:minHeight="160dp"
+                    android:layout_centerInParent="true" />
+
+                <ImageButton
+                    android:id="@+id/ibPlayVideo"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/ic_play"/>
+
+            </RelativeLayout>
         </androidx.cardview.widget.CardView>
 
         <LinearLayout

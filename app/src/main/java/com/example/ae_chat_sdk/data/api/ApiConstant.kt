@@ -6,6 +6,7 @@ class ApiConstant {
             const val MEDIA = "https://app-539ccd9b-9361-41a7-8adb-f7d64732641c.cleverapps.io/"
             const val URL_AUDIO = MEDIA + "audio/"
             const val URL_IMAGE = MEDIA + "image/"
+            const val URL_VIDEO = MEDIA + "video/"
             const val ACCOUNT_POST_EMAIL = "register-by-email"
             const val VERIFY_OTP = "verifyOTP-email"
             const val UPLOAD_USER_AVATAR = "upload-user-avatar"

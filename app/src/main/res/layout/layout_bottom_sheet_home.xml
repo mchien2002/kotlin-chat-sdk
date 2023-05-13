@@ -123,18 +123,31 @@
                     android:layout_height="wrap_content"
                     android:paddingBottom="10dp">
 
-                    <ImageView
-                        android:id="@+id/ivOnstream"
-                        android:layout_width="100dp"
-                        android:layout_height="20dp"
+
+                    <TextView
+                        android:id="@+id/tvOnstream"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:background="@drawable/label_onstream"
-                        tools:ignore="ContentDescription" />
+                        android:background="@drawable/bg_frame_input"
+                        android:backgroundTint="@color/Tertiary90"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="Đang hoạt động"
+                        android:textColor="@color/Primary40"
+                        android:textSize="10sp"
+                        android:drawableRight="@drawable/ic_online"
+                        android:drawablePadding="3dp"
+                        android:drawableTint="@color/Online"
+                        tools:ignore="UseCompatTextViewDrawableXml" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/ivOnstream"
+                        android:layout_below="@id/tvOnstream"
                         android:layout_marginTop="5dp">
 
                         <androidx.recyclerview.widget.RecyclerView
@@ -151,18 +164,29 @@
                     android:layout_height="fill_parent"
                     android:layout_below="@id/rlOnstream">
 
-                    <ImageView
-                        android:id="@+id/ivRecent"
-                        android:layout_width="80dp"
-                        android:layout_height="20dp"
+                    <TextView
+                        android:id="@+id/tvRecent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="15dp"
-                        android:background="@drawable/label_recent"
-                        tools:ignore="ContentDescription" />
+                        android:background="@drawable/bg_frame_input"
+                        android:backgroundTint="@color/Tertiary90"
+                        android:fontFamily="@font/roboto_medium"
+                        android:paddingTop="3dp"
+                        android:paddingBottom="3dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:text="Gần đây"
+                        android:textColor="@color/Primary40"
+                        android:textSize="10sp"
+                        android:drawableRight="@drawable/ic_recent"
+                        android:drawablePadding="4dp"
+                        tools:ignore="UseCompatTextViewDrawableXml" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/ivRecent"
+                        android:layout_below="@id/tvRecent"
                         android:layout_marginTop="5dp">
 
                         <androidx.recyclerview.widget.RecyclerView

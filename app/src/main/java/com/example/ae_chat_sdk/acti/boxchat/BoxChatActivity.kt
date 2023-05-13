@@ -12,6 +12,7 @@ import android.os.Build.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -69,8 +70,7 @@ class BoxChatActivity : AppCompatActivity() {
 
     lateinit var messageId: String
     private val REQUEST_IMAGE_CAPTURE = 1
-    private val REQUEST_IMAGE_PICK = 2
-    private var IMAGE_PATH = ""
+    private val REQUEST_IV_PICK = 2
 
     lateinit var progressBar: ProgressBar
     var onMic = false
@@ -78,11 +78,11 @@ class BoxChatActivity : AppCompatActivity() {
     private var output: String? = null
     private var mediaRecorder: MediaRecorder? = null
     private var state: Boolean = false
-    private var recordingStopped: Boolean = false
 
     private val webSocketListener: WebSocketListener = WebSocketListener()
 
     companion object {
+        @SuppressLint("StaticFieldLeak")
         var messageAdapter: MessageAdapter? = null
         var groupId: String? = null
     }
@@ -109,9 +109,7 @@ class BoxChatActivity : AppCompatActivity() {
         messageId = intent.getStringExtra("lastmessage").toString()
         if(groupId != null){
             webSocketListener.receiveMessage(HomeActivity.webSocket, groupId!!)
-            if (messageId!=null){
-                webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
-            }
+            webSocketListener.seenMessage(HomeActivity.webSocket, messageId)
             showMessage()
         }else{
             messageAdapter = MessageAdapter(context,this,"")
@@ -477,9 +475,9 @@ class BoxChatActivity : AppCompatActivity() {
     }
 
     fun openGallery() {
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
-        startActivityForResult(intent, REQUEST_IMAGE_PICK)
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        intent.type = "video/*, image/*"
+        startActivityForResult(intent, REQUEST_IV_PICK)
     }
 
     @RequiresApi(VERSION_CODES.O)
@@ -500,8 +498,10 @@ class BoxChatActivity : AppCompatActivity() {
                     // Send media message
                     //WebSocketListener.sendMediaMessage(Message(), imageData, width, height)
                 }
-                REQUEST_IMAGE_PICK -> {
+                REQUEST_IV_PICK -> {
                     val uri: Uri? = data?.data
+                    val mimeType: String? = contentResolver.getType(uri!!)
+
                     val path = uri?.let { RealPathUtil.getRealPath(this, it) }
                     // Read data of the image
                     val file = File(path)
@@ -512,7 +512,6 @@ class BoxChatActivity : AppCompatActivity() {
                     val base64String = Base64.getEncoder().encodeToString(byteArray)
                     val myUser: User = AppStorage.getInstance(context).getUserLocal()
                     val message = Message()
-                    message.type = Message.Type.IMAGE.ordinal
                     message.groupType = Message.GroupType.PUBLIC.ordinal
                     message.message = etInputMessage.text.toString()
                     message.groupId = groupId
@@ -521,6 +520,16 @@ class BoxChatActivity : AppCompatActivity() {
                     message.senderAvatar = myUser.avatar.toString()
                     message.senderName = myUser.userName
                     message.createdAt = Date()
+
+
+                    if (mimeType?.startsWith("image/") == true) {
+                        message.type = Message.Type.IMAGE.ordinal
+                    } else if (mimeType?.startsWith("video/") == true) {
+                        message.type = Message.Type.VIDEO.ordinal
+                    } else {
+                        return
+                    }
+
                     messageAdapter!!.addMessageSeeding(message)
                     // Send media message
                     WebSocketListener.sendMediaMessage(message, base64String)
