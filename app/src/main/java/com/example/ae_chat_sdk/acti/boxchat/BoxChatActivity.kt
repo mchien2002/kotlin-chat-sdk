@@ -8,7 +8,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.media.MediaRecorder
 import android.net.Uri
-import android.os.Build
+import android.os.Build.*
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -29,21 +29,13 @@ import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.adapter.MessageAdapter
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.data.api.RestClient
-import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.*
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
 import com.example.ae_chat_sdk.utils.DateTimeUtil
-<<<<<<< HEAD
-import com.google.gson.reflect.TypeToken
-=======
 import com.google.android.material.bottomsheet.BottomSheetDialog
->>>>>>> audio_record
 import de.hdodenhof.circleimageview.CircleImageView
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileInputStream
@@ -88,31 +80,13 @@ class BoxChatActivity : AppCompatActivity() {
 
     private val webSocketListener: WebSocketListener = WebSocketListener()
 
-    private fun init() {
-        btnBack = findViewById(R.id.ibBack)
-        btnSendMessage = findViewById(R.id.ibSendMessage)
-        rvMessage = findViewById(R.id.rvMessage)
-        ibImage = findViewById(R.id.ibImage)
-        ibMic = findViewById(R.id.ibMic)
-        ibExpand = findViewById(R.id.ibExpand)
-        tvActiveStatus = findViewById(R.id.tvActiveStatus)
-        ivAvatar = findViewById(R.id.ivAvatar)
-        tvUsername = findViewById(R.id.tvUsername)
-        etInputMessage = findViewById(R.id.etInputMessage)
-        ivOnline = findViewById(R.id.ivOnline)
-        progressBar = findViewById(R.id.progressBar)
-        setOnClickListener()
-        setOnFocusChangeListener()
-        addTextChangedListener()
-    }
-
     companion object {
         var messageAdapter: MessageAdapter? = null
         var groupId: String? = null
     }
 
 
-    @RequiresApi(Build.VERSION_CODES.R)
+    @RequiresApi(VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -142,12 +116,9 @@ class BoxChatActivity : AppCompatActivity() {
         }
 
         etInputMessage.requestFocus()
-        // Hiện bàn phím mềm nhưng éo được
-//        val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-//        imm.showSoftInput(etInputMessage, InputMethodManager.SHOW_IMPLICIT)
     }
 
-    @RequiresApi(Build.VERSION_CODES.R)
+    @RequiresApi(VERSION_CODES.R)
     private fun hideSystemUI() {
 //        WindowCompat.setDecorFitsSystemWindows(window, false)
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -167,12 +138,13 @@ class BoxChatActivity : AppCompatActivity() {
         }
     }
 
-<<<<<<< HEAD
-    public fun reCreateActivity(){
+
+    public fun reCreateActivity() {
         overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         recreate();
-=======
-    @RequiresApi(Build.VERSION_CODES.O)
+    }
+
+    @RequiresApi(VERSION_CODES.O)
     private fun init() {
         btnBack = findViewById(R.id.ibBack)
 //        btnNotification = findViewById(R.id.ibNotification)
@@ -193,7 +165,6 @@ class BoxChatActivity : AppCompatActivity() {
         setOnClickListener()
         setOnFocusChangeListener()
         addTextChangedListener()
->>>>>>> audio_record
     }
 
     public fun showMessage() {
@@ -265,11 +236,7 @@ class BoxChatActivity : AppCompatActivity() {
 
     }
 
-<<<<<<< HEAD
-=======
-
-    @RequiresApi(Build.VERSION_CODES.O)
->>>>>>> audio_record
+    @RequiresApi(VERSION_CODES.O)
     private fun setOnClickListener() {
         btnBack.setOnClickListener {
             messageAdapter = null
@@ -330,7 +297,7 @@ class BoxChatActivity : AppCompatActivity() {
         }
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(VERSION_CODES.O)
     private fun showBottomSheetAudioRecord() {
         val bottomSheet = BottomSheetDialog(this)
         val view = layoutInflater.inflate(R.layout.layout_bottom_sheet_audio_record, null)
@@ -382,7 +349,6 @@ class BoxChatActivity : AppCompatActivity() {
             stopRecording()
         }
         btnMic.setOnClickListener {
-
             onMic = true
             lotMic.visibility = View.VISIBLE
             btnMic.visibility = View.GONE
@@ -453,7 +419,7 @@ class BoxChatActivity : AppCompatActivity() {
     @SuppressLint("RestrictedApi")
     private fun startRecording() {
         output = "${externalCacheDir?.absolutePath}" + "/recording.mp3"
-        mediaRecorder = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+        mediaRecorder = if (VERSION.SDK_INT >= VERSION_CODES.S) {
             MediaRecorder(applicationContext)
         } else {
             MediaRecorder()
@@ -486,7 +452,7 @@ class BoxChatActivity : AppCompatActivity() {
         startActivityForResult(intent, REQUEST_IMAGE_PICK)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
+    @RequiresApi(VERSION_CODES.O)
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 

@@ -27,12 +27,12 @@
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             android:background="@color/Primary40"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
         <ImageButton
             android:id="@+id/ibMicRecord"
             android:layout_width="100dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:layout_height="100dp"
             android:background="@drawable/bg_button_mic"
             tools:ignore="ContentDescription,SpeakableTextPresentCheck"
