@@ -272,7 +272,7 @@ class BoxChatActivity : AppCompatActivity() {
                 val message = Message()
                 message.type = Message.Type.TEXT.ordinal
                 message.groupType = Message.GroupType.PUBLIC.ordinal
-                message.message = etInputMessage.text.toString()
+                message.message = etInputMessage.text.toString().trim()
                 message.status = Message.Status.SENDING.ordinal
                 message.senderUin = myUser.userId
                 message.senderAvatar = myUser.avatar.toString()
