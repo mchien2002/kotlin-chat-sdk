@@ -70,6 +70,14 @@ class MessageAdapter(
         VIDEO_RECEIVE(8)
     }
 
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        if (holder is MessageReceiverHolder){
+           holder.clearTimeSent()
+        }
+        if (holder is MessageSenderHolder){
+            holder.clearTimeSent()
+        }
+    }
     inner class MessageSenderHolder(private val binding: LayoutFrameMessageSenderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         lateinit var tvMessageContent: TextView
@@ -94,6 +102,11 @@ class MessageAdapter(
             cvVideoMessage = binding.cvVideoMessage
             exoPlayerView = binding.idExoPlayerVIew
             timeMessage = binding.timeMessage
+
+        }
+        fun clearTimeSent(){
+           //timeMessage.text= ""
+            timeMessage.visibility = View.GONE
         }
 
         fun releasePlayer() {
@@ -127,6 +140,10 @@ class MessageAdapter(
             cvVideoMessage = binding.cvVideoMessage
             exoPlayerView = binding.idExoPlayerVIew
             timeMessage = binding.timeMessage
+        }
+        fun clearTimeSent(){
+            //timeMessage.text= ""
+            timeMessage.visibility = View.GONE
         }
 
         fun releasePlayer() {
@@ -183,17 +200,19 @@ class MessageAdapter(
         val message: Message = listMessage[position]
         val senderUin = message.senderUin
         var audioPlaying = false
-        if (position > 0){
+        if (position > 0 && listMessage[position - 1].senderUin != listMessage[position ].senderUin){
             val timeDifference = DateTimeUtil().calculateTimeDifference(listMessage[position - 1].createdAt.toString(),listMessage[position].createdAt.toString())
             Log.e("DIFFTIME",timeDifference.toString())
             if (timeDifference>15){
                 if (holder is MessageReceiverHolder){
                     (holder as MessageReceiverHolder).bind()
+                    holder.timeMessage.clearComposingText()
                     holder.timeMessage.visibility = View.VISIBLE
                     holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
                 }
                 if (holder is MessageSenderHolder){
                     (holder as MessageSenderHolder).bind()
+                    holder.timeMessage.clearComposingText()
                     holder.timeMessage.visibility = View.VISIBLE
                     holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
                 }
@@ -201,6 +220,7 @@ class MessageAdapter(
         }
         if (holder is BeginMessageHolder){
             (holder as BeginMessageHolder).bind()
+            holder.timeMessage.clearComposingText()
             holder.timeMessage.visibility = View.VISIBLE
             holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
         }
@@ -775,6 +795,7 @@ class MessageAdapter(
         this.listMessage = message
         notifyDataSetChanged()
     }
+
 
     @RequiresApi(Build.VERSION_CODES.O)
     fun addMessage(message: Message) {
