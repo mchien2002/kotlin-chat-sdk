@@ -515,39 +515,67 @@ class BoxChatActivity : AppCompatActivity() {
                 REQUEST_IV_PICK -> {
                     val uri: Uri? = data?.data
                     val mimeType: String? = contentResolver.getType(uri!!)
+                    val message = Message()
 
                     val path = uri?.let { RealPathUtil.getRealPath(this, it) }
                     // Read data of the image
                     val file = File(path)
-                    val inputStream = FileInputStream(file)
-                    val fileSize = file.length().toInt()
-                    val byteArray = ByteArray(fileSize)
-                    inputStream.read(byteArray)
-                    val base64String = Base64.getEncoder().encodeToString(byteArray)
-                    val myUser: User = AppStorage.getInstance(context).getUserLocal()
-                    val message = Message()
-                    message.groupType = Message.GroupType.PUBLIC.ordinal
-                    message.message = etInputMessage.text.toString()
-                    message.groupId = groupId
-                    message.status = Message.Status.SENDING.ordinal
-                    message.senderUin = myUser.userId
-                    message.senderAvatar = myUser.avatar.toString()
-                    message.senderName = myUser.userName
-                    message.createdAt = Date()
-
-
                     if (mimeType?.startsWith("image/") == true) {
                         message.type = Message.Type.IMAGE.ordinal
+                        val inputStream = FileInputStream(file)
+                        val fileSize = file.length().toInt()
+                        val byteArray = ByteArray(fileSize)
+                        inputStream.read(byteArray)
+                        val base64String = Base64.getEncoder().encodeToString(byteArray)
+                        val myUser: User = AppStorage.getInstance(context).getUserLocal()
+                        message.groupType = Message.GroupType.PUBLIC.ordinal
+                        message.message = etInputMessage.text.toString()
+                        message.groupId = groupId
+                        message.status = Message.Status.SENDING.ordinal
+                        message.senderUin = myUser.userId
+                        message.senderAvatar = myUser.avatar.toString()
+                        message.senderName = myUser.userName
+                        message.createdAt = Date()
+
+                        messageAdapter!!.addMessageSeeding(message)
+                        // Send media message
+                        WebSocketListener.sendMediaMessage(message, base64String)
+                        inputStream.close()
                     } else if (mimeType?.startsWith("video/") == true) {
                         message.type = Message.Type.VIDEO.ordinal
+                        val ffmpegCommand = "-i ${file.absolutePath} -c:v copy -c:a copy ${file.absolutePath}.mp4"
+                        val process = Runtime.getRuntime().exec("ffmpeg $ffmpegCommand")
+                        process.waitFor()
+                        val convertedFile = File("${file.absolutePath}.mp4")
+                        val inputStream = FileInputStream(convertedFile)
+                        val fileSize = convertedFile.length().toInt()
+                        val byteArray = ByteArray(fileSize)
+                        inputStream.read(byteArray)
+                        val base64String = Base64.getEncoder().encodeToString(byteArray)
+                        inputStream.read(byteArray)
+                        val myUser: User = AppStorage.getInstance(context).getUserLocal()
+                        message.groupType = Message.GroupType.PUBLIC.ordinal
+                        message.message = etInputMessage.text.toString()
+                        message.groupId = groupId
+                        message.status = Message.Status.SENDING.ordinal
+                        message.senderUin = myUser.userId
+                        message.senderAvatar = myUser.avatar.toString()
+                        message.senderName = myUser.userName
+                        message.createdAt = Date()
+
+                        messageAdapter!!.addMessageSeeding(message)
+                        // Send media message
+                        WebSocketListener.sendMediaMessage(message, base64String)
+                        inputStream.close()
                     } else {
                         return
                     }
 
-                    messageAdapter!!.addMessageSeeding(message)
-                    // Send media message
-                    WebSocketListener.sendMediaMessage(message, base64String)
-                    inputStream.close()
+
+
+
+
+
                 }
             }
         }

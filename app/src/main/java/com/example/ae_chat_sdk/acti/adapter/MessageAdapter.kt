@@ -327,11 +327,26 @@ class MessageAdapter(
                 var videoPlaying = false
 
                 holder.cvVideoMessage.visibility = View.VISIBLE
+
+                val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
+
+                holder.vvVideoMessage.setVideoPath(videoUri.toString())
+                holder.vvVideoMessage.seekTo(1);
+
+                holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
+                    val intent = Intent(context, PhotoActivity::class.java)
+                    intent.putExtra("topic", "video")
+                    intent.putExtra("mediaUrl", "url")
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+
+                })
+
                 if (message.attachment != null) {
                     val gson = Gson()
                     val video = gson.fromJson(gson.toJson(message.attachment), Video::class.java)
                     val url = ApiConstant.URL_VIDEO + video.url
-                    val videoUri = Uri.parse(url)
+                    val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
                     Log.d("HSJDHFKS", videoUri.toString())
 
                     holder.vvVideoMessage.setVideoPath(videoUri.toString())
@@ -524,11 +539,25 @@ class MessageAdapter(
 
                 holder.cvVideoMessage.visibility = View.VISIBLE
 
+                val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
+
+                holder.vvVideoMessage.setVideoPath(videoUri.toString())
+                holder.vvVideoMessage.seekTo(1);
+
+                holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
+                    val intent = Intent(context, PhotoActivity::class.java)
+                    intent.putExtra("topic", "video")
+                    intent.putExtra("mediaUrl", "url")
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+
+                })
+
                 if (message.attachment != null) {
                     val gson = Gson()
                     val video = gson.fromJson(gson.toJson(message.attachment), Video::class.java)
                     val url = ApiConstant.URL_VIDEO + video.url
-                    val videoUri = Uri.parse(url)
+                    val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
                     Log.d("HSJDHFKS", videoUri.toString())
 
                     holder.vvVideoMessage.setVideoPath(videoUri.toString())

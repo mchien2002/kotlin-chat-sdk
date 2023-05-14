@@ -82,7 +82,7 @@ class PhotoActivity : AppCompatActivity() {
             GlobalScope.launch(Dispatchers.Main) {
                 videoView.visibility = View.VISIBLE
                 val url = intent.getStringExtra("mediaUrl")
-                val videoUri = Uri.parse(url)
+                val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
 
                 videoView.setVideoPath(videoUri.toString())
                 videoView.seekTo(1);
