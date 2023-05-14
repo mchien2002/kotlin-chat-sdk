@@ -84,6 +84,8 @@
             android:layout_weight="1"
             android:background="@color/transparent"
             android:outlineSpotShadowColor="@color/transparent"
+            android:clickable="true"
+
             android:visibility="gone"
             app:cardCornerRadius="15dp"
             tools:cardElevation="0dp">
@@ -93,23 +95,13 @@
                 android:layout_height="wrap_content"
                 android:background="@color/Black">
 
-                <VideoView
-                    android:id="@+id/vvVideoMessage"
-                    android:layout_width="280dp"
-                    android:layout_height="160dp"
-                    android:minWidth="280dp"
-                    android:minHeight="160dp"
+                <com.google.android.exoplayer2.ui.SimpleExoPlayerView
+                    android:id="@+id/idExoPlayerVIew"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
                     android:layout_centerInParent="true"
                     android:clickable="true"
                     android:focusable="true"/>
-
-                <ImageButton
-                    android:id="@+id/ibPlayVideo"
-                    android:layout_width="60dp"
-                    android:layout_height="60dp"
-                    android:layout_centerInParent="true"
-                    android:background="@drawable/ic_play"
-                    android:padding="20dp"/>
 
             </RelativeLayout>
         </androidx.cardview.widget.CardView>

@@ -66,18 +66,34 @@ class RecentAdapter(val progressBar: ProgressBar, val context: Context) : Recycl
             }
             val itemObject = listRecent[position]
 
-            if (itemObject.lastMessage!!.type == Message.Type.FIRST_MESSAGE.ordinal) {
-                holder.tvMessage.text = "Hãy bắt đầu cuộc trò chuyện"
-            } else if (itemObject.lastMessage!!.type == Message.Type.TEXT.ordinal) {
-                val senderUin = itemObject!!.lastMessage!!.senderUin
-                if (itemObject.lastMessage != null && holder.tvMessage != null) {
-                    if (senderUin == RestClient().getUserId()) {
-                        holder.tvMessage.text = "Bạn: " + itemObject.lastMessage!!.message
-                    } else {
-                        holder.tvMessage.text = itemObject.lastMessage!!.message
-                    }
+        val senderUin = itemObject!!.lastMessage!!.senderUin
+        if (itemObject.lastMessage!!.type == Message.Type.FIRST_MESSAGE.ordinal) {
+            holder.tvMessage.text = "Hãy bắt đầu cuộc trò chuyện"
+        } else if (itemObject.lastMessage!!.type == Message.Type.TEXT.ordinal) {
+            if (itemObject.lastMessage != null && holder.tvMessage != null) {
+                if (senderUin == RestClient().getUserId()) {
+                    holder.tvMessage.text = "Bạn: " + itemObject.lastMessage!!.message
+                } else {
+                    holder.tvMessage.text = itemObject.lastMessage!!.message
                 }
             }
+        } else if (itemObject.lastMessage!!.type == Message.Type.IMAGE.ordinal) {
+            if (itemObject.lastMessage != null && holder.tvMessage != null) {
+                if (senderUin == RestClient().getUserId()) {
+                    holder.tvMessage.text = "Bạn đã gửi 1 ảnh."
+                } else {
+                    holder.tvMessage.text = "Bạn nhận được 1 ảnh."
+                }
+            }
+        }else if (itemObject.lastMessage!!.type == Message.Type.AUDIO.ordinal){
+            if (itemObject.lastMessage != null && holder.tvMessage != null) {
+                if (senderUin == RestClient().getUserId()) {
+                    holder.tvMessage.text = "Bạn đã gửi 1 tin nhắn thoại."
+                } else {
+                    holder.tvMessage.text = "Bạn đã nhận được 1 tin nhắn thoại."
+                }
+            }
+        }
             var seenUins: ArrayList<String>? = itemObject.lastMessage!!.seenUins
             Log.e("SEENNN", seenUins.toString())
             //val seenUins = itemObject.lastMessage.seenUins

@@ -29,18 +29,33 @@ import com.example.ae_chat_sdk.data.model.Image
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.data.model.Video
 import com.example.ae_chat_sdk.databinding.*
+import com.google.android.exoplayer2.ExoPlayerFactory
+import com.google.android.exoplayer2.SimpleExoPlayer
+import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
+import com.google.android.exoplayer2.extractor.ExtractorsFactory
+import com.google.android.exoplayer2.source.ExtractorMediaSource
+import com.google.android.exoplayer2.source.MediaSource
+import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection
+import com.google.android.exoplayer2.trackselection.DefaultTrackSelector
+import com.google.android.exoplayer2.trackselection.TrackSelector
+import com.google.android.exoplayer2.ui.SimpleExoPlayerView
+import com.google.android.exoplayer2.upstream.BandwidthMeter
+import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter
+import com.google.android.exoplayer2.upstream.DefaultHttpDataSourceFactory
 import com.google.gson.Gson
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
+@Suppress("DEPRECATION")
 class MessageAdapter(
     val context: Context, val appCompatActivity: AppCompatActivity, val groupId: String
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     val webSocketListener: WebSocketListener = WebSocketListener()
     var listMessage: ArrayList<Message> = ArrayList()
     var mediaPlayer: MediaPlayer? = null
+
 
     enum class TypeView(val typeView: Int) {
         FIRST_MESSAGE(0),
@@ -63,9 +78,9 @@ class MessageAdapter(
         lateinit var llAudio: LinearLayout
         lateinit var ibPlay: ImageButton
         lateinit var aniAudio: LottieAnimationView
-        lateinit var vvVideoMessage: VideoView
         lateinit var cvVideoMessage: CardView
-        lateinit var ibPlayVideo: ImageButton
+        lateinit var exoPlayerView: SimpleExoPlayerView
+        lateinit var exoPlayer: SimpleExoPlayer
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivCheckSeen = binding.ivCheckSeen
@@ -74,14 +89,8 @@ class MessageAdapter(
             llAudio = binding.llAudio
             ibPlay = binding.ibPlay
             aniAudio = binding.animationView
-            vvVideoMessage = binding.vvVideoMessage
             cvVideoMessage = binding.cvVideoMessage
-            ibPlayVideo = binding.ibPlayVideo
-//            val layoutParams = vvVideoMessage.layoutParams
-//            layoutParams.width = 400
-//            layoutParams.height = 250
-//            vvVideoMessage.layoutParams = layoutParams
-//            ivThumbnail = binding.ivThumbnail
+            exoPlayerView = binding.idExoPlayerVIew
         }
     }
 
@@ -94,9 +103,9 @@ class MessageAdapter(
         lateinit var llAudio: LinearLayout
         lateinit var ibPlay: ImageButton
         lateinit var aniAudio: LottieAnimationView
-        lateinit var vvVideoMessage: VideoView
         lateinit var cvVideoMessage: CardView
-        lateinit var ibPlayVideo: ImageButton
+        lateinit var exoPlayerView: SimpleExoPlayerView
+        lateinit var exoPlayer: SimpleExoPlayer
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivAvatar = binding.ivAvatar
@@ -105,13 +114,8 @@ class MessageAdapter(
             llAudio = binding.llAudio
             ibPlay = binding.ibPlay
             aniAudio = binding.animationView
-            vvVideoMessage = binding.vvVideoMessage
             cvVideoMessage = binding.cvVideoMessage
-            ibPlayVideo = binding.ibPlayVideo
-            val layoutParams = vvVideoMessage.layoutParams
-            layoutParams.width = 400
-            layoutParams.height = 250
-            vvVideoMessage.layoutParams = layoutParams
+            exoPlayerView = binding.idExoPlayerVIew
         }
     }
 
@@ -187,6 +191,8 @@ class MessageAdapter(
                                 || messBefore.type?.toFloat()!!
                             .toInt() == Message.Type.IMAGE.ordinal
                                 || messBefore.type?.toFloat()!!
+                            .toInt() == Message.Type.VIDEO.ordinal
+                                || messBefore.type?.toFloat()!!
                             .toInt() == Message.Type.FIRST_MESSAGE.ordinal)
                         && messAfter.senderUin == senderUin
                         && messAfter.type?.toFloat()!!.toInt() == Message.Type.TEXT.ordinal
@@ -196,7 +202,8 @@ class MessageAdapter(
 
                     } else if (messBefore.senderUin == senderUin
                         && (messAfter.senderUin != senderUin || messAfter.type?.toFloat()!!
-                            .toInt() == Message.Type.IMAGE.ordinal)
+                            .toInt() == Message.Type.IMAGE.ordinal || messAfter.type?.toFloat()!!
+                            .toInt() == Message.Type.VIDEO.ordinal)
                         && messBefore.type?.toFloat()!!.toInt() == Message.Type.TEXT.ordinal
                     ) {
                         holder.tvMessageContent.setBackgroundResource(R.drawable.bg_message_receive_one_top)
@@ -324,54 +331,77 @@ class MessageAdapter(
             }
             TypeView.VIDEO_RECEIVE.ordinal -> {
                 (holder as MessageReceiverHolder).bind()
-                var videoPlaying = false
-
                 holder.cvVideoMessage.visibility = View.VISIBLE
-
-                val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
-
-                holder.vvVideoMessage.setVideoPath(videoUri.toString())
-                holder.vvVideoMessage.seekTo(1);
-
-                holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
-                    val intent = Intent(context, PhotoActivity::class.java)
-                    intent.putExtra("topic", "video")
-                    intent.putExtra("mediaUrl", "url")
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
-
-                })
-
                 if (message.attachment != null) {
                     val gson = Gson()
                     val video = gson.fromJson(gson.toJson(message.attachment), Video::class.java)
                     val url = ApiConstant.URL_VIDEO + video.url
-                    val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
-                    Log.d("HSJDHFKS", videoUri.toString())
 
-                    holder.vvVideoMessage.setVideoPath(videoUri.toString())
-                    holder.vvVideoMessage.seekTo(1);
-                    holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
-                        val intent = Intent(context, PhotoActivity::class.java)
-                        intent.putExtra("topic", "video")
-                        intent.putExtra("mediaUrl", url)
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                        context.startActivity(intent)
 
-                    })
-                    holder.vvVideoMessage.setOnCompletionListener {
-                        videoPlaying = false
-                        holder.ibPlayVideo.visibility = View.VISIBLE
+                    try {
+                        // bandwidthmeter is used for
+                        // getting default bandwidth
+                        val bandwidthMeter: BandwidthMeter = DefaultBandwidthMeter()
+
+                        // track selector is used to navigate between
+                        // video using a default seekbar.
+                        val trackSelector: TrackSelector =
+                            DefaultTrackSelector(AdaptiveTrackSelection.Factory(bandwidthMeter))
+
+                        // we are adding our track selector to exoplayer.
+                        holder.exoPlayer =
+                            ExoPlayerFactory.newSimpleInstance(context, trackSelector)
+
+                        // we are parsing a video url
+                        // and parsing its video uri.
+                        val videoURI: Uri = Uri.parse(url)
+
+                        // we are creating a variable for datasource factory
+                        // and setting its user agent as 'exoplayer_view'
+                        val dataSourceFactory: DefaultHttpDataSourceFactory =
+                            DefaultHttpDataSourceFactory("Exoplayer_video")
+
+                        // we are creating a variable for extractor factory
+                        // and setting it to default extractor factory.
+                        val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory();
+
+                        // we are creating a media source with above variables
+                        // and passing our event handler as null,
+                        val mediaSourse: MediaSource =
+                            ExtractorMediaSource(
+                                videoURI,
+                                dataSourceFactory,
+                                extractorsFactory,
+                                null,
+                                null
+                            )
+
+                        // inside our exoplayer view
+                        // we are setting our player
+                        holder.exoPlayerView.player = holder.exoPlayer
+
+                        // we are preparing our exoplayer
+                        // with media source.
+                        holder.exoPlayer.prepare(mediaSourse)
+
+                        // we are setting our exoplayer
+                        // when it is ready.
+                        holder.exoPlayer.playWhenReady = false
+                        holder.cvVideoMessage.setOnClickListener(View.OnClickListener {
+                            val intent = Intent(context, PhotoActivity::class.java)
+                            intent.putExtra("topic", "video")
+                            intent.putExtra("mediaUrl", url)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            context.startActivity(intent)
+
+                        })
+
+                    } catch (e: Exception) {
+                        // on below line we
+                        // are handling exception
+                        e.printStackTrace()
                     }
-                    holder.ibPlayVideo.setOnClickListener(View.OnClickListener {
-                        if (!videoPlaying) {
-                            holder.ibPlayVideo.visibility = View.GONE
-                            holder.vvVideoMessage.start()
-                            videoPlaying = true
-                        }
-                    })
                 }
-
             }
             TypeView.TEXT_SEND.ordinal -> {
                 (holder as MessageSenderHolder).bind()
@@ -395,6 +425,8 @@ class MessageAdapter(
                                 || messBefore.type?.toFloat()!!
                             .toInt() == Message.Type.IMAGE.ordinal
                                 || messBefore.type?.toFloat()!!
+                            .toInt() == Message.Type.VIDEO.ordinal
+                                || messBefore.type?.toFloat()!!
                             .toInt() == Message.Type.FIRST_MESSAGE.ordinal)
                         && messAfter.senderUin == senderUin
                         && messAfter.type?.toFloat()!!.toInt() == Message.Type.TEXT.ordinal
@@ -404,7 +436,8 @@ class MessageAdapter(
 
                     } else if (messBefore.senderUin == senderUin
                         && (messAfter.senderUin != senderUin || messAfter.type?.toFloat()!!
-                            .toInt() == Message.Type.IMAGE.ordinal)
+                            .toInt() == Message.Type.IMAGE.ordinal || messAfter.type?.toFloat()!!
+                            .toInt() == Message.Type.VIDEO.ordinal)
                         && messBefore.type?.toFloat()!!.toInt() == Message.Type.TEXT.ordinal
                     ) {
                         holder.tvMessageContent.setBackgroundResource(R.drawable.bg_message_send_one_top)
@@ -535,53 +568,79 @@ class MessageAdapter(
             }
             TypeView.VIDEO_SEND.ordinal -> {
                 (holder as MessageSenderHolder).bind()
-                var videoPlaying = false
 
                 holder.cvVideoMessage.visibility = View.VISIBLE
-
-                val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
-
-                holder.vvVideoMessage.setVideoPath(videoUri.toString())
-                holder.vvVideoMessage.seekTo(1);
-
-                holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
-                    val intent = Intent(context, PhotoActivity::class.java)
-                    intent.putExtra("topic", "video")
-                    intent.putExtra("mediaUrl", "url")
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
-
-                })
-
                 if (message.attachment != null) {
                     val gson = Gson()
                     val video = gson.fromJson(gson.toJson(message.attachment), Video::class.java)
                     val url = ApiConstant.URL_VIDEO + video.url
-                    val videoUri = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
-                    Log.d("HSJDHFKS", videoUri.toString())
 
-                    holder.vvVideoMessage.setVideoPath(videoUri.toString())
-                    holder.vvVideoMessage.seekTo(1);
-                    holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
+
+                    try {
+                        // bandwidthmeter is used for
+                        // getting default bandwidth
+                        val bandwidthMeter: BandwidthMeter = DefaultBandwidthMeter()
+
+                        // track selector is used to navigate between
+                        // video using a default seekbar.
+                        val trackSelector: TrackSelector =
+                            DefaultTrackSelector(AdaptiveTrackSelection.Factory(bandwidthMeter))
+
+                        // we are adding our track selector to exoplayer.
+                        holder.exoPlayer =
+                            ExoPlayerFactory.newSimpleInstance(context, trackSelector)
+
+                        // we are parsing a video url
+                        // and parsing its video uri.
+                        val videoURI: Uri = Uri.parse(url)
+
+                        // we are creating a variable for datasource factory
+                        // and setting its user agent as 'exoplayer_view'
+                        val dataSourceFactory: DefaultHttpDataSourceFactory =
+                            DefaultHttpDataSourceFactory("Exoplayer_video")
+
+                        // we are creating a variable for extractor factory
+                        // and setting it to default extractor factory.
+                        val extractorsFactory: ExtractorsFactory = DefaultExtractorsFactory();
+
+                        // we are creating a media source with above variables
+                        // and passing our event handler as null,
+                        val mediaSourse: MediaSource =
+                            ExtractorMediaSource(
+                                videoURI,
+                                dataSourceFactory,
+                                extractorsFactory,
+                                null,
+                                null
+                            )
+
+                        // inside our exoplayer view
+                        // we are setting our player
+                        holder.exoPlayerView.player = holder.exoPlayer
+
+                        // we are preparing our exoplayer
+                        // with media source.
+                        holder.exoPlayer.prepare(mediaSourse)
+
+                        // we are setting our exoplayer
+                        // when it is ready.
+                        holder.exoPlayer.playWhenReady = false
+
+                        holder.cvVideoMessage.setOnClickListener(View.OnClickListener {
                             val intent = Intent(context, PhotoActivity::class.java)
                             intent.putExtra("topic", "video")
                             intent.putExtra("mediaUrl", url)
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                             context.startActivity(intent)
 
-                    })
-                    holder.vvVideoMessage.setOnCompletionListener {
-                        videoPlaying = false
-                        holder.ibPlayVideo.visibility = View.VISIBLE
+                        })
+                    } catch (e: Exception) {
+                        // on below line we
+                        // are handling exception
+                        e.printStackTrace()
                     }
-                    holder.ibPlayVideo.setOnClickListener(View.OnClickListener {
-                        if (!videoPlaying) {
-                            holder.ibPlayVideo.visibility = View.GONE
-                            holder.vvVideoMessage.start()
-                            videoPlaying = true
-                        }
-                    })
                 }
+//
             }
         }
 
@@ -662,7 +721,7 @@ class MessageAdapter(
                 Message.Type.TEXT.ordinal -> return TypeView.TEXT_RECEIVE.ordinal
                 Message.Type.IMAGE.ordinal -> return TypeView.IMG_RECEVIE.ordinal
                 Message.Type.AUDIO.ordinal -> return TypeView.AUDIO_RECEIVE.ordinal
-                Message.Type.VIDEO.ordinal -> return TypeView.VIDEO_SEND.ordinal
+                Message.Type.VIDEO.ordinal -> return TypeView.VIDEO_RECEIVE.ordinal
             }
         }
         return 0

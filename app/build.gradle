@@ -60,7 +60,6 @@ dependencies {
     implementation 'com.airbnb.android:lottie:6.0.0'
     implementation 'androidx.core:core-ktx:+'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
-    implementation 'com.arthenica:mobile-ffmpeg-full-gpl:4.4.LTS'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
@@ -72,4 +71,21 @@ dependencies {
     implementation 'com.eightbitlab:supportrenderscriptblur:1.0.2'
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    // dependency for exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer:r2.4.0'
+
+// for core support in exoplayer.
+    implementation 'com.google.android.exoplayer:exoplayer-core:r2.4.0'
+
+// for adding dash support in our exoplayer.
+    implementation 'com.google.android.exoplayer:exoplayer-dash:r2.4.0'
+
+// for adding hls support in exoplayer.
+    implementation 'com.google.android.exoplayer:exoplayer-hls:r2.4.0'
+
+// for smooth streaming of video in our exoplayer.
+    implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:r2.4.0'
+
+// for generating default ui of exoplayer
+    implementation 'com.google.android.exoplayer:exoplayer-ui:r2.4.0'
 }
