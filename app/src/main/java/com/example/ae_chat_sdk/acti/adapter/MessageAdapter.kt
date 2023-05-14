@@ -81,8 +81,8 @@ class MessageAdapter(
         lateinit var aniAudio: LottieAnimationView
         lateinit var cvVideoMessage: CardView
         lateinit var exoPlayerView: SimpleExoPlayerView
-        lateinit var exoPlayer: SimpleExoPlayer
-        lateinit var timeMessage : TextView
+        var exoPlayer: SimpleExoPlayer? = null
+        lateinit var timeMessage: TextView
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivCheckSeen = binding.ivCheckSeen
@@ -95,9 +95,12 @@ class MessageAdapter(
             exoPlayerView = binding.idExoPlayerVIew
             timeMessage = binding.timeMessage
         }
-//        fun release() {
-//            exoPlayer.release()
-//        }
+
+        fun releasePlayer() {
+            exoPlayer?.release()
+            exoPlayer = null
+            exoPlayerView?.player = null
+        }
     }
 
     inner class MessageReceiverHolder(private val binding: LayoutFrameMessageReceiverBinding) :
@@ -111,8 +114,8 @@ class MessageAdapter(
         lateinit var aniAudio: LottieAnimationView
         lateinit var cvVideoMessage: CardView
         lateinit var exoPlayerView: SimpleExoPlayerView
-        lateinit var exoPlayer: SimpleExoPlayer
-        lateinit var timeMessage : TextView
+        var exoPlayer: SimpleExoPlayer? = null
+        lateinit var timeMessage: TextView
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivAvatar = binding.ivAvatar
@@ -125,9 +128,12 @@ class MessageAdapter(
             exoPlayerView = binding.idExoPlayerVIew
             timeMessage = binding.timeMessage
         }
-//        fun release() {
-//            exoPlayer.release()
-//        }
+
+        fun releasePlayer() {
+            exoPlayer?.release()
+            exoPlayer = null
+            exoPlayerView?.player = null
+        }
     }
 
     inner class BeginMessageHolder(private val binding: LayoutFrameMessageBeginBinding) :
@@ -171,15 +177,6 @@ class MessageAdapter(
     override fun getItemCount(): Int {
         return listMessage.size
     }
-//    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-//        super.onViewRecycled(holder)
-//        if(holder is MessageReceiverHolder){
-//            (holder as MessageReceiverHolder).release()
-//        }
-//        if(holder is MessageSenderHolder){
-//            (holder as MessageSenderHolder).release()
-//        }
-//    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -426,13 +423,13 @@ class MessageAdapter(
 
                         // we are preparing our exoplayer
                         // with media source.
-                        holder.exoPlayer.prepare(mediaSourse)
+                        holder.exoPlayer?.prepare(mediaSourse)
 
                         // we are setting our exoplayer
                         // when it is ready.
-                        holder.exoPlayer.playWhenReady = false
+                        holder.exoPlayer?.playWhenReady = false
                         holder.exoPlayerView.videoSurfaceView.setOnClickListener(View.OnClickListener {
-                            holder.exoPlayer.playWhenReady = false
+                            holder.exoPlayer?.playWhenReady = false
                             val intent = Intent(context, PhotoActivity::class.java)
                             intent.putExtra("topic", "video")
                             intent.putExtra("mediaUrl", url)
@@ -665,14 +662,14 @@ class MessageAdapter(
 
                         // we are preparing our exoplayer
                         // with media source.
-                        holder.exoPlayer.prepare(mediaSourse)
+                        holder.exoPlayer?.prepare(mediaSourse)
 
                         // we are setting our exoplayer
                         // when it is ready.
-                        holder.exoPlayer.playWhenReady = false
+                        holder.exoPlayer?.playWhenReady = false
 
                         holder.exoPlayerView.videoSurfaceView.setOnClickListener(View.OnClickListener {
-                            holder.exoPlayer.playWhenReady = false
+                            holder.exoPlayer?.playWhenReady = false
                             val intent = Intent(context, PhotoActivity::class.java)
                             intent.putExtra("topic", "video")
                             intent.putExtra("mediaUrl", url)

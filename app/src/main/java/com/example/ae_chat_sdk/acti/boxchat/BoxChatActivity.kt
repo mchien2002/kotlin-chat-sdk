@@ -243,7 +243,19 @@ class BoxChatActivity : AppCompatActivity() {
             messageAdapter?.mediaPlayer?.stop()
             messageAdapter?.mediaPlayer?.release()
             messageAdapter?.mediaPlayer = null
+
+            for (i in 0 until rvMessage.childCount) {
+                val viewHolder = rvMessage.getChildViewHolder(rvMessage.getChildAt(i))
+                if (viewHolder is MessageAdapter.MessageReceiverHolder) {
+                    viewHolder.releasePlayer()
+                }
+                if (viewHolder is MessageAdapter.MessageSenderHolder) {
+                    viewHolder.releasePlayer()
+                }
+            }
+            rvMessage.adapter = null
             messageAdapter = null
+
             finish()
             groupId = null
 
@@ -560,6 +572,16 @@ class BoxChatActivity : AppCompatActivity() {
         messageAdapter?.mediaPlayer?.stop()
         messageAdapter?.mediaPlayer?.release()
         messageAdapter?.mediaPlayer = null
+        for (i in 0 until rvMessage.childCount) {
+            val viewHolder = rvMessage.getChildViewHolder(rvMessage.getChildAt(i))
+            if (viewHolder is MessageAdapter.MessageReceiverHolder) {
+                viewHolder.releasePlayer()
+            }
+            if (viewHolder is MessageAdapter.MessageSenderHolder) {
+                viewHolder.releasePlayer()
+            }
+        }
+        rvMessage.adapter = null
         messageAdapter = null
 
     }

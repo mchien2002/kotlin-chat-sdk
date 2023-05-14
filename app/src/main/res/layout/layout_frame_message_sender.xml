@@ -83,9 +83,6 @@
             android:layout_marginBottom="2dp"
             android:layout_weight="1"
             android:background="@color/transparent"
-            android:outlineSpotShadowColor="@color/transparent"
-            android:clickable="true"
-
             android:visibility="gone"
             app:cardCornerRadius="15dp"
             tools:cardElevation="0dp">
