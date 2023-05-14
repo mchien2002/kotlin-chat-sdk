@@ -1,24 +1,29 @@
-package com.example.ae_chat_sdk
+package com.example.ae_chat_sdk.acti.media
 
 import android.content.Context
-import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.MediaController
+import android.widget.VideoView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.example.ae_chat_sdk.data.storage.AppStorage
+import com.example.ae_chat_sdk.R
 import com.github.chrisbanes.photoview.PhotoView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class PhotoActivity : AppCompatActivity() {
     lateinit var photoView: PhotoView
+    lateinit var videoView: VideoView
     lateinit var btnBack: ImageButton
     lateinit var context: Context
 
@@ -56,15 +61,36 @@ class PhotoActivity : AppCompatActivity() {
     private fun init() {
         btnBack = findViewById(R.id.ibBack)
 
+        videoView = findViewById(R.id.vvVideo_View)
         photoView = findViewById(R.id.photo_view)
     }
 
     private fun setData() {
+        val topic = intent.getStringExtra("topic")
+        val mediaController = MediaController(this)
+        videoView.setMediaController(mediaController)
+        mediaController.setAnchorView(videoView)
+        if (topic == "image") {
+            GlobalScope.launch(Dispatchers.Main) {
+                photoView.visibility = View.VISIBLE
+                val url = intent.getStringExtra("mediaUrl")
+                Glide.with(applicationContext).load(url).placeholder(R.drawable.image_default)
+                    .error(R.drawable.image_default).into(photoView)
+            }
 
-        val url = intent.getStringExtra("imageUrl")
-        Glide.with(applicationContext).load(url).skipMemoryCache(true)
-            .diskCacheStrategy(DiskCacheStrategy.NONE)
-            .error(R.drawable.image_default).into(photoView)
+        } else if (topic == "video") {
+            GlobalScope.launch(Dispatchers.Main) {
+                videoView.visibility = View.VISIBLE
+                val url = intent.getStringExtra("mediaUrl")
+                val videoUri = Uri.parse(url)
+
+                videoView.setVideoPath(videoUri.toString())
+                videoView.seekTo(1);
+
+                mediaController.setAnchorView(videoView)
+                videoView.start()
+            }
+        }
     }
 
     private fun setOnClickListener() {

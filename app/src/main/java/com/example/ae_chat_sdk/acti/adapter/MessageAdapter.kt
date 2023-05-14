@@ -19,9 +19,9 @@ import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.example.ae_chat_sdk.PhotoActivity
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
+import com.example.ae_chat_sdk.acti.media.PhotoActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
 import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
@@ -242,7 +242,8 @@ class MessageAdapter(
                     val url = ApiConstant.URL_IMAGE + img.url
                     holder.ivImageMessage.setOnClickListener(View.OnClickListener {
                         val intent = Intent(context, PhotoActivity::class.java)
-                        intent.putExtra("imageUrl", url)
+                        intent.putExtra("topic", "image")
+                        intent.putExtra("mediaUrl", url)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         context.startActivity(intent)
                     })
@@ -336,11 +337,12 @@ class MessageAdapter(
                     holder.vvVideoMessage.setVideoPath(videoUri.toString())
                     holder.vvVideoMessage.seekTo(1);
                     holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
-                        if (videoPlaying) {
-                            videoPlaying = false
-                            holder.ibPlayVideo.visibility = View.VISIBLE
-                            holder.vvVideoMessage.pause()
-                        }
+                        val intent = Intent(context, PhotoActivity::class.java)
+                        intent.putExtra("topic", "video")
+                        intent.putExtra("mediaUrl", url)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                        context.startActivity(intent)
+
                     })
                     holder.vvVideoMessage.setOnCompletionListener {
                         videoPlaying = false
@@ -434,7 +436,8 @@ class MessageAdapter(
                     val url = ApiConstant.URL_IMAGE + img.url
                     holder.ivImageMessage.setOnClickListener(View.OnClickListener {
                         val intent = Intent(context, PhotoActivity::class.java)
-                        intent.putExtra("imageUrl", url)
+                        intent.putExtra("topic", "image")
+                        intent.putExtra("mediaUrl", url)
                         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                         context.startActivity(intent)
                     })
@@ -520,48 +523,23 @@ class MessageAdapter(
                 var videoPlaying = false
 
                 holder.cvVideoMessage.visibility = View.VISIBLE
-//                val url_video = Uri.parse("http://techslides.com/demos/sample-videos/small.mp4")
-//                holder.vvVideoMessage.setVideoPath(url_video.toString())
-//                holder.vvVideoMessage.seekTo(1);
-//                holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
-//                    if (videoPlaying) {
-//                        videoPlaying = false
-//                        holder.ibPlayVideo.visibility = View.VISIBLE
-//                        holder.vvVideoMessage.pause()
-//                    }
-//                })
-//                holder.vvVideoMessage.setOnCompletionListener {
-//                    videoPlaying = false
-//                    holder.ibPlayVideo.visibility = View.VISIBLE
-//                }
-//                holder.ibPlayVideo.setOnClickListener(View.OnClickListener {
-//                    if (!videoPlaying) {
-//                        holder.ibPlayVideo.visibility = View.GONE
-//                        holder.vvVideoMessage.start()
-//                        videoPlaying = true
-//                    }
-//                })
 
                 if (message.attachment != null) {
                     val gson = Gson()
                     val video = gson.fromJson(gson.toJson(message.attachment), Video::class.java)
                     val url = ApiConstant.URL_VIDEO + video.url
-//                    holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
-//                        val intent = Intent(context, PhotoActivity::class.java)
-//                        intent.putExtra("imageUrl", url)
-//                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-//                        context.startActivity(intent)
-//                    })
-                    Log.d("HSJDHFKS", url)
+                    val videoUri = Uri.parse(url)
+                    Log.d("HSJDHFKS", videoUri.toString())
 
-                    holder.vvVideoMessage.setVideoPath(url)
+                    holder.vvVideoMessage.setVideoPath(videoUri.toString())
                     holder.vvVideoMessage.seekTo(1);
                     holder.vvVideoMessage.setOnClickListener(View.OnClickListener {
-                        if (videoPlaying) {
-                            videoPlaying = false
-                            holder.ibPlayVideo.visibility = View.VISIBLE
-                            holder.vvVideoMessage.pause()
-                        }
+                            val intent = Intent(context, PhotoActivity::class.java)
+                            intent.putExtra("topic", "video")
+                            intent.putExtra("mediaUrl", url)
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            context.startActivity(intent)
+
                     })
                     holder.vvVideoMessage.setOnCompletionListener {
                         videoPlaying = false
