@@ -205,7 +205,7 @@ class WebSocketListener : WebSocketListener() {
             val request: SocketRequest = SocketRequest("create_message", map)
             val stringtest = gson.toJson(request)
             Log.e("TOJSON", stringtest)
-//            myWebSocket.send(gson.toJson(request))
+            myWebSocket.send(gson.toJson(request))
         }
 
         internal fun createGroup(

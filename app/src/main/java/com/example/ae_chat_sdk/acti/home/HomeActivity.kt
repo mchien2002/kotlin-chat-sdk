@@ -321,6 +321,7 @@ class HomeActivity : AppCompatActivity() {
                             tvPagename.animate().alpha(0F).setDuration(500).setListener(null)
                         }
                         findViewById<RelativeLayout>(R.id.rlHome).visibility = View.VISIBLE
+                        findViewById<RelativeLayout>(R.id.rlListSearch).visibility = View.GONE
                     }
                     BottomSheetBehavior.STATE_DRAGGING -> {
                         tvPagename.visibility = View.VISIBLE

@@ -250,7 +250,8 @@ class BoxChatActivity : AppCompatActivity() {
 
         btnSendMessage.setOnClickListener {
             val myUser: User = AppStorage.getInstance(context).getUserLocal()
-            if (etInputMessage.text.trim() != "" && groupId != null) {
+            Log.d("CCCCJ", etInputMessage.text.trim().toString())
+            if (etInputMessage.text.trim().toString() != "" && groupId != null) {
                 val message = Message()
                 message.type = Message.Type.TEXT.ordinal
                 message.groupType = Message.GroupType.PUBLIC.ordinal
@@ -265,7 +266,7 @@ class BoxChatActivity : AppCompatActivity() {
                 webSocketListener.sendMessage(HomeActivity.webSocket, message)
                 etInputMessage.text.clear()
                 rvMessage.scrollToPosition(messageAdapter!!.itemCount - 1)
-            }else if (etInputMessage.text.trim() != "" && groupId == null){
+            }else if (etInputMessage.text.trim().toString() != "" && groupId == null){
                 val userIdMe = RestClient().getUserId()
                 val userId = intent.getStringExtra("userId")
                 val newList: List<String> = listOf(userIdMe, userId.toString())
@@ -475,6 +476,19 @@ class BoxChatActivity : AppCompatActivity() {
     }
 
     fun openGallery() {
+        if (ContextCompat.checkSelfPermission(
+                this, Manifest.permission.WRITE_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED && ContextCompat.checkSelfPermission(
+                this, Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            val permissions = arrayOf(
+                Manifest.permission.RECORD_AUDIO,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+            ActivityCompat.requestPermissions(this, permissions, 0)
+        }
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         intent.type = "video/*, image/*"
         startActivityForResult(intent, REQUEST_IV_PICK)
