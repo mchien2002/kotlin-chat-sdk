@@ -151,8 +151,14 @@ class PhotoActivity : AppCompatActivity() {
         }
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        exoPlayer.release()
+    }
+
     private fun setOnClickListener() {
         btnBack.setOnClickListener(View.OnClickListener {
+            exoPlayer.release()
             finish()
         })
     }

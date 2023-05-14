@@ -92,6 +92,9 @@ class MessageAdapter(
             cvVideoMessage = binding.cvVideoMessage
             exoPlayerView = binding.idExoPlayerVIew
         }
+        fun release() {
+            exoPlayer.release()
+        }
     }
 
     inner class MessageReceiverHolder(private val binding: LayoutFrameMessageReceiverBinding) :
@@ -116,6 +119,9 @@ class MessageAdapter(
             aniAudio = binding.animationView
             cvVideoMessage = binding.cvVideoMessage
             exoPlayerView = binding.idExoPlayerVIew
+        }
+        fun release() {
+            exoPlayer.release()
         }
     }
 
@@ -157,6 +163,15 @@ class MessageAdapter(
 
     override fun getItemCount(): Int {
         return listMessage.size
+    }
+    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+        super.onViewRecycled(holder)
+        if(holder is MessageReceiverHolder){
+            (holder as MessageReceiverHolder).release()
+        }
+        if(holder is MessageSenderHolder){
+            (holder as MessageSenderHolder).release()
+        }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -387,7 +402,8 @@ class MessageAdapter(
                         // we are setting our exoplayer
                         // when it is ready.
                         holder.exoPlayer.playWhenReady = false
-                        holder.cvVideoMessage.setOnClickListener(View.OnClickListener {
+                        holder.exoPlayerView.videoSurfaceView.setOnClickListener(View.OnClickListener {
+                            holder.exoPlayer.playWhenReady = false
                             val intent = Intent(context, PhotoActivity::class.java)
                             intent.putExtra("topic", "video")
                             intent.putExtra("mediaUrl", url)
@@ -626,7 +642,8 @@ class MessageAdapter(
                         // when it is ready.
                         holder.exoPlayer.playWhenReady = false
 
-                        holder.cvVideoMessage.setOnClickListener(View.OnClickListener {
+                        holder.exoPlayerView.videoSurfaceView.setOnClickListener(View.OnClickListener {
+                            holder.exoPlayer.playWhenReady = false
                             val intent = Intent(context, PhotoActivity::class.java)
                             intent.putExtra("topic", "video")
                             intent.putExtra("mediaUrl", url)
