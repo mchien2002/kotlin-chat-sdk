@@ -4,6 +4,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import java.text.SimpleDateFormat
+import java.time.Duration
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -15,15 +16,16 @@ class DateTimeUtil {
     @RequiresApi(Build.VERSION_CODES.O)
     fun getTimeFromDate(date: Date?): String {
 
-        // Lấy ngày tháng hiện tại
         val today = Calendar.getInstance()
+        val todayDay = today.get(Calendar.DAY_OF_MONTH)
 
         // Lấy ngày tháng của đối tượng Date
         val calendar = Calendar.getInstance()
         calendar.time = date
+        val calendarDay = calendar.get(Calendar.DAY_OF_MONTH)
 
-        if (calendar == today) {
-            val outputFormat = SimpleDateFormat("h:mm a", Locale.US)
+        if (calendarDay == todayDay) {
+            val outputFormat = SimpleDateFormat("HH:mm", Locale.US)
             val time = outputFormat.format(date)
             return time
         } else {
@@ -34,19 +36,30 @@ class DateTimeUtil {
         return " "
     }
 
+    fun getTimeFromDateMess(date: Date?): String {
+
+        // Lấy ngày tháng hiện tại
+        val today = Calendar.getInstance()
+        val todayDay = today.get(Calendar.DAY_OF_MONTH)
+
+        // Lấy ngày tháng của đối tượng Date
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        val calendarDay = calendar.get(Calendar.DAY_OF_MONTH)
+
+        if (calendarDay == todayDay) {
+            val outputFormat = SimpleDateFormat("HH:mm", Locale.US)
+            val time = outputFormat.format(date)
+            return time
+        } else {
+            val newFormatter = SimpleDateFormat("HH:mm dd MMM", Locale("vi", "VN"))
+            val newDateString = newFormatter.format(date)
+            return newDateString
+        }
+        return " "
+    }
+
     fun getElapsedTimeInWords(date: Date): String {
-//        val date2 = "Mon May 09 11:09:00 GMT+07:00 2023"
-//        val date9 = "Mon May 09 10:39:00 GMT+07:00 2023"
-//        val date3 = "Mon May 09 07:30:00 GMT+07:00 2023"
-//        val date4 = "Tue May 08 07:30:00 GMT+07:00 2023"
-//        val date5 = "Tue May 01 07:30:00 GMT+07:00 2023"
-//        val date6 = "Tue Jan 01 07:30:00 GMT+07:00 2023"
-//        val date7 = "Tue Jan 01 07:30:00 GMT+07:00 2021"
-//
-//        val dateFormat = SimpleDateFormat("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
-//        val datex = dateFormat.parse(date3)
-
-
         val calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Ho_Chi_Minh"))
         val currentDate = calendar.time
         val elapsedMillis = currentDate.time - date.time
@@ -65,5 +78,17 @@ class DateTimeUtil {
             elapsedMonths < 12 -> "Hoạt động $elapsedMonths tháng trước"
             else -> "Hoạt động $elapsedYears năm trước"
         }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun calculateTimeDifference(timeString1: String, timeString2: String): Long {
+        val formatter = DateTimeFormatter.ofPattern("EEE MMM dd HH:mm:ss zzz yyyy", Locale.ENGLISH)
+        val time1 = LocalDateTime.parse(timeString1, formatter)
+        val time2 = LocalDateTime.parse(timeString2, formatter)
+
+        val duration = Duration.between(time1, time2)
+        val minutesDifference = duration.toMinutes()
+
+        return minutesDifference
     }
 }

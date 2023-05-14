@@ -93,6 +93,14 @@ class RecentAdapter(val progressBar: ProgressBar, val context: Context) : Recycl
                     holder.tvMessage.text = "Bạn đã nhận được 1 tin nhắn thoại."
                 }
             }
+        }else if(itemObject.lastMessage!!.type == Message.Type.VIDEO.ordinal){
+            if (itemObject.lastMessage != null && holder.tvMessage != null) {
+                if (senderUin == RestClient().getUserId()) {
+                    holder.tvMessage.text = "Bạn đã gửi 1 video."
+                } else {
+                    holder.tvMessage.text = "Bạn đã nhận được 1 video."
+                }
+            }
         }
             var seenUins: ArrayList<String>? = itemObject.lastMessage!!.seenUins
             Log.e("SEENNN", seenUins.toString())
@@ -143,12 +151,12 @@ class RecentAdapter(val progressBar: ProgressBar, val context: Context) : Recycl
                                     holder.tvUsername.text = userTemp.fullName
                                     username = userTemp.userName
                                     userId = userTemp.userId
-                                }
-                                if (userTemp.avatar != null) {
-                                    imageUrl = ApiConstant.URL_IMAGE + userTemp.avatar
-                                    Glide.with(context).load(imageUrl)
-                                        .placeholder(R.drawable.avatardefault)
-                                        .error(R.drawable.avatardefault).into(holder.ivAvatarRecent)
+                                    if (userTemp.avatar != null) {
+                                        imageUrl = ApiConstant.URL_IMAGE + userTemp.avatar
+                                        Glide.with(context).load(imageUrl)
+                                            .placeholder(R.drawable.avatardefault)
+                                            .error(R.drawable.avatardefault).into(holder.ivAvatarRecent)
+                                    }
                                 }
                             }
                         })

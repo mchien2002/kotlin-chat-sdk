@@ -36,7 +36,7 @@ class PhotoActivity : AppCompatActivity() {
     lateinit var btnBack: ImageButton
     lateinit var context: Context
     lateinit var exoPlayerView: SimpleExoPlayerView
-    lateinit var exoPlayer: SimpleExoPlayer
+    var exoPlayer: SimpleExoPlayer? = null
 
     @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -134,11 +134,11 @@ class PhotoActivity : AppCompatActivity() {
 
                 // we are preparing our exoplayer
                 // with media source.
-                exoPlayer.prepare(mediaSourse)
+                exoPlayer?.prepare(mediaSourse)
 
                 // we are setting our exoplayer
                 // when it is ready.
-                exoPlayer.playWhenReady = true
+                exoPlayer?.playWhenReady = true
 
 
             } catch (e: Exception) {
@@ -153,12 +153,12 @@ class PhotoActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        exoPlayer.release()
+        exoPlayer?.release()
     }
 
     private fun setOnClickListener() {
         btnBack.setOnClickListener(View.OnClickListener {
-            exoPlayer.release()
+            exoPlayer?.release()
             finish()
         })
     }

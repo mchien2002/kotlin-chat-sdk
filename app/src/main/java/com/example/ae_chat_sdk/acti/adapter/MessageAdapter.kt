@@ -29,6 +29,7 @@ import com.example.ae_chat_sdk.data.model.Image
 import com.example.ae_chat_sdk.data.model.Message
 import com.example.ae_chat_sdk.data.model.Video
 import com.example.ae_chat_sdk.databinding.*
+import com.example.ae_chat_sdk.utils.DateTimeUtil
 import com.google.android.exoplayer2.ExoPlayerFactory
 import com.google.android.exoplayer2.SimpleExoPlayer
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory
@@ -81,6 +82,7 @@ class MessageAdapter(
         lateinit var cvVideoMessage: CardView
         lateinit var exoPlayerView: SimpleExoPlayerView
         lateinit var exoPlayer: SimpleExoPlayer
+        lateinit var timeMessage : TextView
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivCheckSeen = binding.ivCheckSeen
@@ -91,10 +93,11 @@ class MessageAdapter(
             aniAudio = binding.animationView
             cvVideoMessage = binding.cvVideoMessage
             exoPlayerView = binding.idExoPlayerVIew
+            timeMessage = binding.timeMessage
         }
-        fun release() {
-            exoPlayer.release()
-        }
+//        fun release() {
+//            exoPlayer.release()
+//        }
     }
 
     inner class MessageReceiverHolder(private val binding: LayoutFrameMessageReceiverBinding) :
@@ -109,6 +112,7 @@ class MessageAdapter(
         lateinit var cvVideoMessage: CardView
         lateinit var exoPlayerView: SimpleExoPlayerView
         lateinit var exoPlayer: SimpleExoPlayer
+        lateinit var timeMessage : TextView
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivAvatar = binding.ivAvatar
@@ -119,15 +123,18 @@ class MessageAdapter(
             aniAudio = binding.animationView
             cvVideoMessage = binding.cvVideoMessage
             exoPlayerView = binding.idExoPlayerVIew
+            timeMessage = binding.timeMessage
         }
-        fun release() {
-            exoPlayer.release()
-        }
+//        fun release() {
+//            exoPlayer.release()
+//        }
     }
 
     inner class BeginMessageHolder(private val binding: LayoutFrameMessageBeginBinding) :
         RecyclerView.ViewHolder(binding.root) {
+        lateinit var timeMessage : TextView
         fun bind() {
+            timeMessage = binding.timeMessage
             binding.tvMessageBegin.text = "Bạn đã bắt đầu cuộc trò chuyện."
         }
     }
@@ -164,20 +171,42 @@ class MessageAdapter(
     override fun getItemCount(): Int {
         return listMessage.size
     }
-    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        super.onViewRecycled(holder)
-        if(holder is MessageReceiverHolder){
-            (holder as MessageReceiverHolder).release()
-        }
-        if(holder is MessageSenderHolder){
-            (holder as MessageSenderHolder).release()
-        }
-    }
+//    override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
+//        super.onViewRecycled(holder)
+//        if(holder is MessageReceiverHolder){
+//            (holder as MessageReceiverHolder).release()
+//        }
+//        if(holder is MessageSenderHolder){
+//            (holder as MessageSenderHolder).release()
+//        }
+//    }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val message: Message = listMessage[position]
         val senderUin = message.senderUin
         var audioPlaying = false
+        if (position > 0){
+            val timeDifference = DateTimeUtil().calculateTimeDifference(listMessage[position - 1].createdAt.toString(),listMessage[position].createdAt.toString())
+            Log.e("DIFFTIME",timeDifference.toString())
+            if (timeDifference>15){
+                if (holder is MessageReceiverHolder){
+                    (holder as MessageReceiverHolder).bind()
+                    holder.timeMessage.visibility = View.VISIBLE
+                    holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                }
+                if (holder is MessageSenderHolder){
+                    (holder as MessageSenderHolder).bind()
+                    holder.timeMessage.visibility = View.VISIBLE
+                    holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                }
+            }
+        }
+        if (holder is BeginMessageHolder){
+            (holder as BeginMessageHolder).bind()
+            holder.timeMessage.visibility = View.VISIBLE
+            holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+        }
 
         when (getItemViewType(position)) {
             TypeView.FIRST_MESSAGE.ordinal -> {
