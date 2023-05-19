@@ -88,4 +88,7 @@ dependencies {
 
 // for generating default ui of exoplayer
     implementation 'com.google.android.exoplayer:exoplayer-ui:r2.4.0'
+    //double click
+    implementation 'com.daimajia.androidanimations:library:2.4@aar'
+    implementation 'com.nineoldandroids:library:2.4.0'
 }

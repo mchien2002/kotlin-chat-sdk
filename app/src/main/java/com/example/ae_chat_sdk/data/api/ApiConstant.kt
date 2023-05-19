@@ -2,8 +2,8 @@ package com.example.ae_chat_sdk.data.api
 
 class ApiConstant {
     companion object {
-            const val URL = "https://62f7-2001-ee0-4fc7-dce0-9c64-429a-172-979e.ngrok-free.app/api/v1/"
-            const val MEDIA = "https://62f7-2001-ee0-4fc7-dce0-9c64-429a-172-979e.ngrok-free.app/"
+            const val URL = "https://ec62-2402-800-781d-1352-e090-b790-7d34-d1ca.ngrok-free.app/api/v1/"
+            const val MEDIA = "https://ec62-2402-800-781d-1352-e090-b790-7d34-d1ca.ngrok-free.app/"
             const val URL_AUDIO = MEDIA + "audio/"
             const val URL_IMAGE = MEDIA + "image/"
             const val URL_VIDEO = MEDIA + "video/"

@@ -19,6 +19,8 @@ import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
+import com.daimajia.androidanimations.library.Techniques
+import com.daimajia.androidanimations.library.YoYo
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.acti.media.PhotoActivity
@@ -762,6 +764,54 @@ class MessageAdapter(
             }
 
         }
+        if (holder is MessageReceiverHolder){
+            (holder as MessageReceiverHolder).bind()
+            holder.tvMessageContent.setOnClickListener {
+                if (holder.timeMessage.visibility == View.GONE){
+                    holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                    holder.timeMessage.visibility = View.VISIBLE
+                }else{
+                    holder.timeMessage.clearComposingText()
+                    holder.timeMessage.visibility = View.GONE
+                }
+            }
+        }
+        if (holder is MessageSenderHolder){
+            (holder as MessageSenderHolder).bind()
+            holder.tvMessageContent.setOnClickListener {
+                if (holder.timeMessage.visibility == View.GONE){
+                    holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                    holder.timeMessage.visibility = View.VISIBLE
+                }else{
+                    holder.timeMessage.clearComposingText()
+                    holder.timeMessage.visibility = View.GONE
+                }
+            }
+
+        }
+//        var lastClickTime: Long = 0
+//        if (holder is MessageReceiverHolder){
+//            (holder as MessageReceiverHolder).bind()
+//            holder.tvMessageContent.setOnClickListener {
+//                val currentTime = System.currentTimeMillis()
+//                if (currentTime - lastClickTime < 500) {
+//                    // Xử lý sự kiện double click vào TextView ở vị trí `position`
+//                    Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
+//                }
+//                lastClickTime = currentTime
+//            }
+//        }
+//        if (holder is MessageSenderHolder){
+//            (holder as MessageSenderHolder).bind()
+//            holder.tvMessageContent.setOnClickListener {
+//                val currentTime = System.currentTimeMillis()
+//                if (currentTime - lastClickTime < 500) {
+//                    // Xử lý sự kiện double click vào TextView ở vị trí `position`
+//                    Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
+//                }
+//                lastClickTime = currentTime
+//            }
+//        }
     }
 
     override fun getItemViewType(position: Int): Int {
