@@ -87,5 +87,7 @@ class Message {
     @SerializedName("attachment")
     var attachment: Any? = null
 
+    @SerializedName("likeUins")
+    var likeUins: ArrayList<String>? = null
 
 }

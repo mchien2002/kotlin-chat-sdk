@@ -23,6 +23,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.daimajia.androidanimations.library.Techniques
 import com.daimajia.androidanimations.library.YoYo
 import com.example.ae_chat_sdk.R
+import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.acti.home.HomeActivity
 import com.example.ae_chat_sdk.acti.media.PhotoActivity
 import com.example.ae_chat_sdk.data.api.ApiConstant
@@ -51,6 +52,8 @@ import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.util.*
+import kotlin.collections.ArrayList
 
 @Suppress("DEPRECATION")
 class MessageAdapter(
@@ -803,7 +806,20 @@ class MessageAdapter(
                             holder.timeMessage.visibility = View.GONE
                         }
                     } else if (clickCount == 2) {
-                        // Double click event
+                        var message = Message()
+//                        message.type = Message.Type.TEXT.ordinal
+//                        message.groupType = Message.GroupType.PUBLIC.ordinal
+//                        message.messageId = listMessage[position].messageId
+//                        message.message = listMessage[position].message
+//                        message.groupId = listMessage[position].groupId
+//                        message.status = listMessage[position].status
+//                        message.senderUin = listMessage[position].senderUin
+//                        message.senderAvatar = listMessage[position].senderAvatar
+//                        message.senderName = listMessage[position].senderName
+//                        message.createdAt = listMessage[position].createdAt
+//                        message.seenUins = listMessage[position].seenUins
+                        message = listMessage[position]
+                        WebSocketListener.likeMessage(message)
                         Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
                     }
                     clickCount = 0

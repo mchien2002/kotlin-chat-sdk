@@ -230,6 +230,13 @@ class WebSocketListener : WebSocketListener() {
             Log.e("REQEST", gson.toJson(request))
             myWebSocket.send(gson.toJson(request))
         }
+        internal fun likeMessage( message: Message) {
+            val map: MutableMap<String, Any> = HashMap<String, Any>()
+            map["message"] = message
+            val request: SocketRequest = SocketRequest("like_message", map)
+            val abc = gson.toJson(request)
+            myWebSocket.send(gson.toJson(request))
+        }
     }
 
     fun receiveMessage(webSocket: WebSocket, groupId: String) {
@@ -262,5 +269,6 @@ class WebSocketListener : WebSocketListener() {
         val request: SocketRequest = SocketRequest("seen_message", map)
         webSocket.send(gson.toJson(request))
     }
+
 
 }
