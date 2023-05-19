@@ -5,6 +5,7 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -58,6 +59,9 @@ class MessageAdapter(
     val webSocketListener: WebSocketListener = WebSocketListener()
     var listMessage: ArrayList<Message> = ArrayList()
     var mediaPlayer: MediaPlayer? = null
+    private var clickCount: Int = 0
+    private val doubleClickThreshold = 500L
+    private val handler = Handler()
 
 
     enum class TypeView(val typeView: Int) {
@@ -767,51 +771,45 @@ class MessageAdapter(
         if (holder is MessageReceiverHolder){
             (holder as MessageReceiverHolder).bind()
             holder.tvMessageContent.setOnClickListener {
-                if (holder.timeMessage.visibility == View.GONE){
-                    holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
-                    holder.timeMessage.visibility = View.VISIBLE
-                }else{
-                    holder.timeMessage.clearComposingText()
-                    holder.timeMessage.visibility = View.GONE
-                }
+                clickCount++
+                handler.postDelayed({
+                    if (clickCount == 1) {
+                        if (holder.timeMessage.visibility == View.GONE){
+                            holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                            holder.timeMessage.visibility = View.VISIBLE
+                        }else{
+                            holder.timeMessage.clearComposingText()
+                            holder.timeMessage.visibility = View.GONE
+                        }
+                    } else if (clickCount == 2) {
+                        // Double click event
+                        Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
+                    }
+                    clickCount = 0
+                }, doubleClickThreshold)
             }
         }
         if (holder is MessageSenderHolder){
             (holder as MessageSenderHolder).bind()
             holder.tvMessageContent.setOnClickListener {
-                if (holder.timeMessage.visibility == View.GONE){
-                    holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
-                    holder.timeMessage.visibility = View.VISIBLE
-                }else{
-                    holder.timeMessage.clearComposingText()
-                    holder.timeMessage.visibility = View.GONE
-                }
+                clickCount++
+                handler.postDelayed({
+                    if (clickCount == 1) {
+                        if (holder.timeMessage.visibility == View.GONE){
+                            holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                            holder.timeMessage.visibility = View.VISIBLE
+                        }else{
+                            holder.timeMessage.clearComposingText()
+                            holder.timeMessage.visibility = View.GONE
+                        }
+                    } else if (clickCount == 2) {
+                        // Double click event
+                        Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
+                    }
+                    clickCount = 0
+                }, doubleClickThreshold)
             }
-
         }
-//        var lastClickTime: Long = 0
-//        if (holder is MessageReceiverHolder){
-//            (holder as MessageReceiverHolder).bind()
-//            holder.tvMessageContent.setOnClickListener {
-//                val currentTime = System.currentTimeMillis()
-//                if (currentTime - lastClickTime < 500) {
-//                    // Xử lý sự kiện double click vào TextView ở vị trí `position`
-//                    Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
-//                }
-//                lastClickTime = currentTime
-//            }
-//        }
-//        if (holder is MessageSenderHolder){
-//            (holder as MessageSenderHolder).bind()
-//            holder.tvMessageContent.setOnClickListener {
-//                val currentTime = System.currentTimeMillis()
-//                if (currentTime - lastClickTime < 500) {
-//                    // Xử lý sự kiện double click vào TextView ở vị trí `position`
-//                    Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
-//                }
-//                lastClickTime = currentTime
-//            }
-//        }
     }
 
     override fun getItemViewType(position: Int): Int {
