@@ -20,8 +20,6 @@ import com.airbnb.lottie.LottieAnimationView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
-import com.daimajia.androidanimations.library.Techniques
-import com.daimajia.androidanimations.library.YoYo
 import com.example.ae_chat_sdk.R
 import com.example.ae_chat_sdk.acti.boxchat.BoxChatActivity
 import com.example.ae_chat_sdk.acti.home.HomeActivity
@@ -301,6 +299,9 @@ class MessageAdapter(
 
                     }
                 }
+                holder.tvMessageContent.setOnLongClickListener(View.OnLongClickListener {
+                    true
+                })
             }
             TypeView.IMG_RECEVIE.ordinal -> {
                 (holder as MessageReceiverHolder).bind()
@@ -536,6 +537,9 @@ class MessageAdapter(
 
                     }
                 }
+                holder.tvMessageContent.setOnLongClickListener(View.OnLongClickListener {
+                    true
+                })
             }
             TypeView.IMG_SEND.ordinal -> {
                 (holder as MessageSenderHolder).bind()

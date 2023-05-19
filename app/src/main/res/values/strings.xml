@@ -13,7 +13,7 @@
     <string name="description_button_down">Button drop down</string>
     <string name="sign_in">Đăng nhập</string>
     <string name="list_message">Tin nhắn</string>
-    <string name="status">Trạng thái hoạt động</string>
+    <string name="block_tranger">Chặn tin nhắn từ người lạ</string>
     <string name="language">Ngôn ngữ</string>
     <string name="support">Trợ giúp &amp; hỗ trợ</string>
     <string name="log_out">Đăng xuất</string>

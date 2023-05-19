@@ -116,24 +116,12 @@ class HomeActivity : AppCompatActivity() {
 
         connectSocket()
         init()
-        checkStatus()
         addTextChangeListener()
         setButtonOnClickListener()
         searchUser("")
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
         setUserData()
-    }
-
-    private fun checkStatus() {
-        val appStorage = AppStorage.getInstance(context)
-        appStorage.saveData("swState", swState.isChecked.toString())
-        val state: Boolean = appStorage.getSWStatus()
-        if (state) {
-            rLayoutOnStream.visibility = View.VISIBLE
-        } else {
-            rLayoutOnStream.visibility = View.GONE
-        }
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -226,10 +214,6 @@ class HomeActivity : AppCompatActivity() {
             finish()
         })
 
-        // Update state
-        swState.setOnCheckedChangeListener(OnCheckedChangeListener { compoundButton, b ->
-            checkStatus()
-        })
     }
 
     private fun init() {
@@ -255,7 +239,7 @@ class HomeActivity : AppCompatActivity() {
         btnLogOut = findViewById(R.id.mbLogOut)
 
         val appStorage = AppStorage.getInstance(context)
-        swState = findViewById(R.id.switchStatus)
+        swState = findViewById(R.id.switchBlock)
         swState.isChecked = appStorage.getSWStatus()
 
         progressBar = findViewById(R.id.progressBar)

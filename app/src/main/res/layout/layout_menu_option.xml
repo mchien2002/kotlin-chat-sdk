@@ -7,7 +7,7 @@
     android:background="@color/transparent"
     xmlns:tools="http://schemas.android.com/tools"
     android:paddingTop="50dp"
-    android:visibility="visible">
+    android:visibility="gone">
 
     <RelativeLayout
         android:id="@+id/rlAvatar"
@@ -80,26 +80,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-<!--                <com.google.android.material.button.MaterialButton-->
-<!--                    android:id="@+id/mbListMessage"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:background="@drawable/bg_retangle_button"-->
-<!--                    android:fontFamily="@font/roboto_medium"-->
-<!--                    android:gravity="start|center"-->
-<!--                    android:letterSpacing="0.03"-->
-<!--                    android:text="@string/list_message"-->
-<!--                    android:textAllCaps="false"-->
-<!--                    android:textColor="@color/Primary10"-->
-<!--                    android:textSize="12sp"-->
-<!--                    app:backgroundTint="@color/White"-->
-<!--                    app:icon="@drawable/ic_right"-->
-<!--                    app:iconGravity="end"-->
-<!--                    app:iconTint="@color/Primary10"-->
-<!--                    app:rippleColor="@color/Primary90" />-->
-
                 <androidx.appcompat.widget.SwitchCompat
-                    android:id="@+id/switchStatus"
+                    android:id="@+id/switchBlock"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical|end"
@@ -110,7 +92,7 @@
                     android:letterSpacing="0.03"
                     android:paddingStart="15dp"
                     android:paddingEnd="10dp"
-                    android:text="@string/status"
+                    android:text="@string/block_tranger"
                     android:textColor="@color/Primary10"
                     android:textSize="12sp"
                     app:thumbTint="@drawable/switch_thumb"
