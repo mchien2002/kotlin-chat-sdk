@@ -35,4 +35,8 @@ class UserRepository constructor(){
     public fun updateUser(token: String, user: User): Call<MyResponse> {
         return userService.updateUser(token, user)
     }
+
+    public fun updateUserState(token: String,userId: String,state : Int) : Call<MyResponse>{
+        return userService.updateUserState(token, userId, state)
+    }
 }

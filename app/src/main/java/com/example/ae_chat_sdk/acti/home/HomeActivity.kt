@@ -36,7 +36,9 @@ import com.example.ae_chat_sdk.data.api.RestClient
 import com.example.ae_chat_sdk.data.api.reponsitory.UserRepository
 import com.example.ae_chat_sdk.data.api.service.WebSocketListener
 import com.example.ae_chat_sdk.data.model.ApiResponse
+import com.example.ae_chat_sdk.data.model.MyResponse
 import com.example.ae_chat_sdk.data.model.User
+import com.example.ae_chat_sdk.data.model.UserState
 import com.example.ae_chat_sdk.data.socket.SocketConstant
 import com.example.ae_chat_sdk.data.storage.AppStorage
 import com.example.ae_chat_sdk.utils.BlurUtils
@@ -122,6 +124,19 @@ class HomeActivity : AppCompatActivity() {
         renderDataRecyclerView()
         setBottomSheetBehaviorHome()
         setUserData()
+        checkState()
+        swState.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked) {
+                // Switch đã được bật
+                // Thực hiện hành động khi switch được bật
+                UserRepository().updateUserState(RestClient().getToken(),RestClient().getUserId(),UserState.PRIAVTE.ordinal)
+            } else {
+                // Switch đã được tắt
+                // Thực hiện hành động khi switch được tắt
+                UserRepository().updateUserState(RestClient().getToken(),RestClient().getUserId(),UserState.PUBLIC.ordinal)
+
+            }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.R)
@@ -240,9 +255,33 @@ class HomeActivity : AppCompatActivity() {
 
         val appStorage = AppStorage.getInstance(context)
         swState = findViewById(R.id.switchBlock)
-        swState.isChecked = appStorage.getSWStatus()
+        //swState.isChecked = appStorage.getSWStatus()
 
         progressBar = findViewById(R.id.progressBar)
+    }
+    private fun checkState(){
+        val gson = Gson()
+        val type = object : TypeToken<User>() {}.type
+        val call = UserRepository().getUserProfile(RestClient().getToken(), RestClient().getUserId())
+        call.enqueue(object : Callback<MyResponse> {
+            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
+                Log.e("CCCCC", t.toString())
+            }
+
+            override fun onResponse(
+                call: Call<MyResponse>, response: Response<MyResponse>
+            ) {
+                val userTemp =
+                    gson.fromJson<User>(gson.toJson(response.body()?.data), type)
+                if(userTemp != null){
+                    if (userTemp.state == UserState.PUBLIC.ordinal) {
+                        swState.isChecked = false
+                    } else if (userTemp.state == UserState.PRIAVTE.ordinal) {
+                        swState.isChecked = true
+                    }
+                }
+            }
+        })
     }
 
     private fun addTextChangeListener() {

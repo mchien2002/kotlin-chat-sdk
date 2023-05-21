@@ -140,6 +140,7 @@ class ProfileActivity : AppCompatActivity() {
                         myUser.email,
                         myUser.fullName,
                         myUser.localName,
+                        myUser.state,
                         myUser.phone,
                         token2,
                         myUser.userId,

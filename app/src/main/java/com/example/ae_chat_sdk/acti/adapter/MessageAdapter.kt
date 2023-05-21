@@ -78,13 +78,14 @@ class MessageAdapter(
     }
 
     override fun onViewRecycled(holder: RecyclerView.ViewHolder) {
-        if (holder is MessageReceiverHolder){
-           holder.clearTimeSent()
+        if (holder is MessageReceiverHolder) {
+            holder.clearTimeSent()
         }
-        if (holder is MessageSenderHolder){
+        if (holder is MessageSenderHolder) {
             holder.clearTimeSent()
         }
     }
+
     inner class MessageSenderHolder(private val binding: LayoutFrameMessageSenderBinding) :
         RecyclerView.ViewHolder(binding.root) {
         lateinit var tvMessageContent: TextView
@@ -98,6 +99,7 @@ class MessageAdapter(
         lateinit var exoPlayerView: SimpleExoPlayerView
         var exoPlayer: SimpleExoPlayer? = null
         lateinit var timeMessage: TextView
+        lateinit var ivLike: ImageView
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivCheckSeen = binding.ivCheckSeen
@@ -109,10 +111,12 @@ class MessageAdapter(
             cvVideoMessage = binding.cvVideoMessage
             exoPlayerView = binding.idExoPlayerVIew
             timeMessage = binding.timeMessage
+            ivLike = binding.ivLike
 
         }
-        fun clearTimeSent(){
-           //timeMessage.text= ""
+
+        fun clearTimeSent() {
+            //timeMessage.text= ""
             timeMessage.visibility = View.GONE
         }
 
@@ -136,6 +140,7 @@ class MessageAdapter(
         lateinit var exoPlayerView: SimpleExoPlayerView
         var exoPlayer: SimpleExoPlayer? = null
         lateinit var timeMessage: TextView
+        lateinit var ivLike: ImageView
         fun bind() {
             tvMessageContent = binding.tvMessageContent
             ivAvatar = binding.ivAvatar
@@ -147,8 +152,10 @@ class MessageAdapter(
             cvVideoMessage = binding.cvVideoMessage
             exoPlayerView = binding.idExoPlayerVIew
             timeMessage = binding.timeMessage
+            ivLike = binding.ivLike
         }
-        fun clearTimeSent(){
+
+        fun clearTimeSent() {
             //timeMessage.text= ""
             timeMessage.visibility = View.GONE
         }
@@ -162,7 +169,7 @@ class MessageAdapter(
 
     inner class BeginMessageHolder(private val binding: LayoutFrameMessageBeginBinding) :
         RecyclerView.ViewHolder(binding.root) {
-        lateinit var timeMessage : TextView
+        lateinit var timeMessage: TextView
         fun bind() {
             timeMessage = binding.timeMessage
             binding.tvMessageBegin.text = "Bạn đã bắt đầu cuộc trò chuyện."
@@ -207,29 +214,35 @@ class MessageAdapter(
         val message: Message = listMessage[position]
         val senderUin = message.senderUin
         var audioPlaying = false
-        if (position > 0 && listMessage[position - 1].senderUin != listMessage[position ].senderUin){
-            val timeDifference = DateTimeUtil().calculateTimeDifference(listMessage[position - 1].createdAt.toString(),listMessage[position].createdAt.toString())
-            Log.e("DIFFTIME",timeDifference.toString())
-            if (timeDifference>15){
-                if (holder is MessageReceiverHolder){
+        if (position > 0 && listMessage[position - 1].senderUin != listMessage[position].senderUin) {
+            val timeDifference = DateTimeUtil().calculateTimeDifference(
+                listMessage[position - 1].createdAt.toString(),
+                listMessage[position].createdAt.toString()
+            )
+            Log.e("DIFFTIME", timeDifference.toString())
+            if (timeDifference > 15) {
+                if (holder is MessageReceiverHolder) {
                     (holder as MessageReceiverHolder).bind()
                     holder.timeMessage.clearComposingText()
                     holder.timeMessage.visibility = View.VISIBLE
-                    holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                    holder.timeMessage.text =
+                        DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
                 }
-                if (holder is MessageSenderHolder){
+                if (holder is MessageSenderHolder) {
                     (holder as MessageSenderHolder).bind()
                     holder.timeMessage.clearComposingText()
                     holder.timeMessage.visibility = View.VISIBLE
-                    holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                    holder.timeMessage.text =
+                        DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
                 }
             }
         }
-        if (holder is BeginMessageHolder){
+        if (holder is BeginMessageHolder) {
             (holder as BeginMessageHolder).bind()
             holder.timeMessage.clearComposingText()
             holder.timeMessage.visibility = View.VISIBLE
-            holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+            holder.timeMessage.text =
+                DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
         }
 
         when (getItemViewType(position)) {
@@ -775,59 +788,78 @@ class MessageAdapter(
             }
 
         }
-        if (holder is MessageReceiverHolder){
+        if (holder is MessageReceiverHolder) {
             (holder as MessageReceiverHolder).bind()
             holder.tvMessageContent.setOnClickListener {
                 clickCount++
                 handler.postDelayed({
                     if (clickCount == 1) {
-                        if (holder.timeMessage.visibility == View.GONE){
-                            holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                        if (holder.timeMessage.visibility == View.GONE) {
+                            holder.timeMessage.text =
+                                DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
                             holder.timeMessage.visibility = View.VISIBLE
-                        }else{
+                        } else {
                             holder.timeMessage.clearComposingText()
                             holder.timeMessage.visibility = View.GONE
                         }
                     } else if (clickCount == 2) {
                         // Double click event
-                        Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            holder.tvMessageContent.context,
+                            "Double click!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     clickCount = 0
                 }, doubleClickThreshold)
             }
         }
-        if (holder is MessageSenderHolder){
+        if (holder is MessageSenderHolder) {
             (holder as MessageSenderHolder).bind()
             holder.tvMessageContent.setOnClickListener {
                 clickCount++
                 handler.postDelayed({
                     if (clickCount == 1) {
-                        if (holder.timeMessage.visibility == View.GONE){
-                            holder.timeMessage.text = DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
+                        if (holder.timeMessage.visibility == View.GONE) {
+                            holder.timeMessage.text =
+                                DateTimeUtil().getTimeFromDateMess(listMessage[position].createdAt)
                             holder.timeMessage.visibility = View.VISIBLE
-                        }else{
+                        } else {
                             holder.timeMessage.clearComposingText()
                             holder.timeMessage.visibility = View.GONE
                         }
                     } else if (clickCount == 2) {
                         var message = Message()
-//                        message.type = Message.Type.TEXT.ordinal
-//                        message.groupType = Message.GroupType.PUBLIC.ordinal
-//                        message.messageId = listMessage[position].messageId
-//                        message.message = listMessage[position].message
-//                        message.groupId = listMessage[position].groupId
-//                        message.status = listMessage[position].status
-//                        message.senderUin = listMessage[position].senderUin
-//                        message.senderAvatar = listMessage[position].senderAvatar
-//                        message.senderName = listMessage[position].senderName
-//                        message.createdAt = listMessage[position].createdAt
-//                        message.seenUins = listMessage[position].seenUins
                         message = listMessage[position]
                         WebSocketListener.likeMessage(message)
-                        Toast.makeText(holder.tvMessageContent.context, "Double click!", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            holder.tvMessageContent.context,
+                            "Double click!",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                     clickCount = 0
                 }, doubleClickThreshold)
+            }
+        }
+        if (holder is MessageReceiverHolder) {
+            (holder as MessageReceiverHolder).bind()
+            if (listMessage[position].likeUins != null) {
+                listMessage[position].likeUins!!.forEach { item ->
+                    if (item == RestClient().getUserId()) {
+                        holder.ivLike.visibility = View.VISIBLE
+                    }
+                }
+            }
+        }
+        if (holder is MessageSenderHolder) {
+            (holder as MessageSenderHolder).bind()
+            if (listMessage[position].likeUins != null) {
+                listMessage[position].likeUins!!.forEach { item ->
+                    if (item == RestClient().getUserId()) {
+                        holder.ivLike.visibility = View.VISIBLE
+                    }
+                }
             }
         }
     }

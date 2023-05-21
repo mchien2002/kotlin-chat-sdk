@@ -27,4 +27,7 @@ interface UserController {
 
     @POST(ApiConstant.UPDATE_USER)
     fun updateUser(@Header("token") token:String, @Body user: User):Call<MyResponse>
+
+    @POST(ApiConstant.UPDATE_USER_STATE)
+    fun updateUserState(@Header("token") token:String, @Query("key") userId : String,@Query("state") state:Int):Call<MyResponse>
 }

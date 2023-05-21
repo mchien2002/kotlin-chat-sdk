@@ -46,9 +46,9 @@ class AppStorage private constructor(context: Context) {
         return user
     }
 
-    fun getSWStatus(): Boolean {
-        val appStorage = AppStorage.getInstance()
-        val state: Boolean = appStorage.getData("swState", "false").toBoolean()
-        return state
-    }
+//    fun getSWStatus(): Boolean {
+//        val appStorage = AppStorage.getInstance()
+//        val state: Boolean = appStorage.getData("swState", "false").toBoolean()
+//        return state
+//    }
 }

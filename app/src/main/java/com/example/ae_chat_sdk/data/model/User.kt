@@ -8,6 +8,7 @@ import java.util.*
     val email: String,
     val fullName: String,
     val localName: String,
+    val state: Int?,
     val phone: String?,
     val token: String,
     val userId: String,
@@ -16,9 +17,6 @@ import java.util.*
 
 )
 
-//class User constructor(){
-//    val avatar: String?
-//        get() {
-//            TODO()
-//        }
-//}
+enum class UserState(state: Int?) {
+   NOT_AUTHORIZED(0), AUTHORIZED(1), PUBLIC(2), PRIAVTE(3)
+}
